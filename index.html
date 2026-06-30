@@ -151,6 +151,7 @@
             font-size: 0.85rem;
             color: var(--text-muted);
             margin-top: 2px;
+            line-height: 1.4;
         }
 
         /* マトリクスコンテナ */
@@ -389,7 +390,6 @@
             <div class="search-group">
                 <label for="startLoc">出発地 (現在のレベル)</label>
                 <select id="startLoc" class="search-select" onchange="calculateRoute()">
-                    <!-- 出発地側も18個の選択肢を完全網羅 -->
                     <optgroup label="A1 レイヤー">
                         <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
                         <option value="A1_Bridge">A1 × Bridge (超初歩の実務)</option>
@@ -426,7 +426,6 @@
             <div class="search-group">
                 <label for="endLoc">目的地 (目標のレベル)</label>
                 <select id="endLoc" class="search-select" onchange="calculateRoute()">
-                    <!-- 目的地側も18個すべて選択可能 -->
                     <optgroup label="A1 レイヤー">
                         <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
                         <option value="A1_Bridge">A1 × Bridge (超初歩の実務受信)</option>
@@ -582,7 +581,7 @@
                 <h4>必要学習時間(目安）</h4>
                 <p id="modalTime">-</p>
             </div>
-            <div class="modal-section" style="border-left-color: #e3b341;">
+            <div class="modal-section" style="border-left-color: #38bdf8;"> <!-- 黄色(#e3b341)からスカイブルーに変更 -->
                 <h4>処理速度・WPM指標 (かっこ内はネイティブ基準)</h4>
                 <p id="modalTimeSpeed">-</p>
             </div>
@@ -615,6 +614,22 @@
             "C1_BICS": 2250, "C1_Bridge": 2600, "C1_CALP": 2800,
             "C2_BICS": 4750, "C2_Bridge": 5000, "C2_CALP": 5500
         };
+
+        // 時間から日・数・年への分かりやすいテキストを生成する補助関数
+        function formatDaysString(hours) {
+            const dailyStudy = 1.5;
+            const days = Math.round(hours / dailyStudy);
+            
+            if (days < 30) {
+                return `${days}日`;
+            } else if (days < 365) {
+                const months = (days / 30.4).toFixed(1);
+                return `${days}日 (約 ${months}ヶ月)`;
+            } else {
+                const years = (days / 365).toFixed(1);
+                return `${days}日 (約 ${years}年)`;
+            }
+        }
 
         function calculateRoute() {
             const start = document.getElementById("startLoc").value;
@@ -657,9 +672,14 @@
             const minHours = Math.max(0, Math.round(neededHours * 0.55));
             const maxHours = Math.round(neededHours * 1.45);
 
-            resultValue.innerText = `${neededHours} 時間`;
+            // 1日1.5時間勉強した場合の日数計算
+            const mainDaysText = formatDaysString(neededHours);
+            const minDaysText = formatDaysString(minHours);
+            const maxDaysText = formatDaysString(maxHours);
+
+            resultValue.innerText = `${neededHours} 時間 (1日1.5hで約 ${mainDaysText})`;
             resultValue.style.color = "#10b981";
-            resultRange.innerText = `[95%信頼区間: ${minHours} 〜 ${maxHours} 時間の直行フライト]`;
+            resultRange.innerHTML = `[95%信頼区間: ${minHours} 〜 ${maxHours} 時間の直行フライト]<br><span style="color: #9ca3af;">➔ 1日1.5hペース時の幅: ${minDaysText} 〜 ${maxDaysText}</span>`;
         }
 
         const matrixData = {
@@ -727,11 +747,11 @@
                 curation: "【できること】科学・歴史テーマの易しい解説（Wikipedia等）の読解、学校講義のメインアイデアの把握。\n【できないこと】学術論文の背景知識なしでの精読、自分の専門外の講義に対する論理的なカウンター質問。\n\n★明日からの最初のアクション:\n身近な社会問題のWikipedia記事を読み、「原因・現状・対策」の3つの要素を箇条書きで抜き出してみましょう。"
             },
             "B2_BICS": {
-                title: "B2 × BICS (ネイティブ同調の雑談) — 文化的ユーモアの同期",
+                title: "B2 × BICS (ネイティブ同調 of 雑談) — 文化的ユーモアの同期",
                 vocab: "【公式目安】英検: 準1級 / TOEIC LR: 800-900 / TOEIC SW: 320-350 / TOEFL: 72-94 / IELTS: 5.5-6.5 / DET: 100-115\n【総語彙数】約 9,000語",
                 time: "【Zeroからの累積時間】平均 1,000時間",
                 wpm: "【Reading WPM】140 - 170 (ネイティブ基準: 200-250)\n【Listening WPM】150 - 180 (ネイティブ基準: 150-180)\n【Speaking WPM】100 - 130 (ネイティブ基準: 130-150)",
-                curation: "【できること】ネイティブと緊張感なしにやり取りし、文化的なジョークや皮肉のニュアンスも大枠理解できる。\n【できないこと】海外の古いTV番組や政治コンテクストが絡む、超ディープなローカルスラングの100%完全同調。\n\n★明日からの最初のアクション:\n海外のコメディドラマを英語字幕付きで観て、登場人物のセリフのテンポに被せるようにシャドーイングしてください。"
+                curation: "【できること】ネイティブと緊張感なしにやり取りし、文化的なジョークや皮肉のニュアンスも大枠理解できる。\n【できないこと】海外の古いTV番組や政治コンテクストが絡む、超ディープなローカルスラングの100%完全同調。\n\n★明日からの最初のアクション:\n海外の人気コメディドラマを英語字幕付きで観て、登場人物のセリフのテンポに被せるようにシャドーイングしてください。"
             },
             "B2_Bridge": {
                 title: "B2 × Bridge (現場を回す圧倒的実務) — 丁々発止のリアルビジネス",
@@ -793,7 +813,16 @@
             const data = matrixData[key] || { title: `${cefr} × ${type}`, vocab: "データ調整中", time: "主要セルを参照してください。", curation: "定義中。" };
             document.getElementById('modalTitle').innerHTML = `<span class="tag tag-${type.toLowerCase()}">${type}</span> ${data.title}`;
             document.getElementById('modalVocabulary').innerHTML = data.vocab;
-            document.getElementById('modalTime').innerHTML = data.time;
+            
+            // モーダル内の学習時間にも「1日1.5時間換算日数」を表示
+            let rawHours = data.time.match(/\d+([,.\d]+)?/);
+            let appendDays = "";
+            if(rawHours) {
+                let hrs = parseInt(rawHours[0].replace(/,/g, ''));
+                appendDays = ` (1日1.5hで約 ${formatDaysString(hrs)})`;
+            }
+            document.getElementById('modalTime').innerHTML = data.time + appendDays;
+            
             document.getElementById('modalTimeSpeed').innerHTML = data.wpm;
             document.getElementById('modalCuration').innerHTML = data.curation;
             document.getElementById('modalOverlay').classList.add('active');
