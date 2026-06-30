@@ -62,7 +62,7 @@
             margin-bottom: 8px;
         }
 
-        /* コントロール＆搭乗券セクション */
+        /* ダッシュボードコンテナ */
         .dashboard-container {
             width: 100%;
             max-width: 1050px;
@@ -72,19 +72,61 @@
             margin-bottom: 40px;
         }
 
-        /* スライダーパネル */
+        /* コントロールパネル（プルダウン & スライダー） */
         .control-panel {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .search-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-group {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .search-group label {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .search-select {
+            background: #111827;
+            border: 1px solid #374151;
+            color: #f3f4f6;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .search-select:focus {
+            border-color: var(--skyscanner-blue);
         }
 
         .slider-group {
             display: flex;
             flex-direction: column;
             gap: 10px;
+            border-top: 1px solid var(--panel-border);
+            padding-top: 15px;
         }
 
         .slider-header {
@@ -588,7 +630,7 @@
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7.5);
+            background: rgba(0,0,0,0.75);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -753,11 +795,85 @@
     <header>
         <h1>The Language Matrix©︎2026 kodyork</h1>
         <div class="tagline-en">Let's skyscan your English, shall we?</div>
-        <p>マスをタップして「現在地」と「目的地」を設定する時間計算ナビゲーター</p>
+        <p>「マスをタップ」または「プルダウン選択」で現在地と目的地を設定する時間計算ナビゲーター</p>
     </header>
 
     <div class="dashboard-container">
         <div class="control-panel">
+            <div class="search-row">
+                <div class="search-group">
+                    <label for="startLoc">🛫 出発地 (現在のレベル)</label>
+                    <select id="startLoc" class="search-select" onchange="handleSelectChange()">
+                        <optgroup label="A1 レイヤー">
+                            <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
+                            <option value="A1_Bridge">A1 × Bridge (超初歩の実務)</option>
+                            <option value="A1_CALP">A1 × CALP (単発の事実認識)</option>
+                        </optgroup>
+                        <optgroup label="A2 レイヤー">
+                            <option value="A2_BICS" selected>A2 × BICS (カタコト脱出・対人)</option>
+                            <option value="A2_Bridge">A2 × Bridge (指示書通りの受動実務)</option>
+                            <option value="A2_CALP">A2 × CALP (基礎短文の読解)</option>
+                        </optgroup>
+                        <optgroup label="B1 レイヤー">
+                            <option value="B1_BICS">B1 × BICS (日常会話の自立)</option>
+                            <option value="B1_Bridge">B1 × Bridge (日常ビジネスメール)</option>
+                            <option value="B1_CALP">B1 × CALP (論理的なやりとりも少しずつ)</option>
+                        </optgroup>
+                        <optgroup label="B2 レイヤー">
+                            <option value="B2_BICS">B2 × BICS (ネイティブとの雑談)</option>
+                            <option value="B2_Bridge">B2 × Bridge (現場を回す圧倒的実務)</option>
+                            <option value="B2_CALP">B2 × CALP (教養講義・ロジックの核)</option>
+                        </optgroup>
+                        <optgroup label="C1 レイヤー">
+                            <option value="C1_BICS">C1 × BICS (高速・即興の洗練討論)</option>
+                            <option value="C1_Bridge">C1 × Bridge (最高級タフな国際交渉)</option>
+                            <option value="C1_CALP">C1 × CALP (知性を研ぐエリート学術)</option>
+                        </optgroup>
+                        <optgroup label="C2 レイヤー">
+                            <option value="C2_BICS">C2 × BICS (文化・言葉の完全越境)</option>
+                            <option value="C2_Bridge">C2 × Bridge (全方位支配のトップ交渉)</option>
+                            <option value="C2_CALP">C2 × CALP (最高峰の思想・人類の知性)</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+                <div class="search-group">
+                    <label for="endLoc">🛬 目的地 (目標のレベル)</label>
+                    <select id="endLoc" class="search-select" onchange="handleSelectChange()">
+                        <optgroup label="A1 レイヤー">
+                            <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
+                            <option value="A1_Bridge">A1 × Bridge (超初歩の実務受信)</option>
+                            <option value="A1_CALP">A1 × CALP (単発の事実認識)</option>
+                        </optgroup>
+                        <optgroup label="A2 レイヤー">
+                            <option value="A2_BICS">A2 × BICS (カタコト脱出・対人)</option>
+                            <option value="A2_Bridge">A2 × Bridge (指示書通りの受動実務)</option>
+                            <option value="A2_CALP">A2 × CALP (基礎短文の読解)</option>
+                        </optgroup>
+                        <optgroup label="B1 レイヤー">
+                            <option value="B1_BICS">B1 × BICS (日常会話の自立)</option>
+                            <option value="B1_Bridge">B1 × Bridge (日常ビジネスメール)</option>
+                            <option value="B1_CALP">B1 × CALP (論理的なやりとりも少しずつ)</option>
+                        </optgroup>
+                        <optgroup label="B2 レイヤー">
+                            <option value="B2_BICS">B2 × BICS (ネイティブとの雑談)</option>
+                            <option value="B2_Bridge" selected>B2 × Bridge (現場を回す圧倒的実務)</option>
+                            <option value="B2_CALP">B2 × CALP (教養講義・ロジックの核)</option>
+                        </optgroup>
+                        <optgroup label="C1 レイヤー">
+                            <option value="C1_BICS">C1 × BICS (高速・即興の洗練討論)</option>
+                            <option value="C1_Bridge">C1 × Bridge (最高級タフな国際交渉)</option>
+                            <option value="C1_CALP">C1 × CALP (知性を研ぐエリート学術)</option>
+                        </optgroup>
+                        <optgroup label="C2 レイヤー">
+                            <option value="C2_BICS">C2 × BICS (文化・言葉の完全越境)</option>
+                            <option value="C2_Bridge">C2 × Bridge (全方位支配のトップ交渉)</option>
+                            <option value="C2_CALP">C2 × CALP (最高峰の思想・人類の知性)</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+
             <div class="slider-group">
                 <div class="slider-header">
                     <label for="hoursPerDay">📅 コミットメント設定 (1日あたりの勉強時間)</label>
@@ -832,7 +948,7 @@
 
     <div class="matrix-container">
         <div class="matrix-instructions">
-            💡 <b>操作方法:</b> マスをタップすると <b>1回目：出発地</b> ➔ <b>2回目：目的地</b> がセットされます。右下の <b>ⓘ ボタン</b> で詳細が開きます。
+            💡 <b>2パターンの操作に対応:</b> 上の「プルダウン」で選ぶことも、下の「マスを直接タップ（1回目現在地➔2回目目標）」して設定することも可能です。
         </div>
         <div class="matrix-grid">
             <div></div>
@@ -1019,10 +1135,10 @@
             "C2_BICS": 4750, "C2_Bridge": 5000, "C2_CALP": 5500
         };
 
-        // タップによる現在選択状態
+        // 初期設定値
         let currentStart = "A2_BICS";
         let currentEnd = "B2_Bridge";
-        let clickToggle = false; // false: 次は出発地セット, true: 次は目的地セット
+        let clickToggle = false; // false: 次は出発地、true: 次は目的地をセット
         let currentAnimationInterval = null;
 
         // 時間から日・数・年への分かりやすいテキストを生成
@@ -1039,35 +1155,46 @@
             }
         }
 
-        // マスをクリックしたときの制御（コンフリクトを回避）
+        // 1. 【表のマスをクリックしたとき】の制御
         function handleCellClick(levelId, event) {
             if (!clickToggle) {
                 currentStart = levelId;
+                document.getElementById("startLoc").value = levelId; // プルダウンを同期
                 clickToggle = true;
             } else {
                 currentEnd = levelId;
+                document.getElementById("endLoc").value = levelId;   // プルダウンを同期
                 clickToggle = false;
             }
             calculateRoute();
         }
 
-        // ℹ️ボタンをクリックしたときはモーダルだけを開く
+        // 2. 【プルダウンメニューを変更したとき】の制御
+        function handleSelectChange() {
+            currentStart = document.getElementById("startLoc").value;
+            currentEnd = document.getElementById("endLoc").value;
+            calculateRoute();
+        }
+
+        // 3. 【ℹ️ボタンをクリックしたとき】（モーダルだけを開く）
         function handleInfoClick(levelId, event) {
-            event.stopPropagation(); // 親のマスへのクリックイベント伝播を止める
+            event.stopPropagation(); // 親マスへのクリックイベント連伝播（選択の変更）を阻止
             const parts = levelId.split('_');
             openModal(parts[0], parts[1]);
         }
 
+        // 4. 【学習時間スライダーを動かしたとき】
         function updateHoursPerDay() {
             const val = document.getElementById("hoursPerDay").value;
             document.getElementById("hoursDisplay").innerText = parseFloat(val).toFixed(1);
-            calculateRoute(true); // スライダー移動時は数字アニメーションはスキップして即反映
+            calculateRoute(true); // スライダー移動時は数字の高速アニメをスキップして即時反映
         }
 
+        // コア計算・UI描画ロジック
         function calculateRoute(isSliderMove = false) {
             const dailyStudy = parseFloat(document.getElementById("hoursPerDay").value);
             
-            // UIテキスト初期化
+            // チケット上のテキスト表示を更新
             document.getElementById("ticketStartCode").innerText = currentStart.split('_')[0];
             document.getElementById("ticketStartName").innerText = currentStart.split('_')[1] + " (" + document.getElementById(`cell-${currentStart.split('_')[0]}-${currentStart.split('_')[1]}`).querySelector('.cell-summary').innerText + ")";
             document.getElementById("ticketEndCode").innerText = currentEnd.split('_')[0];
@@ -1076,13 +1203,14 @@
             document.getElementById("stubStart").innerText = currentStart;
             document.getElementById("stubEnd").innerText = currentEnd;
 
-            // マトリクスの色リセット＆再付与
+            // マトリクスの全マスの色付けを一旦リセット
             document.querySelectorAll('.matrix-cell').forEach(cell => {
                 cell.classList.remove('highlight-start', 'highlight-end', 'highlight-both');
             });
             const startCell = document.getElementById(`cell-${currentStart.split('_')[0]}-${currentStart.split('_')[1]}`);
             const endCell = document.getElementById(`cell-${currentEnd.split('_')[0]}-${currentEnd.split('_')[1]}`);
 
+            // 現在地と目的地が同じ場合
             if (currentStart === currentEnd) {
                 if (startCell) startCell.classList.add('highlight-both');
                 document.getElementById("ticketHours").innerText = "到着済み ✈️";
@@ -1099,6 +1227,7 @@
             const startIndex = levelsOrder.indexOf(currentStart);
             const endIndex = levelsOrder.indexOf(currentEnd);
 
+            // 逆流ルートの場合
             if (startIndex > endIndex) {
                 document.getElementById("ticketHours").innerText = "別ルート航路 ↩️";
                 document.getElementById("ticketDays").innerText = "スキルが目標を上回っています。";
@@ -1115,7 +1244,7 @@
 
             document.getElementById("stubRange").innerText = `${minHours}h - ${maxHours}h`;
 
-            // カウントアップアニメーション
+            // チケット時間部分へのアニメーション適用
             if (isSliderMove) {
                 document.getElementById("ticketHours").innerText = `${neededHours} 時間`;
                 document.getElementById("ticketDays").innerText = formatDaysString(neededHours, dailyStudy);
@@ -1123,16 +1252,16 @@
                 animateHours(neededHours, dailyStudy);
             }
 
-            // タイムライン・経由地の生成
+            // ロードマップ（タイムライン）の作成
             const pathLevels = levelsOrder.slice(startIndex + 1, endIndex + 1);
             generateTimeline(pathLevels, dailyStudy);
         }
 
-        // 数字がダダダダッと上がるアニメーション
+        // 数字がダダダダッとカウントアップするアニメーション
         function animateHours(targetHours, dailyStudy) {
             clearInterval(currentAnimationInterval);
             let current = 0;
-            const duration = 400; // アニメーション時間(ms)
+            const duration = 400; // アニメーションにかける総時間(ms)
             const stepTime = 20;
             const steps = duration / stepTime;
             const increment = targetHours / steps;
@@ -1150,7 +1279,7 @@
             }, stepTime);
         }
 
-        // ロードマップタイムラインの動的作成
+        // タイムラインHTMLを動的に生成
         function generateTimeline(pathLevels, dailyStudy) {
             const container = document.getElementById("timelineContainer");
             container.innerHTML = "";
@@ -1161,8 +1290,7 @@
             }
             document.getElementById("milestonePanel").style.display = "block";
 
-            // 出発地を最初に追加
-            let currentAccum = 0;
+            // タイムラインの始点として出発地を最初に追加
             createTimelineItem(container, currentStart, "出発", true);
 
             pathLevels.forEach((level) => {
@@ -1189,7 +1317,7 @@
             container.appendChild(item);
         }
 
-        // モーダル関連とタブ切替
+        // モーダルのタブ切り替え機能
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -1205,11 +1333,11 @@
 
             document.getElementById('modalTitle').innerHTML = `<span class="tag tag-${type.toLowerCase()}">${type}</span> ${data.title}`;
             
-            // 語彙力抽出
+            // 語彙力数を抽出して大きく表示
             const vocabMatch = data.vocab.match(/約.*語/);
             document.getElementById('modalVocabText').innerText = vocabMatch ? vocabMatch[0] : "定義データ参照";
 
-            // 試験目安バッジ化
+            // 試験スコアのテキストをバラバラにしてきれいなバッジ（カード型）に変換
             const badgesContainer = document.getElementById('modalBadgesContainer');
             badgesContainer.innerHTML = "";
             const rawScores = data.vocab.split(' / ');
@@ -1219,7 +1347,7 @@
                     const parts = cleanStr.split(':');
                     const card = document.createElement('div');
                     card.className = 'score-card';
-                    card.innerHTML = `<div class="score-cards-name">${parts[0].trim()}</div><div class="score-card-value">${parts[1].trim()}</div>`;
+                    card.innerHTML = `<div class="score-card-name">${parts[0].trim()}</div><div class="score-card-value">${parts[1].trim()}</div>`;
                     badgesContainer.appendChild(card);
                 }
             });
@@ -1227,7 +1355,7 @@
             document.getElementById('modalWpmText').innerHTML = data.wpm;
             document.getElementById('modalTimeText').innerText = data.time;
 
-            // 運用能力セクションの分離
+            // テキストデータベースから、できること・できないこと・アクションをパース
             const canMatch = data.curation.match(/【できること】([\s\S]*?)【できないこと】/);
             const cannotMatch = data.curation.match(/【できないこと】([\s\S]*?)★/);
             const actionMatch = data.curation.match(/★明日からの最初のアクション:([\s\S]*)$/);
@@ -1236,7 +1364,7 @@
             document.getElementById('modalCannotText').innerText = cannotMatch ? cannotMatch[1].trim() : "-";
             document.getElementById('modalActionText').innerText = actionMatch ? actionMatch[1].trim() : "-";
 
-            // 最初は1つ目のタブを開く
+            // 初期状態は1番目の「スコア・語彙」タブをアクティブにする
             switchTab('tab-scores', document.querySelectorAll('.modal-tab')[0]);
 
             document.getElementById('modalOverlay').classList.add('active');
@@ -1246,7 +1374,7 @@
             document.getElementById('modalOverlay').classList.remove('active');
         }
 
-        // 18マスの網羅データベース
+        // 18マスの網羅データベース（テキスト修正反映済み）
         const matrixData = {
             "A1_BICS": {
                 title: "A1 × BICS (挨拶・単語の羅列) — 生存の防衛本能",
@@ -1365,7 +1493,7 @@
                 vocab: "【公式目安】TOEIC: 満点圏 / 各種換算: 上限値 / DET: 155-160",
                 time: "平均 5,000時間",
                 wpm: "【Reading】250+ WPM (200-250)<br>【Listening】220+ WPM (150-180)<br>【Speaking】140-170 WPM (130-150)",
-                curation: "【できること】あらゆる国際ビジネス文書の即時処理、企業の最高戦略決定会議での英語によるトップ交渉や宣言。\n【できないこと】なし。\n\n★明日からの最初のアクション:\nグローバル企業の決算発表の質疑応答の音声を聴き、経営陣が放つ「市場をコントロールするための極限の表現」をシャドーイングしてください。"
+                curation: "【できること】あらゆる国際ビジネス文書の即時処理、企業の最高戦略決定会議での英語によるトップ交渉や宣言。\n【できないこと】なし。\n\n★明日からの最初のアクション:\nグローバル企業の決算発表の質疑応答の音声を聴き、経営陣が放つ「市場をコントロールするための極限 of 表現」をシャドーイングしてください。"
             },
             "C2_CALP": {
                 title: "C2 × CALP (知識人・研究者レイヤー) — 最高峰の思想・人類の知性",
@@ -1376,7 +1504,7 @@
             }
         };
 
-        // 初期読み込み実行
+        // 初期ロード時
         window.onload = function() {
             calculateRoute();
         };
