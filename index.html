@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Language Matrix©︎2026 kodyork</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --panel-bg: #161b22;
+            --panel-border: #30363d;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent-bics: #58a6ff;
+            --accent-bridge: #d29922;
+            --accent-calp: #bc8cff;
+            --cell-hover: #21262d;
+            --skyscanner-blue: #0073ea;
+            --dest-green: #10b981;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 900px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            letter-spacing: -0.05em;
+            margin-bottom: 10px;
+            color: #f0f6fc;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .tagline-en {
+            font-family: "Georgia", serif;
+            font-style: italic;
+            color: #58a6ff;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        /* Skyscanner 検索パネル */
+        .search-panel {
+            width: 100%;
+            max-width: 1050px;
+            background: #1f2937;
+            border: 1px solid #4b5563;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+        }
+
+        .search-panel h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.1rem;
+            color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .search-group {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .search-group label {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        .search-select {
+            background: #111827;
+            border: 1px solid #374151;
+            color: #f3f4f6;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .search-select:focus {
+            border-color: var(--skyscanner-blue);
+        }
+
+        /* 検索結果表示 */
+        .result-display {
+            flex: 2;
+            min-width: 300px;
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 12px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .result-title {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .result-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--dest-green);
+        }
+
+        .result-range {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* マトリクスコンテナ */
+        .matrix-container {
+            width: 100%;
+            max-width: 1050px;
+            overflow-x: auto;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+            margin-bottom: 40px;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(3, 1fr);
+            gap: 12px;
+            min-width: 800px;
+        }
+
+        .grid-header {
+            font-weight: 600;
+            text-align: center;
+            padding: 12px;
+            color: #f0f6fc;
+            border-bottom: 2px solid var(--panel-border);
+        }
+
+        .axis-bics { color: var(--accent-bics); }
+        .axis-bridge { color: var(--accent-bridge); }
+        .axis-calp { color: var(--accent-calp); }
+
+        .cefr-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            border-right: 1px solid var(--panel-border);
+        }
+
+        .matrix-cell {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .matrix-cell:hover {
+            background: var(--cell-hover);
+            transform: translateY(-2px);
+            border-color: #8b949e;
+        }
+
+        /* 動的ハイライト用クラス */
+        .matrix-cell.highlight-start {
+            border: 2px solid var(--skyscanner-blue) !important;
+            background: rgba(0, 115, 234, 0.15) !important;
+            box-shadow: 0 0 12px rgba(0, 115, 234, 0.5);
+        }
+
+        .matrix-cell.highlight-start::after {
+            content: "出発地";
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: var(--skyscanner-blue);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .matrix-cell.highlight-end {
+            border: 2px solid var(--dest-green) !important;
+            background: rgba(16, 185, 129, 0.15) !important;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+        }
+
+        .matrix-cell.highlight-end::after {
+            content: "目的地";
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: var(--dest-green);
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .matrix-cell.highlight-both {
+            border: 2px solid #e3b341 !important;
+            background: rgba(227, 179, 65, 0.15) !important;
+            box-shadow: 0 0 12px rgba(227, 179, 65, 0.5);
+        }
+
+        .matrix-cell.highlight-both::after {
+            content: "現在地＆目標";
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background: #e3b341;
+            color: black;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .cell-summary {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #f0f6fc;
+            line-height: 1.2;
+        }
+
+        .cell-meta {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        /* モーダル */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 32px;
+            width: 90%;
+            max-width: 650px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px; right: 16px;
+            background: none; border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem; cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 1.4rem; margin-bottom: 20px;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 10px;
+        }
+
+        .modal-section {
+            margin-bottom: 16px;
+            background: rgba(255,255,255,0.01);
+            padding: 14px;
+            border-radius: 6px;
+            border-left: 3px solid var(--panel-border);
+            white-space: pre-line;
+        }
+
+        .modal-section h4 {
+            margin: 0 0 8px 0; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .modal-section p {
+            margin: 0; font-size: 0.95rem; color: #f0f6fc;
+            line-height: 1.6;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; margin-right: 6px;
+        }
+        .tag-bics { background: rgba(88,166,255,0.15); color: var(--accent-bics); }
+        .tag-bridge { background: rgba(210,153,34,0.15); color: var(--accent-bridge); }
+        .tag-calp { background: rgba(188,140,255,0.15); color: var(--accent-calp); }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--panel-border);
+            width: 100%;
+            max-width: 1050px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>The Language Matrix©︎2026 kodyork</h1>
+        <div class="tagline-en">Let's skyscan your English, shall we?</div>
+        <p>現在地と目的地を選ぶ最短ルート・時間計算ナビゲーター</p>
+    </header>
+
+    <!-- Skyscanner 検索パネル -->
+    <div class="search-panel">
+        <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            必要学習時間のクイック見積もり
+        </h3>
+        <div class="search-row">
+            <div class="search-group">
+                <label for="startLoc">出発地 (現在のレベル)</label>
+                <select id="startLoc" class="search-select" onchange="calculateRoute()">
+                    <!-- 出発地側も18個の選択肢を完全網羅 -->
+                    <optgroup label="A1 レイヤー">
+                        <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
+                        <option value="A1_Bridge">A1 × Bridge (超初歩の実務受信)</option>
+                        <option value="A1_CALP">A1 × CALP (単発の事実認識)</option>
+                    </optgroup>
+                    <optgroup label="A2 レイヤー">
+                        <option value="A2_BICS" selected>A2 × BICS (カタコト脱出・対人)</option>
+                        <option value="A2_Bridge">A2 × Bridge (指示書通りの受動実務)</option>
+                        <option value="A2_CALP">A2 × CALP (基礎短文の読解)</option>
+                    </optgroup>
+                    <optgroup label="B1 レイヤー">
+                        <option value="B1_BICS">B1 × BICS (日常雑談の完全自立)</option>
+                        <option value="B1_Bridge">B1 × Bridge (日常ビジネスメール)</option>
+                        <option value="B1_CALP">B1 × CALP (一般論理の受信開始)</option>
+                    </optgroup>
+                    <optgroup label="B2 レイヤー">
+                        <option value="B2_BICS">B2 × BICS (ネイティブ同調の雑談)</option>
+                        <option value="B2_Bridge">B2 × Bridge (現場を回す圧倒的実務)</option>
+                        <option value="B2_CALP">B2 × CALP (教養講義・ロジックの核)</option>
+                    </optgroup>
+                    <optgroup label="C1 レイヤー">
+                        <option value="C1_BICS">C1 × BICS (高速・即興の洗練討論)</option>
+                        <option value="C1_Bridge">C1 × Bridge (最高級タフな国際交渉)</option>
+                        <option value="C1_CALP">C1 × CALP (知性を研ぐエリート学術)</option>
+                    </optgroup>
+                    <optgroup label="C2 レイヤー">
+                        <option value="C2_BICS">C2 × BICS (文化・言葉の完全越境)</option>
+                        <option value="C2_Bridge">C2 × Bridge (全方位支配のトップ交渉)</option>
+                        <option value="C2_CALP">C2 × CALP (最高峰の思想・人類の知性)</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <div class="search-group">
+                <label for="endLoc">目的地 (目標のレベル)</label>
+                <select id="endLoc" class="search-select" onchange="calculateRoute()">
+                    <!-- 目的地側も18個すべて選択可能 -->
+                    <optgroup label="A1 レイヤー">
+                        <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
+                        <option value="A1_Bridge">A1 × Bridge (超初歩の実務受信)</option>
+                        <option value="A1_CALP">A1 × CALP (単発の事実認識)</option>
+                    </optgroup>
+                    <optgroup label="A2 レイヤー">
+                        <option value="A2_BICS">A2 × BICS (カタコト脱出・対人)</option>
+                        <option value="A2_Bridge">A2 × Bridge (指示書通りの受動実務)</option>
+                        <option value="A2_CALP">A2 × CALP (基礎短文の読解)</option>
+                    </optgroup>
+                    <optgroup label="B1 レイヤー">
+                        <option value="B1_BICS">B1 × BICS (日常雑談の完全自立)</option>
+                        <option value="B1_Bridge">B1 × Bridge (日常ビジネスメール)</option>
+                        <option value="B1_CALP">B1 × CALP (一般論理の受信開始)</option>
+                    </optgroup>
+                    <optgroup label="B2 レイヤー">
+                        <option value="B2_BICS">B2 × BICS (ネイティブ同調の雑談)</option>
+                        <option value="B2_Bridge" selected>B2 × Bridge (現場を回す圧倒的実務)</option>
+                        <option value="B2_CALP">B2 × CALP (教養講義・ロジックの核)</option>
+                    </optgroup>
+                    <optgroup label="C1 レイヤー">
+                        <option value="C1_BICS">C1 × BICS (高速・即興の洗練討論)</option>
+                        <option value="C1_Bridge">C1 × Bridge (最高級タフな国際交渉)</option>
+                        <option value="C1_CALP">C1 × CALP (知性を研ぐエリート学術)</option>
+                    </optgroup>
+                    <optgroup label="C2 レイヤー">
+                        <option value="C2_BICS">C2 × BICS (文化・言葉の完全越境)</option>
+                        <option value="C2_Bridge">C2 × Bridge (全方位支配のトップ交渉)</option>
+                        <option value="C2_CALP">C2 × CALP (最高峰の思想・人類の知性)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="result-display">
+                <div class="result-title">推定必要フライト時間（総学習時間）</div>
+                <div id="routeResult" class="result-value">-</div>
+                <div id="routeRange" class="result-range">-</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 俯瞰マトリクス -->
+    <div class="matrix-container">
+        <div class="matrix-grid">
+            <div></div>
+            <div class="grid-header axis-bics">BICS<br><small>日常・対人</small></div>
+            <div class="grid-header axis-bridge">Bridge<br><small>社会・ビジネス</small></div>
+            <div class="grid-header axis-calp">CALP<br><small>学術・論理</small></div>
+
+            <!-- A1 行 -->
+            <div class="cefr-label">A1</div>
+            <div class="matrix-cell" id="cell-A1-BICS" onclick="openModal('A1', 'BICS')">
+                <div class="cell-summary">挨拶・単語の羅列</div>
+                <div class="cell-meta">英検:3級 / 語彙:1k</div>
+            </div>
+            <div class="matrix-cell" id="cell-A1-Bridge" onclick="openModal('A1', 'Bridge')">
+                <div class="cell-summary">超初歩の実務受信</div>
+                <div class="cell-meta">TOEIC LR:120〜</div>
+            </div>
+            <div class="matrix-cell" id="cell-A1-CALP" onclick="openModal('A1', 'CALP')">
+                <div class="cell-summary">単発の事実認識</div>
+                <div class="cell-meta">限定的リテラシー</div>
+            </div>
+
+            <!-- A2 行 -->
+            <div class="cefr-label">A2</div>
+            <div class="matrix-cell" id="cell-A2-BICS" onclick="openModal('A2', 'BICS')">
+                <div class="cell-summary">カタコト脱出・対人</div>
+                <div class="cell-meta">英検:準2 / 語彙:2.5k</div>
+            </div>
+            <div class="matrix-cell" id="cell-A2-Bridge" onclick="openModal('A2', 'Bridge')">
+                <div class="cell-summary">指示書通りの受動実務</div>
+                <div class="cell-meta">TOEIC LR:225〜</div>
+            </div>
+            <div class="matrix-cell" id="cell-A2-CALP" onclick="openModal('A2', 'CALP')">
+                <div class="cell-summary">基礎短文の読解</div>
+                <div class="cell-meta">中学理科水準</div>
+            </div>
+
+            <!-- B1 行 -->
+            <div class="cefr-label">B1</div>
+            <div class="matrix-cell" id="cell-B1-BICS" onclick="openModal('B1', 'BICS')">
+                <div class="cell-summary">日常雑談の完全自立</div>
+                <div class="cell-meta">英検:2級 / 語彙:5k</div>
+            </div>
+            <div class="matrix-cell" id="cell-B1-Bridge" onclick="openModal('B1', 'Bridge')">
+                <div class="cell-summary">日常ビジネスメール</div>
+                <div class="cell-meta">TOEIC LR:550〜</div>
+            </div>
+            <div class="matrix-cell" id="cell-B1-CALP" onclick="openModal('B1', 'CALP')">
+                <div class="cell-summary">一般論理の受信開始</div>
+                <div class="cell-meta">TOEFL:42〜 / IELTS:4.0</div>
+            </div>
+
+            <!-- B2 行 -->
+            <div class="cefr-label">B2</div>
+            <div class="matrix-cell" id="cell-B2-BICS" onclick="openModal('B2', 'BICS')">
+                <div class="cell-summary">ネイティブ同調の雑談</div>
+                <div class="cell-meta">英検:準1 / 語彙:9k</div>
+            </div>
+            <div class="matrix-cell" id="cell-B2-Bridge" onclick="openModal('B2', 'Bridge')">
+                <div class="cell-summary">現場を回す圧倒的実務</div>
+                <div class="cell-meta">TOEIC LR:785〜</div>
+            </div>
+            <div class="matrix-cell" id="cell-B2-CALP" onclick="openModal('B2', 'CALP')">
+                <div class="cell-summary">教養講義・ロジックの核</div>
+                <div class="cell-meta">TOEFL:72〜 / IELTS:5.5</div>
+            </div>
+
+            <!-- C1 行 -->
+            <div class="cefr-label">C1</div>
+            <div class="matrix-cell" id="cell-C1-BICS" onclick="openModal('C1', 'BICS')">
+                <div class="cell-summary">高速・即興の洗練討論</div>
+                <div class="cell-meta">英検:1級 / 語彙:15k</div>
+            </div>
+            <div class="matrix-cell" id="cell-C1-Bridge" onclick="openModal('C1', 'Bridge')">
+                <div class="cell-summary">最高級タフな国際交渉</div>
+                <div class="cell-meta">TOEIC LR:945〜</div>
+            </div>
+            <div class="matrix-cell" id="cell-C1-CALP" onclick="openModal('C1', 'CALP')">
+                <div class="cell-summary">知性を研ぐエリート学術</div>
+                <div class="cell-meta">TOEFL:95〜 / IELTS:7.0</div>
+            </div>
+
+            <!-- C2 行 -->
+            <div class="cefr-label">C2</div>
+            <div class="matrix-cell" id="cell-C2-BICS" onclick="openModal('C2', 'BICS')">
+                <div class="cell-summary">文化・言葉の完全越境</div>
+                <div class="cell-meta">ネイティブ同等</div>
+            </div>
+            <div class="matrix-cell" id="cell-C2-Bridge" onclick="openModal('C2', 'Bridge')">
+                <div class="cell-summary">全方位支配のトップ交渉</div>
+                <div class="cell-meta">実務の神域</div>
+            </div>
+            <div class="matrix-cell" id="cell-C2-CALP" onclick="openModal('C2', 'CALP')">
+                <div class="cell-summary">最高峰の思想・人類の知性</div>
+                <div class="cell-meta">TOEFL:114〜 / IELTS:8.5</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 詳細モーダル -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div class="modal-title" id="modalTitle">詳細カード</div>
+            
+            <div class="modal-section" style="border-left-color: #58a6ff;">
+                <h4>対応資格試験＆語彙数 (LEMMA基準)</h4>
+                <p id="modalVocabulary">-</p>
+            </div>
+            <div class="modal-section" style="border-left-color: #d29922;">
+                <h4>必要学習時間(目安）</h4>
+                <p id="modalTime">-</p>
+            </div>
+            <div class="modal-section" style="border-left-color: #e3b341;">
+                <h4>処理速度・WPM指標 (かっこ内はネイティブ基準)</h4>
+                <p id="modalTimeSpeed">-</p>
+            </div>
+            <div class="modal-section" style="border-left-color: #bc8cff;">
+                <h4>英語運用力のイメージ</h4>
+                <p id="modalCuration">-</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        The Language Matrix ©︎2026 kodyork | All Rights Reserved.
+    </footer>
+
+    <script>
+        const levelsOrder = [
+            "A1_BICS", "A1_Bridge", "A1_CALP",
+            "A2_BICS", "A2_Bridge", "A2_CALP",
+            "B1_BICS", "B1_Bridge", "B1_CALP",
+            "B2_BICS", "B2_Bridge", "B2_CALP",
+            "C1_BICS", "C1_Bridge", "C1_CALP",
+            "C2_BICS", "C2_Bridge", "C2_CALP"
+        ];
+
+        const cumulativeHours = {
+            "A1_BICS": 125,  "A1_Bridge": 150,  "A1_CALP": 180,
+            "A2_BICS": 187,  "A2_Bridge": 400,  "A2_CALP": 450,
+            "B1_BICS": 465,  "B1_Bridge": 800,  "B1_CALP": 900,
+            "B2_BICS": 1000, "B2_Bridge": 1350, "B2_CALP": 1450,
+            "C1_BICS": 2250, "C1_Bridge": 2600, "C1_CALP": 2800,
+            "C2_BICS": 4750, "C2_Bridge": 5000, "C2_CALP": 5500
+        };
+
+        function calculateRoute() {
+            const start = document.getElementById("startLoc").value;
+            const end = document.getElementById("endLoc").value;
+            const resultValue = document.getElementById("routeResult");
+            const resultRange = document.getElementById("routeRange");
+
+            document.querySelectorAll('.matrix-cell').forEach(cell => {
+                cell.classList.remove('highlight-start', 'highlight-end', 'highlight-both');
+            });
+
+            const startId = `cell-${start.split('_')[0]}-${start.split('_')[1]}`;
+            const endId = `cell-${end.split('_')[0]}-${end.split('_')[1]}`;
+            
+            const startCell = document.getElementById(startId);
+            const endCell = document.getElementById(endId);
+            
+            if (start === end) {
+                if (startCell) startCell.classList.add('highlight-both');
+                resultValue.innerText = "到着済み ✈️";
+                resultValue.style.color = "#38bdf8";
+                resultRange.innerText = "出発地と目的地が同じ位置にセットされています。";
+                return;
+            } else {
+                if (startCell) startCell.classList.add('highlight-start');
+                if (endCell) endCell.classList.add('highlight-end');
+            }
+
+            const startIndex = levelsOrder.indexOf(start);
+            const endIndex = levelsOrder.indexOf(end);
+
+            if (startIndex > endIndex) {
+                resultValue.innerText = "別ルート航路 ↩️";
+                resultValue.style.color = "#e3b341";
+                resultRange.innerText = "すでに目標以上のスキルをお持ちか、異なる軸のレイヤーです。";
+                return;
+            }
+
+            const neededHours = cumulativeHours[end] - cumulativeHours[start];
+            const minHours = Math.max(0, Math.round(neededHours * 0.55));
+            const maxHours = Math.round(neededHours * 1.45);
+
+            resultValue.innerText = `${neededHours} 時間`;
+            resultValue.style.color = "#10b981";
+            resultRange.innerText = `[95%信頼区間: ${minHours} 〜 ${maxHours} 時間の直行フライト]`;
+        }
+
+        const matrixData = {
+            "A1_BICS": {
+                title: "A1 × BICS (挨拶・単語の羅列) — 生存の防衛本能",
+                vocab: "【公式目安】英検: 3級 / TOEIC LR: 120-220 / TOEIC SW: 80-150 / TOEFL: 0-31 / IELTS: 1.0-3.0 / DET: 10-55\n【総語彙数】約 1,000語",
+                time: "【Zeroからの累積時間】平均 125時間",
+                wpm: "【Reading WPM】40 - 60 (ネイティブ基準: 200-250)\n【Listening WPM】60 - 80 (ネイティブ基準: 150-180)\n【Speaking WPM】20 - 30 (ネイティブ基準: 130-150)",
+                curation: "【できること】名前、出身地の極めて単純なやり取り。型通りの挨拶。\n【できないこと】相手の返答を予想して自発的にラリーを繋ぐこと。\n\n★明日からの最初のアクション:\n中学1年レベルの基本動詞（go, have, take）のコアイメージを音読して脳にログインさせてください。"
+            },
+            "A1_Bridge": {
+                title: "A1 × Bridge (超初歩の実務受信) — 受動のデータ視認",
+                vocab: "【公式目安】英検: 3級 / TOEIC LR: 120-380 / TOEIC SW: 80-190 / TOEFL: 10-34 / IELTS: 2.0-3.5 / DET: 20-55\n【総語彙数】約 1,000語",
+                time: "【Zeroからの累積時間】平均 150時間",
+                wpm: "【Reading WPM】50 - 70 (ネイティブ基準: 200-250)\n【Listening WPM】60 - 80 (ネイティブ基準: 150-180)\n【Speaking WPM】10 - 20 (ネイティブ基準: 130-150)",
+                curation: "【できること】単発のシンプルな社内通知や短い数字データの読み取り。\n【できないこと】複数文にまたがるメールの文脈把握、チャットへの英語での返信。\n\n★明日からの最初のアクション:\n社内で使われる最も短い英文定型フォーマット（OK, Approved等）を3パターン丸暗記してください。"
+            },
+            "A1_CALP": {
+                title: "A1 × CALP (単発の事実認識) — 静的なリテラシー",
+                vocab: "【公式目安】英検: 3級 / TOEIC LR: 150-200 / TOEIC SW: 60-90 / TOEFL: 0-23 / IELTS: 1.5-2.5 / DET: 10-40\n【総語彙数】約 1,000語",
+                time: "【Zeroからの累積時間】平均 180時間",
+                wpm: "【Reading WPM】30 - 50 (ネイティブ基準: 200-250)\n【Listening WPM】50 - 70 (ネイティブ基準: 150-180)\n【Speaking WPM】計測不可",
+                curation: "【できること】図表のキャプション、ラベルに書かれた単純な単語や明確な事実の視認。\n【できないこと】論理的な因果関係の理解、短いテキストの要約や推論。\n\n★明日からの最初のアクション:\n'Water boils at 100 degrees.'のような、もっとも単純な事実の短文を1日3つ主語と述語に分けてください。"
+            },
+            "A2_BICS": {
+                title: "A2 × BICS (カタコト脱出・対人) — サバイバル会話",
+                vocab: "【公式目安】英検: 準2級 / TOEIC LR: 225-545 / TOEIC SW: 160-230 / TOEFL: 32-41 / IELTS: 3.5-4.5 / DET: 60-80\n【総語彙数】約 2,500語",
+                time: "【Zeroからの累積時間】平均 187時間",
+                wpm: "【Reading WPM】80 - 100 (ネイティブ基準: 200-250)\n【Listening WPM】90 - 110 (ネイティブ基準: 150-180)\n【Speaking WPM】40 - 60 (ネイティブ基準: 130-150)",
+                curation: "【できること】ホテルや駅でのトラブル対応、趣味や家族についての簡単な情報交換。\n【できないこと】抽象的な話題の雑談、冗談やスラングが飛び交うネイティブ同士の輪への参加。\n\n★明日からの最初のアクション:\n海外旅行の「困った場面」を想定し、3文構成（状況説明＋理由＋要求）の独り言をつぶやいてみてください。"
+            },
+            "A2_Bridge": {
+                title: "A2 × Bridge (指示書通りの受動実務) — テンプレート遂行",
+                vocab: "【公式目安】英検: 準2級 / TOEIC LR: 385-780 / TOEIC SW: 200-300 / TOEFL: 35-45 / IELTS: 4.0 / DET: 65-80\n【総語彙数】約 2,500語",
+                time: "【Zeroからの累積時間】平均 400時間",
+                wpm: "【Reading WPM】90 - 110 (ネイティブ基準: 200-250)\n【Listening WPM】100 - 120 (ネイティブ基準: 150-180)\n【Speaking WPM】30 - 50 (ネイティブ基準: 130-150)",
+                curation: "【できること】定型メールの解読、マニュアルに沿った単純データ処理、短い指示の理解。\n【できないこと】自由記述での複雑な進捗報告、突発的なクレームの電話応対。\n\n★明日からの最初のアクション:\n毎日届く定型の英語ビジネスメールを、返信フォームのテンプレートと照らし合わせてパターン化してください。"
+            },
+            "A2_CALP": {
+                title: "A2 × CALP (基礎短文の読解) — 教科書リテラシー",
+                vocab: "【公式目安】英検: 準2級 / TOEIC LR: 400-500 / TOEIC SW: 180-220 / TOEFL: 35-45 / IELTS: 4.0 / DET: 65-75\n【総語彙数】約 2,500語",
+                time: "【Zeroからの累積時間】平均 450時間",
+                wpm: "【Reading WPM】70 - 90 (ネイティブ基準: 200-250)\n【Listening WPM】80 - 100 (ネイティブ基準: 150-180)\n【Speaking WPM】20 - 40 (ネイティブ基準: 130-150)",
+                curation: "【できること】短くシンプルに書かれた百科事典等の事実関係の把握。'Plants need sunlight.'等の理解。\n【できないこと】論文の段落同士の関係性の読み取り、筆者の主張や仮説の論理的な批判検証。\n\n★明日からの最初のアクション:\n子供向けの科学百科事典（Simple English Wikipedia等）の短い1段落を、主語・動詞を意識して精読してください。"
+            },
+            "B1_BICS": {
+                title: "B1 × BICS (日常雑談の完全自立) — 親密圏のインプット/アウトプット",
+                vocab: "【公式目安】英検: 2級 / TOEIC LR: 550-780 / TOEIC SW: 240-300 / TOEFL: 42-71 / IELTS: 4.0-5.0 / DET: 85-95\n【総語彙数】約 5,000語",
+                time: "【Zeroからの累積時間】平均 465時間",
+                wpm: "【Reading WPM】110 - 130 (ネイティブ基準: 200-250)\n【Listening WPM】120 - 140 (ネイティブ基準: 150-180)\n【Speaking WPM】70 - 95 (ネイティブ基準: 130-150)",
+                curation: "【できること】身近な話題や時事ニュースについての標準速度での雑談、自己意見の簡単な表明。\n【できないこと】込み入った感情の機微を伝えること、会話の主導権を握って話をジャックすること。\n\n★明日からの最初のアクション:\nYouTubeの1分程度の海外日常Vlogを視聴し、そこで使われたフレーズを1つ自分の日常に置き換えて発話してください。"
+            },
+            "B1_Bridge": {
+                title: "B1 × Bridge (日常ビジネスメール) — 一般実務のハンドリング",
+                vocab: "【公式目安】英検: 2級 / TOEIC LR: 790-1090 / TOEIC SW: 310-390 / TOEFL: 55-71 / IELTS: 4.5-5.0 / DET: 85-100\n【総語彙数】約 5,000語",
+                time: "【Zeroからの累積時間】平均 800時間",
+                wpm: "【Reading WPM】120 - 140 (ネイティブ基準: 200-250)\n【Listening WPM】130 - 150 (ネイティブ基準: 150-180)\n【Speaking WPM】60 - 80 (ネイティブ基準: 130-150)",
+                curation: "【できること】一般的な実務メールの送受信、アジェンダに沿ったミーティングでの進捗報告。\n【できないこと】ブレインストーミングでの変則的な意見への即座의反論、タフな顧客対応や値引き交渉。\n\n★明日からの最初のアクション:\nVOAニュースの記事を1つ選び、130 WPMのタイマーをかけて時間内に内容の7割をキャッチする速読訓練を開始してください。"
+            },
+            "B1_CALP": {
+                title: "B1 × CALP (一般論理の受信開始) — アカデミックの門戸",
+                vocab: "【公式目安】英検: 2級 / TOEIC LR: 700-800 / TOEIC SW: 280-320 / TOEFL: 42-71 / IELTS: 4.0-5.0 / DET: 85-95\n【総語彙数】約 5,000語",
+                time: "【Zeroからの累積時間】平均 900時間",
+                wpm: "【Reading WPM】100 - 120 (ネイティブ基準: 200-250)\n【Listening WPM】110 - 130 (ネイティブ基準: 150-180)\n【Speaking WPM】50 - 70 (ネイティブ基準: 130-150)",
+                curation: "【できること】科学・歴史テーマの易しい解説（Wikipedia等）の読解、学校講義のメインアイデアの把握。\n【できないこと】学術論文の背景知識なしでの精読、自分の専門外の講義に対する論理的なカウンター質問。\n\n★明日からの最初のアクション:\n身近な社会問題のWikipedia記事を読み、「原因・現状・対策」の3つの要素を箇条書きで抜き出してみましょう。"
+            },
+            "B2_BICS": {
+                title: "B2 × BICS (ネイティブ同調の雑談) — 文化的ユーモアの同期",
+                vocab: "【公式目安】英検: 準1級 / TOEIC LR: 800-900 / TOEIC SW: 320-350 / TOEFL: 72-94 / IELTS: 5.5-6.5 / DET: 100-115\n【総語彙数】約 9,000語",
+                time: "【Zeroからの累積時間】平均 1,000時間",
+                wpm: "【Reading WPM】140 - 170 (ネイティブ基準: 200-250)\n【Listening WPM】150 - 180 (ネイティブ基準: 150-180)\n【Speaking WPM】100 - 130 (ネイティブ基準: 130-150)",
+                curation: "【できること】ネイティブと緊張感なしにやり取りし、文化的なジョークや皮肉のニュアンスも大枠理解できる。\n【できないこと】海外の古いTV番組や政治コンテクストが絡む、超ディープなローカルスラングの100%完全同調。\n\n★明日からの最初のアクション:\n海外のコメディドラマを英語字幕付きで観て、登場人物のセリフのテンポに被せるようにシャドーイングしてください。"
+            },
+            "B2_Bridge": {
+                title: "B2 × Bridge (現場を回す圧倒的実務) — 丁々発止のリアルビジネス",
+                vocab: "【公式目安】英検: 準1級 / TOEIC LR: 785-940 / TOEIC SW: 310-350 / TOEFL: 72-94 / IELTS: 5.5-6.5 / DET: 105-125\n【総語彙数】約 9,000語",
+                time: "【Zeroからの累積時間】平均 1,350時間",
+                wpm: "【Reading WPM】150 - 180 (ネイティブ基準: 200-250)\n【Listening WPM】150 - 180 (ネイティブ基準: 150-180)\n【Speaking WPM】90 - 120 (ネイティブ基準: 130-150)",
+                curation: "【できること】ビジネス会議でのファシリテーション、複雑な業務仕様書の理解、プレゼンと質疑応答。\n【できないこと】法的なリスクが激しく絡む、海外エリート相手の英文契約交渉における微細な言葉の駆け引き。\n\n★明日からの最初のアクション:\nBBCの時事ビジネス記事を1本読み、その背景にある企業の狙いを「PREP法」の論理で30秒で話す練習をしてください。"
+            },
+            "B2_CALP": {
+                title: "B2 × CALP (教養講義・ロジックの核) — 大人の論理OSマウント",
+                vocab: "【公式目安】英検: 準1級 / TOEIC LR: 850-950 / TOEIC SW: 330-370 / TOEFL: 72-94 / IELTS: 5.5-6.5 / DET: 105-125\n【総語彙数】約 9,000語",
+                time: "【Zeroからの累積時間】平均 1,450時間",
+                wpm: "【Reading WPM】130 - 160 (ネイティブ基準: 200-250)\n【Listening WPM】140 - 170 (ネイティブ基準: 150-180)\n【Speaking WPM】80 - 110 (ネイティブ基準: 130-150)",
+                curation: "【できること】TED Talksの字幕なし完全理解。自分の専門分野に関する海外入門論文の読解と要約記述。\n【できないこと】査読付き学術論文のハイスピードな乱読、英語ディベートでの学術的な鋭いカウンター突っ込み。\n\n★明日からの最初のアクション:\n関心のあるテーマのTED Talksを1本選び、スクリプトを読み込みながら、話者のロジック展開の「繋ぎ語」をマーキングしてください。"
+            },
+            "C1_BICS": {
+                title: "C1 × BICS (高速・即興の洗練討論) — 喧騒のネイティブ包囲網突破",
+                vocab: "【公式目安】英検: 1級 / TOEIC LR: 950+ / TOEIC SW: 360+ / TOEFL: 95-113 / IELTS: 7.0-8.0 / DET: 130-140\n【総語彙数】約 15,000語",
+                time: "【Zeroからの累積時間】平均 2,250時間",
+                wpm: "【Reading WPM】180 - 220 (ネイティブ基準: 200-250)\n【Listening WPM】180 - 220 (ネイティブ基準: 150-180)\n【Speaking WPM】130 - 160 (ネイティブ基準: 130-150)",
+                curation: "【できること】騒がしいバー等で、複数人のネイティブが即興で行う超高速のローカル雑談に完全参入。\n【できないこと】ネイティブの幼児期のカルチャーや、地域方言が激しすぎるニッチなインサイド・トークへの完璧な同調。\n\n★明日からの最初のアクション:\n海外の人気ポッドキャストを1.1倍速で聴き、会話が切り替わる瞬間の相槌の入れ方をトレースしてください。"
+            },
+            "C1_Bridge": {
+                title: "C1 × Bridge (最高級タフな国際交渉) — 知略と駆け引きのガバナンス",
+                vocab: "【公式目安】英検: 1級 / TOEIC LR: 945-990 / TOEIC SW: 360-400 / TOEFL: 95-113 / IELTS: 7.0-8.0 / DET: 130-150\n【総語彙数】約 15,000語",
+                time: "【Zeroからの累積時間】平均 2,600時間",
+                wpm: "【Reading WPM】190 - 230 (ネイティブ基準: 200-250)\n【Listening WPM】180 - 220 (ネイティブ基準: 150-180)\n【Speaking WPM】120 - 150 (ネイティブ基準: 130-150)",
+                curation: "【できること】国際M&A契約や高度な知財交渉。ネイティブ向けの高度なユーモアや皮肉を使った心理的関係構築。\n【できないこと】ネイティブが「教養」として嗜む古典文学や歴史的メタファーが重層的に隠された最高級文芸の完璧な解読。\n\n★明日からの最初のアクション:\n海外の経済小説やタフな交渉ドキュメンタリーを読み、相手の要求の裏にある「本音」を匂わせる表現を分析してください。"
+            },
+            "C1_CALP": {
+                title: "C1 × CALP (知性を研ぐエリート学術) — 世界標準の知的覇権",
+                vocab: "【公式目安】英検: 1級 / TOEIC LR: 960+ / TOEFL: 95-113 / IELTS: 7.0-8.0 / DET: 130-150\n【総語彙数】約 15,000語",
+                time: "【Zeroからの累積時間】平均 2,800時間",
+                wpm: "【Reading WPM】170 - 210 (ネイティブ基準: 200-250)\n【Listening WPM】170 - 210 (ネイティブ基準: 150-180)\n【Speaking WPM】110 - 140 (ネイティブ基準: 130-150)",
+                curation: "【できること】『The Economist』や『Nature』誌などの論文を辞書なしで精読。海外大学院ディスカッションの完全完遂。\n【できないこと】未知の学術分野における、その道10年のトップ専門家レベルの超高難度な新理論構築。\n\n★明日からの最初のアクション:\n『The Economist』の最新論説を1本読み、著者の論理構造の欠陥（あるいは反論の余地）を英語で200語のエッセイに書き出してください。"
+            },
+            "C2_BICS": {
+                title: "C2 × BICS (母語話者完全同調) — 文化・言葉の完全越境",
+                vocab: "【公式目安】英検1級満点圏 / 各種試験最高値 / DET: 150-160\n【総語彙数】約 25,000語超",
+                time: "【Zeroからの累積時間】平均 4750時間",
+                curation: "【できること】政治演説、演劇、古典小説、映画のセリフなどを文化的背景も含めて100%理解。言葉遣いの格の自在な変化。\n【できないこと】ほぼなし（ネイティブの知識人層と同等）。\n【Reading WPM】240+ WPM (※ネイティブ実測・完全同調)\n【Listening WPM】220+ WPM\n【Speaking WPM】150 - 180 WPM\n\n★明日からの最初のアクション:\n海外の名作文学や歴史的演説をオーディオブックで聴き、言葉の持つ「リズム」と「思想」を完全に身体へ同期させてください。"
+            },
+            "C2_Bridge": {
+                title: "C2 × Bridge (全方位的ビジネス談話) — 全方位支配のトップ交渉",
+                vocab: "【公式目安】TOEIC L&R・S&W 上限（満点圏）/ 各種換算上限\n【総語彙数】約 25,000語超",
+                time: "【Zeroからの累積時間】平均 5,000時間",
+                curation: "【できること】あらゆる国際ビジネス文書の即時処理、企業の最高戦略決定会議での英語によるトップ交渉や宣言。\n【できないこと】なし。\n【Reading WPM】250+ WPM (※ネイティブ最速水準)\n【Listening WPM】220+ WPM\n【Speaking WPM】140 - 170 WPM\n\n★明日からの最初のアクション:\nグローバル企業の決算発表の質疑応答の音声を聴き、経営陣が放つ「市場をコントロールするための極限の表現」をシャドーイングしてください。"
+            },
+            "C2_CALP": {
+                title: "C2 × CALP (知識人・研究者レイヤー) — 最高峰の思想・人類の知性",
+                vocab: "【公式目安】TOEFL iBT: 114-120 / IELTS: 8.5-9.0 / DET: 155-160\n【総語彙数】約 25,000語超",
+                time: "【Zeroからの累積時間】平均 5,500時間",
+                curation: "【できること】国際学会での基調講演、査読付き最高峰論文の単独執筆、超難解なグローバル政策・法案文書の立案。\n【できないこと】なし。\n【Reading WPM】220+ WPM (※専門論文・書籍のネイティブ限界値)\n【Listening WPM】220+ WPM\n【Speaking WPM】130 - 160 WPM\n\n★明日からの最初のアクション:\n自分の研究あるいは専門領域の最先端の査読付き論文を読み、それに対する補足仮説のプロトタイプを英語で1,000語ビルドしてください。"
+            }
+        };
+
+        function openModal(cefr, type) {
+            const key = `${cefr}_${type}`;
+            const data = matrixData[key] || { title: `${cefr} × ${type}`, vocab: "データ調整中", time: "主要セルを参照してください。", curation: "定義中。" };
+            document.getElementById('modalTitle').innerHTML = `<span class="tag tag-${type.toLowerCase()}">${type}</span> ${data.title}`;
+            document.getElementById('modalVocabulary').innerHTML = data.vocab;
+            document.getElementById('modalTime').innerHTML = data.time;
+            document.getElementById('modalTimeSpeed').innerHTML = data.wpm;
+            document.getElementById('modalCuration').innerHTML = data.curation;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        window.onload = calculateRoute;
+    </script>
+</body>
+</html>
