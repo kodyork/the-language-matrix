@@ -72,7 +72,7 @@
             margin-bottom: 40px;
         }
 
-        /* コントロールパネル（プルダウン & スライダー） */
+        /* コントロールパネル */
         .control-panel {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
@@ -167,7 +167,7 @@
             transform: scale(1.2);
         }
 
-        /* 搭乗券 (Boarding Pass) UI */
+        /* 搭乗券 UI */
         .boarding-pass {
             background: var(--ticket-bg);
             border: 1px solid #4b5563;
@@ -329,6 +329,7 @@
             justify-content: space-between;
             align-items: center;
             min-width: 180px;
+            gap: 15px;
         }
 
         .stub-info {
@@ -346,6 +347,31 @@
 
         .stub-label { color: #9ca3af; }
         .stub-value { font-weight: bold; color: #fff; }
+
+        /* SNSコピーボタン */
+        .share-btn {
+            width: 100%;
+            background: var(--skyscanner-blue);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 10px rgba(0, 115, 234, 0.3);
+        }
+        .share-btn:hover {
+            background: #0056b3;
+        }
+        .share-btn:active {
+            transform: scale(0.98);
+        }
 
         /* ダミーQRコード */
         .qr-code-wrapper {
@@ -459,7 +485,6 @@
         .matrix-container {
             width: 100%;
             max-width: 1050px;
-            overflow-x: auto;
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 12px;
@@ -773,9 +798,76 @@
         .tag-bridge { background: rgba(210,153,34,0.15); color: var(--accent-bridge); }
         .tag-calp { background: rgba(188,140,255,0.15); color: var(--accent-calp); }
 
+        .mobile-row-title {
+            display: none;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 📱 スマートフォン・タブレット向けの完全レスポンシブメディアクエリ */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+            header h1 {
+                font-size: 1.6rem;
+            }
+            .boarding-pass {
+                flex-direction: column;
+            }
+            .ticket-divider {
+                width: 100%;
+                height: 1px;
+                border-left: none;
+                border-top: 2px dashed #374151;
+                margin: 5px 0;
+            }
+            .ticket-divider::before, .ticket-divider::after {
+                top: -11px;
+                left: auto;
+            }
+            .ticket-divider::before { left: -10px; }
+            .ticket-divider::after { right: -10px; }
+
+            .route-code {
+                font-size: 1.4rem;
+            }
+            .route-name {
+                max-width: 110px;
+                font-size: 0.75rem;
+            }
+
+            /* 💡 【最重要】マトリクスの横スクロールを廃止し、縦並びカードに変形 */
+            .matrix-grid {
+                display: flex;
+                flex-direction: column;
+                min-width: 100%;
+                gap: 20px;
+            }
+            /* 横並びのヘッダーと左端のCEFRラベルをスマホ時は非表示にする */
+            .grid-header, .cefr-label {
+                display: none;
+            }
+            /* スマホ時のみ各レイヤーの区切りタイトルを割り込ませる */
+            .mobile-row-title {
+                display: block;
+                font-size: 1.1rem;
+                font-weight: bold;
+                color: #fff;
+                border-bottom: 2px solid var(--panel-border);
+                padding-bottom: 6px;
+                margin-top: 10px;
+            }
+            .matrix-cell {
+                padding: 14px;
+            }
+            /* 横軸の種類が分かるようにスマホのみ擬似要素等でラベル情報を少し補足する設計 */
+            #cell-A1-BICS::before, #cell-A2-BICS::before, #cell-B1-BICS::before, #cell-B2-BICS::before, #cell-C1-BICS::before, #cell-C2-BICS::before { content: "【BICS - 日常会話】"; color: var(--accent-bics); font-size: 0.7rem; font-weight: bold; display: block; margin-bottom: 4px; }
+            #cell-A1-Bridge::before, #cell-A2-Bridge::before, #cell-B1-Bridge::before, #cell-B2-Bridge::before, #cell-C1-Bridge::before, #cell-C2-Bridge::before { content: "【Bridge - ビジネス】"; color: var(--accent-bridge); font-size: 0.7rem; font-weight: bold; display: block; margin-bottom: 4px; }
+            #cell-A1-CALP::before, #cell-A2-CALP::before, #cell-B1-CALP::before, #cell-B2-CALP::before, #cell-C1-CALP::before, #cell-C2-CALP::before { content: "【CALP - アカデミック】"; color: var(--accent-calp); font-size: 0.7rem; font-weight: bold; display: block; margin-bottom: 4px; }
         }
 
         footer {
@@ -795,7 +887,7 @@
     <header>
         <h1>The Language Matrix©︎2026 kodyork</h1>
         <div class="tagline-en">Let's skyscan your English, shall we?</div>
-        <p>「マスをタップ」または「プルダウン選択」で現在地と目的地を設定する時間計算ナビゲーター</p>
+        <p>現在地と目的地を設定する時間計算ナビゲーター</p>
     </header>
 
     <div class="dashboard-container">
@@ -928,6 +1020,11 @@
                     <div class="stub-row"><span class="stub-label">TARGET</span><span class="stub-value" id="stubEnd">B2_Bridge</span></div>
                     <div class="stub-row"><span class="stub-label">INTERVAL</span><span class="stub-value" id="stubRange">-</span></div>
                 </div>
+
+                <button class="share-btn" onclick="copyFlightPlan()">
+                    📋 フライトプランをコピー
+                </button>
+
                 <div class="qr-code-wrapper">
                     <div class="qr-row"><div class="qr-pixel b"></div><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div><div class="qr-pixel b"></div></div>
                     <div class="qr-row"><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div></div>
@@ -948,14 +1045,15 @@
 
     <div class="matrix-container">
         <div class="matrix-instructions">
-            💡 <b>2パターンの操作に対応:</b> 上の「プルダウン」で選ぶことも、下の「マスを直接タップ（1回目現在地➔2回目目標）」して設定することも可能です。
+            💡 <b>操作方法:</b> マスを直接タップすると「1回目現在地➔2回目目標」がセットされます。右下の <b>ⓘ ボタン</b> で詳細が開きます。
         </div>
         <div class="matrix-grid">
-            <div></div>
+            <div class="grid-header"></div>
             <div class="grid-header axis-bics">BICS<br><small>日常・対人</small></div>
             <div class="grid-header axis-bridge">Bridge<br><small>社会・ビジネス</small></div>
             <div class="grid-header axis-calp">CALP<br><small>学術・論理</small></div>
 
+            <div class="mobile-row-title">A1 レイヤー</div>
             <div class="cefr-label">A1</div>
             <div class="matrix-cell" id="cell-A1-BICS" onclick="handleCellClick('A1_BICS', event)">
                 <div class="cell-summary">挨拶・単語の羅列</div>
@@ -973,6 +1071,7 @@
                 <div class="info-trigger" onclick="handleInfoClick('A1_CALP', event)">ⓘ</div>
             </div>
 
+            <div class="mobile-row-title">A2 レイヤー</div>
             <div class="cefr-label">A2</div>
             <div class="matrix-cell" id="cell-A2-BICS" onclick="handleCellClick('A2_BICS', event)">
                 <div class="cell-summary">カタコト脱出・対人</div>
@@ -990,6 +1089,7 @@
                 <div class="info-trigger" onclick="handleInfoClick('A2_CALP', event)">ⓘ</div>
             </div>
 
+            <div class="mobile-row-title">B1 レイヤー</div>
             <div class="cefr-label">B1</div>
             <div class="matrix-cell" id="cell-B1-BICS" onclick="handleCellClick('B1_BICS', event)">
                 <div class="cell-summary">日常雑談の完全自立</div>
@@ -1007,6 +1107,7 @@
                 <div class="info-trigger" onclick="handleInfoClick('B1_CALP', event)">ⓘ</div>
             </div>
 
+            <div class="mobile-row-title">B2 レイヤー</div>
             <div class="cefr-label">B2</div>
             <div class="matrix-cell" id="cell-B2-BICS" onclick="handleCellClick('B2_BICS', event)">
                 <div class="cell-summary">ネイティブとの雑談</div>
@@ -1024,6 +1125,7 @@
                 <div class="info-trigger" onclick="handleInfoClick('B2_CALP', event)">ⓘ</div>
             </div>
 
+            <div class="mobile-row-title">C1 レイヤー</div>
             <div class="cefr-label">C1</div>
             <div class="matrix-cell" id="cell-C1-BICS" onclick="handleCellClick('C1_BICS', event)">
                 <div class="cell-summary">高速・即興の洗練討論</div>
@@ -1041,6 +1143,7 @@
                 <div class="info-trigger" onclick="handleInfoClick('C1_CALP', event)">ⓘ</div>
             </div>
 
+            <div class="mobile-row-title">C2 レイヤー</div>
             <div class="cefr-label">C2</div>
             <div class="matrix-cell" id="cell-C2-BICS" onclick="handleCellClick('C2_BICS', event)">
                 <div class="cell-summary">文化・言葉の完全越境</div>
@@ -1135,13 +1238,13 @@
             "C2_BICS": 4750, "C2_Bridge": 5000, "C2_CALP": 5500
         };
 
-        // 初期設定値
         let currentStart = "A2_BICS";
         let currentEnd = "B2_Bridge";
-        let clickToggle = false; // false: 次は出発地、true: 次は目的地をセット
+        let clickToggle = false;
         let currentAnimationInterval = null;
+        let lastCalculatedHours = 0;
+        let lastCalculatedDaysText = "";
 
-        // 時間から日・数・年への分かりやすいテキストを生成
         function formatDaysString(hours, dailyStudy) {
             const days = Math.round(hours / dailyStudy);
             if (days < 30) {
@@ -1155,46 +1258,86 @@
             }
         }
 
-        // 1. 【表のマスをクリックしたとき】の制御
+        // マスクリック制御
         function handleCellClick(levelId, event) {
             if (!clickToggle) {
                 currentStart = levelId;
-                document.getElementById("startLoc").value = levelId; // プルダウンを同期
+                document.getElementById("startLoc").value = levelId;
                 clickToggle = true;
             } else {
                 currentEnd = levelId;
-                document.getElementById("endLoc").value = levelId;   // プルダウンを同期
+                document.getElementById("endLoc").value = levelId;
                 clickToggle = false;
             }
             calculateRoute();
         }
 
-        // 2. 【プルダウンメニューを変更したとき】の制御
+        // プルダウン変更制御
         function handleSelectChange() {
             currentStart = document.getElementById("startLoc").value;
             currentEnd = document.getElementById("endLoc").value;
             calculateRoute();
         }
 
-        // 3. 【ℹ️ボタンをクリックしたとき】（モーダルだけを開く）
+        // ℹ️ボタン制御
         function handleInfoClick(levelId, event) {
-            event.stopPropagation(); // 親マスへのクリックイベント連伝播（選択の変更）を阻止
+            event.stopPropagation();
             const parts = levelId.split('_');
             openModal(parts[0], parts[1]);
         }
 
-        // 4. 【学習時間スライダーを動かしたとき】
+        // スライダー制御
         function updateHoursPerDay() {
             const val = document.getElementById("hoursPerDay").value;
             document.getElementById("hoursDisplay").innerText = parseFloat(val).toFixed(1);
-            calculateRoute(true); // スライダー移動時は数字の高速アニメをスキップして即時反映
+            calculateRoute(true);
         }
 
-        // コア計算・UI描画ロジック
+        // 📋 SNS用テキストコピー機能の実装
+        function copyFlightPlan() {
+            if (currentStart === currentEnd) {
+                alert("出発地と目的地が同じ航路です。");
+                return;
+            }
+            const startIndex = levelsOrder.indexOf(currentStart);
+            const endIndex = levelsOrder.indexOf(currentEnd);
+            if (startIndex > endIndex) {
+                alert("逆流ルートのためプランを作成できません。");
+                return;
+            }
+
+            const dailyStudy = document.getElementById("hoursPerDay").value;
+            
+            // クリップボードに渡す綺麗な定型文を動的生成
+            const textToCopy = `✈️ 私の英語学習フライトプラン ✈️\n` +
+                               `━━━━━━━━━━━━━━━━━\n` +
+                               `🛫 出発地: ${currentStart.replace('_', ' × ')}\n` +
+                               `🛬 目的地: ${currentEnd.replace('_', ' × ')}\n` +
+                               `⏱️ 必要フライト時間: ${lastCalculatedHours} 時間\n` +
+                               `📅 達成目標期間: ${lastCalculatedDaysText} (1日${dailyStudy}hペース)\n` +
+                               `━━━━━━━━━━━━━━━━━\n` +
+                               `Let's skyscan your English!\n` +
+                               `#TheLanguageMatrix #英語学習 #LEMMA`;
+
+            // クリップボードへのコピーAPIを実行
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = document.querySelector('.share-btn');
+                const originalText = btn.innerText;
+                btn.innerText = "✅ コピー完了！";
+                btn.style.background = "var(--dest-green)";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = "var(--skyscanner-blue)";
+                }, 1500);
+            }).catch(err => {
+                alert("コピーに失敗しました。お使いのブラウザの権限設定を確認してください。");
+            });
+        }
+
+        // コア計算
         function calculateRoute(isSliderMove = false) {
             const dailyStudy = parseFloat(document.getElementById("hoursPerDay").value);
             
-            // チケット上のテキスト表示を更新
             document.getElementById("ticketStartCode").innerText = currentStart.split('_')[0];
             document.getElementById("ticketStartName").innerText = currentStart.split('_')[1] + " (" + document.getElementById(`cell-${currentStart.split('_')[0]}-${currentStart.split('_')[1]}`).querySelector('.cell-summary').innerText + ")";
             document.getElementById("ticketEndCode").innerText = currentEnd.split('_')[0];
@@ -1203,14 +1346,12 @@
             document.getElementById("stubStart").innerText = currentStart;
             document.getElementById("stubEnd").innerText = currentEnd;
 
-            // マトリクスの全マスの色付けを一旦リセット
             document.querySelectorAll('.matrix-cell').forEach(cell => {
                 cell.classList.remove('highlight-start', 'highlight-end', 'highlight-both');
             });
             const startCell = document.getElementById(`cell-${currentStart.split('_')[0]}-${currentStart.split('_')[1]}`);
             const endCell = document.getElementById(`cell-${currentEnd.split('_')[0]}-${currentEnd.split('_')[1]}`);
 
-            // 現在地と目的地が同じ場合
             if (currentStart === currentEnd) {
                 if (startCell) startCell.classList.add('highlight-both');
                 document.getElementById("ticketHours").innerText = "到着済み ✈️";
@@ -1227,7 +1368,6 @@
             const startIndex = levelsOrder.indexOf(currentStart);
             const endIndex = levelsOrder.indexOf(currentEnd);
 
-            // 逆流ルートの場合
             if (startIndex > endIndex) {
                 document.getElementById("ticketHours").innerText = "別ルート航路 ↩️";
                 document.getElementById("ticketDays").innerText = "スキルが目標を上回っています。";
@@ -1243,25 +1383,26 @@
             const maxHours = Math.round(neededHours * 1.45);
 
             document.getElementById("stubRange").innerText = `${minHours}h - ${maxHours}h`;
+            
+            // グローバル変数にキャッシュを退避（SNSコピー用）
+            lastCalculatedHours = neededHours;
+            lastCalculatedDaysText = formatDaysString(neededHours, dailyStudy);
 
-            // チケット時間部分へのアニメーション適用
             if (isSliderMove) {
                 document.getElementById("ticketHours").innerText = `${neededHours} 時間`;
-                document.getElementById("ticketDays").innerText = formatDaysString(neededHours, dailyStudy);
+                document.getElementById("ticketDays").innerText = lastCalculatedDaysText;
             } else {
                 animateHours(neededHours, dailyStudy);
             }
 
-            // ロードマップ（タイムライン）の作成
             const pathLevels = levelsOrder.slice(startIndex + 1, endIndex + 1);
             generateTimeline(pathLevels, dailyStudy);
         }
 
-        // 数字がダダダダッとカウントアップするアニメーション
         function animateHours(targetHours, dailyStudy) {
             clearInterval(currentAnimationInterval);
             let current = 0;
-            const duration = 400; // アニメーションにかける総時間(ms)
+            const duration = 400;
             const stepTime = 20;
             const steps = duration / stepTime;
             const increment = targetHours / steps;
@@ -1279,7 +1420,6 @@
             }, stepTime);
         }
 
-        // タイムラインHTMLを動的に生成
         function generateTimeline(pathLevels, dailyStudy) {
             const container = document.getElementById("timelineContainer");
             container.innerHTML = "";
@@ -1290,7 +1430,6 @@
             }
             document.getElementById("milestonePanel").style.display = "block";
 
-            // タイムラインの始点として出発地を最初に追加
             createTimelineItem(container, currentStart, "出発", true);
 
             pathLevels.forEach((level) => {
@@ -1317,7 +1456,6 @@
             container.appendChild(item);
         }
 
-        // モーダルのタブ切り替え機能
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -1333,11 +1471,9 @@
 
             document.getElementById('modalTitle').innerHTML = `<span class="tag tag-${type.toLowerCase()}">${type}</span> ${data.title}`;
             
-            // 語彙力数を抽出して大きく表示
             const vocabMatch = data.vocab.match(/約.*語/);
             document.getElementById('modalVocabText').innerText = vocabMatch ? vocabMatch[0] : "定義データ参照";
 
-            // 試験スコアのテキストをバラバラにしてきれいなバッジ（カード型）に変換
             const badgesContainer = document.getElementById('modalBadgesContainer');
             badgesContainer.innerHTML = "";
             const rawScores = data.vocab.split(' / ');
@@ -1355,7 +1491,6 @@
             document.getElementById('modalWpmText').innerHTML = data.wpm;
             document.getElementById('modalTimeText').innerText = data.time;
 
-            // テキストデータベースから、できること・できないこと・アクションをパース
             const canMatch = data.curation.match(/【できること】([\s\S]*?)【できないこと】/);
             const cannotMatch = data.curation.match(/【できないこと】([\s\S]*?)★/);
             const actionMatch = data.curation.match(/★明日からの最初のアクション:([\s\S]*)$/);
@@ -1364,9 +1499,7 @@
             document.getElementById('modalCannotText').innerText = cannotMatch ? cannotMatch[1].trim() : "-";
             document.getElementById('modalActionText').innerText = actionMatch ? actionMatch[1].trim() : "-";
 
-            // 初期状態は1番目の「スコア・語彙」タブをアクティブにする
             switchTab('tab-scores', document.querySelectorAll('.modal-tab')[0]);
-
             document.getElementById('modalOverlay').classList.add('active');
         }
 
@@ -1374,7 +1507,6 @@
             document.getElementById('modalOverlay').classList.remove('active');
         }
 
-        // 18マスの網羅データベース（テキスト修正反映済み）
         const matrixData = {
             "A1_BICS": {
                 title: "A1 × BICS (挨拶・単語の羅列) — 生存の防衛本能",
@@ -1447,7 +1579,7 @@
                 curation: "【できること】ネイティブと緊張感なしにやり取りし、文化的なジョークや皮肉のニュアンスも大枠理解できる。\n【できないこと】海外の古いTV番組や政治コンテクストが絡む、超ディープなローカルスラングの100%完全同調。\n\n★明日からの最初のアクション:\n海外の人気コメディドラマを英語字幕付きで観て、登場人物のセリフのテンポに被せるようにシャドーイングしてください。"
             },
             "B2_Bridge": {
-                title: "B2 × Bridge (現場を回す圧倒的実務) — 丁々発止のリアルビジネス",
+                title: "B2 × Bridge (現場を回す圧倒的実務) — 丁々発止 of リアルビジネス",
                 vocab: "【公式目安】英検: 準1級 / TOEIC LR: 785-940 / TOEIC SW: 310-350 / TOEFL: 72-94 / IELTS: 5.5-6.5 / DET: 105-125",
                 time: "平均 1,350時間",
                 wpm: "【Reading】150-180 WPM (200-250)<br>【Listening】150-180 WPM (150-180)<br>【Speaking】90-120 WPM (130-150)",
@@ -1493,7 +1625,7 @@
                 vocab: "【公式目安】TOEIC: 満点圏 / 各種換算: 上限値 / DET: 155-160",
                 time: "平均 5,000時間",
                 wpm: "【Reading】250+ WPM (200-250)<br>【Listening】220+ WPM (150-180)<br>【Speaking】140-170 WPM (130-150)",
-                curation: "【できること】あらゆる国際ビジネス文書の即時処理、企業の最高戦略決定会議での英語によるトップ交渉や宣言。\n【できないこと】なし。\n\n★明日からの最初のアクション:\nグローバル企業の決算発表の質疑応答の音声を聴き、経営陣が放つ「市場をコントロールするための極限 of 表現」をシャドーイングしてください。"
+                curation: "【できること】あらゆる国際ビジネス文書の即時処理、企業の最高戦略決定会議での英語によるトップ交渉や宣言。\n【できないこと】なし。\n\n★明日からの最初のアクション:\nグローバル企業の決算発表の質疑応答の音声を聴き、経営陣が放つ「市場をコントロールするための極限の表現」をシャドーイングしてください。"
             },
             "C2_CALP": {
                 title: "C2 × CALP (知識人・研究者レイヤー) — 最高峰の思想・人類の知性",
@@ -1504,7 +1636,6 @@
             }
         };
 
-        // 初期ロード時
         window.onload = function() {
             calculateRoute();
         };
