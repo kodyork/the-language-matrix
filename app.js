@@ -261,12 +261,13 @@ function renderCheckInStep() {
             </div>
             <div id="scoreInputArea" style="margin-top:15px;"></div>
             <div class="modal-footer">
-                <div></div>
+                <button class="nav-btn text-link-btn" onclick="skipCheckIn()" style="background:none; color:var(--text-muted); font-weight:normal; text-decoration:underline;">問診をスキップして直接使う</button>
                 <button class="nav-btn primary" id="checkinNextBtn" onclick="nextCheckInStep()">次へ進む ➔</button>
             </div>
         `;
         selectScoreType('none', document.querySelector('.option-btn'));
     } else if (checkInStep === 2) {
+        // ... (Step 2のコードは元のままで大丈夫です) ...
         body.innerHTML = `
             <div class="modal-title">🛬 Flight Check-in (目的地の設定 - 2/2)</div>
             <label class="question-label">今回の英語学習フライトの「最も重要な目的」は何ですか？</label>
@@ -281,6 +282,16 @@ function renderCheckInStep() {
             </div>
         `;
     }
+}
+
+// ゲスト搭乗（スキップ）時の処理を新しく追加
+function skipCheckIn() {
+    currentStart = "A2_BICS"; // 標準の出発地
+    currentEnd = "B2_Bridge";  // 標準の目的地
+    document.getElementById("startLoc").value = currentStart;
+    document.getElementById("endLoc").value = currentEnd;
+    closeModal();
+    calculateRoute();
 }
 
 function selectScoreType(type, btn) {
