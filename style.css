@@ -652,3 +652,51 @@ header p {
 }
 
 footer { margin-top: 40px; padding: 20px 0; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--panel-border); width: 100%; max-width: 1240px; }
+
+/* チケット内のメイン数字を圧倒的に主役に */
+.meta-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.meta-value.highlight {
+    font-size: 2.2rem; /* 数字を巨大化 */
+    font-weight: 800;
+    color: var(--dest-green);
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.3); /* ほんのり光らせる */
+    line-height: 1;
+}
+
+#ticketDays {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* マトリクスセルの文字情報をすっきり整理 */
+.matrix-cell {
+    background: rgba(255,255,255,0.015);
+    border: 1px solid rgba(48, 54, 61, 0.6);
+    padding: 16px 12px;
+}
+
+.cell-summary {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #f0f6fc;
+    margin-bottom: 6px;
+}
+
+/* スコア等の補足情報は、背景に馴染むように薄く小さく */
+.cell-meta {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    opacity: 0.6; /* 普段は目立たせない */
+    transition: opacity 0.2s;
+}
+
+.matrix-cell:hover .cell-meta {
+    opacity: 1; /* マウスを乗せた時だけクッキリ見せる（段階的開示） */
+}
