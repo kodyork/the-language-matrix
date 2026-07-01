@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Language Matrix©︎2026 kodyork</title>
     
+    <!-- 📄 style.cssの読み込み -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,8 +17,10 @@
         <button class="nav-btn primary" onclick="openCheckInModal()" style="margin-top: 10px; padding: 6px 14px; font-size: 0.8rem;">✈️ 搭乗手続き（問診リセット）</button>
     </header>
 
+    <!-- 🛠️ 左右2カラムレイアウト -->
     <div class="app-layout">
         
+        <!-- 左側：操作盤（設定＆マトリクス） -->
         <div class="control-side">
             <div class="panel">
                 <div class="search-row">
@@ -26,7 +29,7 @@
                         <select id="startLoc" class="search-select" onchange="handleSelectChange()">
                             <optgroup label="A1 レイヤー">
                                 <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
-                                <option value="A1_Bridge">A1 × Bridge (超初歩の実務)</option>
+                                <option value="A1_Bridge">A1 × Bridge (超初歩の実務受信)</option>
                                 <option value="A1_CALP">A1 × CALP (単発の事実認識)</option>
                             </optgroup>
                             <optgroup label="A2 レイヤー">
@@ -35,9 +38,9 @@
                                 <option value="A2_CALP">A2 × CALP (基礎短文の読解)</option>
                             </optgroup>
                             <optgroup label="B1 レイヤー">
-                                <option value="B1_BICS">B1 × BICS (日常会話の自立)</option>
+                                <option value="B1_BICS">B1 × BICS (日常雑談の完全自立)</option>
                                 <option value="B1_Bridge">B1 × Bridge (日常ビジネスメール)</option>
-                                <option value="B1_CALP">B1 × CALP (論理的なやりとりも少しずつ)</option>
+                                <option value="B1_CALP">B1 × CALP (一般論理の受信開始)</option>
                             </optgroup>
                             <optgroup label="B2 レイヤー">
                                 <option value="B2_BICS">B2 × BICS (ネイティブとの雑談)</option>
@@ -71,9 +74,9 @@
                                 <option value="A2_CALP">A2 × CALP (基礎短文の読解)</option>
                             </optgroup>
                             <optgroup label="B1 レイヤー">
-                                <option value="B1_BICS">B1 × BICS (日常会話の自立)</option>
+                                <option value="B1_BICS">B1 × BICS (日常雑談の完全自立)</option>
                                 <option value="B1_Bridge">B1 × Bridge (日常ビジネスメール)</option>
-                                <option value="B1_CALP">B1 × CALP (論理的なやりとりも少しずつ)</option>
+                                <option value="B1_CALP">B1 × CALP (一般論理の受信開始)</option>
                             </optgroup>
                             <optgroup label="B2 レイヤー">
                                 <option value="B2_BICS">B2 × BICS (ネイティブとの雑談)</option>
@@ -103,6 +106,7 @@
                 </div>
             </div>
 
+            <!-- マトリクス直感マップ -->
             <div class="panel matrix-container">
                 <div class="matrix-instructions">
                     💡 <b>操作方法:</b> マスを直接タップすると「現在地➔目標」が交互にセットされます。右下の <b>ⓘ ボタン</b> で各マスの詳細が開きます。
@@ -117,17 +121,17 @@
                     <div class="cefr-label">A1</div>
                     <div class="matrix-cell" id="cell-A1-BICS" onclick="handleCellClick('A1_BICS', event)">
                         <div class="cell-summary">挨拶・単語の羅列</div>
-                        <div class="cell-meta">英検:3級 / 語彙:1k</div>
+                        <div class="cell-meta">英検3級 / 1k語 / 125h</div>
                         <div class="info-trigger" onclick="handleInfoClick('A1_BICS', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-A1-Bridge" onclick="handleCellClick('A1_Bridge', event)">
                         <div class="cell-summary">超初歩の実務受信</div>
-                        <div class="cell-meta">TOEIC:120〜</div>
+                        <div class="cell-meta">TOEIC:120 / 1.2k語 / 150h</div>
                         <div class="info-trigger" onclick="handleInfoClick('A1_Bridge', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-A1-CALP" onclick="handleCellClick('A1_CALP', event)">
                         <div class="cell-summary">単発の事実認識</div>
-                        <div class="cell-meta">限定的リテラシー</div>
+                        <div class="cell-meta">DET:10 / 1.5k語 / 180h</div>
                         <div class="info-trigger" onclick="handleInfoClick('A1_CALP', event)">ⓘ</div>
                     </div>
 
@@ -135,17 +139,17 @@
                     <div class="cefr-label">A2</div>
                     <div class="matrix-cell" id="cell-A2-BICS" onclick="handleCellClick('A2_BICS', event)">
                         <div class="cell-summary">カタコト脱出・対人</div>
-                        <div class="cell-meta">英検:準2 / 語彙:2.5k</div>
+                        <div class="cell-meta">英検準2 / 2.5k語 / 187h</div>
                         <div class="info-trigger" onclick="handleInfoClick('A2_BICS', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-A2-Bridge" onclick="handleCellClick('A2_Bridge', event)">
                         <div class="cell-summary">指示書通りの受動実務</div>
-                        <div class="cell-meta">TOEIC:225〜</div>
+                        <div class="cell-meta">TOEIC:385 / 3k語 / 400h</div>
                         <div class="info-trigger" onclick="handleInfoClick('A2_Bridge', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-A2-CALP" onclick="handleCellClick('A2_CALP', event)">
                         <div class="cell-summary">基礎短文の読解</div>
-                        <div class="cell-meta">中学理科水準</div>
+                        <div class="cell-meta">TOEFL:35 / 3.5k語 / 450h</div>
                         <div class="info-trigger" onclick="handleInfoClick('A2_CALP', event)">ⓘ</div>
                     </div>
 
@@ -153,17 +157,17 @@
                     <div class="cefr-label">B1</div>
                     <div class="matrix-cell" id="cell-B1-BICS" onclick="handleCellClick('B1_BICS', event)">
                         <div class="cell-summary">日常雑談の完全自立</div>
-                        <div class="cell-meta">英検:2級 / 語彙:5k</div>
+                        <div class="cell-meta">英検2級 / 5k語 / 465h</div>
                         <div class="info-trigger" onclick="handleInfoClick('B1_BICS', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-B1-Bridge" onclick="handleCellClick('B1_Bridge', event)">
                         <div class="cell-summary">日常ビジネスメール</div>
-                        <div class="cell-meta">TOEIC:550〜</div>
+                        <div class="cell-meta">TOEIC:550 / 6k語 / 800h</div>
                         <div class="info-trigger" onclick="handleInfoClick('B1_Bridge', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-B1-CALP" onclick="handleCellClick('B1_CALP', event)">
                         <div class="cell-summary">一般論理の受信開始</div>
-                        <div class="cell-meta">IELTS:4.0</div>
+                        <div class="cell-meta">IELTS:4.0 / 6.5k語 / 900h</div>
                         <div class="info-trigger" onclick="handleInfoClick('B1_CALP', event)">ⓘ</div>
                     </div>
 
@@ -171,17 +175,17 @@
                     <div class="cefr-label">B2</div>
                     <div class="matrix-cell" id="cell-B2-BICS" onclick="handleCellClick('B2_BICS', event)">
                         <div class="cell-summary">ネイティブとの雑談</div>
-                        <div class="cell-meta">英検:準1 / 語彙:9k</div>
+                        <div class="cell-meta">英検準1 / 9k語 / 1.0k h</div>
                         <div class="info-trigger" onclick="handleInfoClick('B2_BICS', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-B2-Bridge" onclick="handleCellClick('B2_Bridge', event)">
                         <div class="cell-summary">現場を回す圧倒的実務</div>
-                        <div class="cell-meta">TOEIC:785〜</div>
+                        <div class="cell-meta">TOEIC:785 / 10k語 / 1.3k h</div>
                         <div class="info-trigger" onclick="handleInfoClick('B2_Bridge', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-B2-CALP" onclick="handleCellClick('B2_CALP', event)">
                         <div class="cell-summary">教養講義・ロジックの核</div>
-                        <div class="cell-meta">IELTS:5.5</div>
+                        <div class="cell-meta">TOEFL:72 / 11k語 / 1.4k h</div>
                         <div class="info-trigger" onclick="handleInfoClick('B2_CALP', event)">ⓘ</div>
                     </div>
 
@@ -189,17 +193,17 @@
                     <div class="cefr-label">C1</div>
                     <div class="matrix-cell" id="cell-C1-BICS" onclick="handleCellClick('C1_BICS', event)">
                         <div class="cell-summary">高速・即興の洗練討論</div>
-                        <div class="cell-meta">英検:1級 / 語彙:15k</div>
+                        <div class="cell-meta">英検1級 / 15k語 / 2.2k h</div>
                         <div class="info-trigger" onclick="handleInfoClick('C1_BICS', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-C1-Bridge" onclick="handleCellClick('C1_Bridge', event)">
                         <div class="cell-summary">最高級タフな国際交渉</div>
-                        <div class="cell-meta">TOEIC:945〜</div>
+                        <div class="cell-meta">TOEIC:945 / 16k語 / 2.6k h</div>
                         <div class="info-trigger" onclick="handleInfoClick('C1_Bridge', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-C1-CALP" onclick="handleCellClick('C1_CALP', event)">
                         <div class="cell-summary">知性を研ぐエリート学術</div>
-                        <div class="cell-meta">IELTS:7.0</div>
+                        <div class="cell-meta">IELTS:7.0 / 17k語 / 2.8k h</div>
                         <div class="info-trigger" onclick="handleInfoClick('C1_CALP', event)">ⓘ</div>
                     </div>
 
@@ -207,24 +211,26 @@
                     <div class="cefr-label">C2</div>
                     <div class="matrix-cell" id="cell-C2-BICS" onclick="handleCellClick('C2_BICS', event)">
                         <div class="cell-summary">文化・言葉の完全越境</div>
-                        <div class="cell-meta">ネイティブ同等</div>
+                        <div class="cell-meta">ネイティブ化 / 20k語 / 4.7k h</div>
                         <div class="info-trigger" onclick="handleInfoClick('C2_BICS', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-C2-Bridge" onclick="handleCellClick('C2_Bridge', event)">
                         <div class="cell-summary">全方位支配のトップ交渉</div>
-                        <div class="cell-meta">実務の神域</div>
+                        <div class="cell-meta">プロ神域 / 22k語 / 5.0k h</div>
                         <div class="info-trigger" onclick="handleInfoClick('C2_Bridge', event)">ⓘ</div>
                     </div>
                     <div class="matrix-cell" id="cell-C2-CALP" onclick="handleCellClick('C2_CALP', event)">
                         <div class="cell-summary">最高峰の思想・人類の知性</div>
-                        <div class="cell-meta">IELTS:8.5</div>
+                        <div class="cell-meta">学術神域 / 25k語 / 5.5k h</div>
                         <div class="info-trigger" onclick="handleInfoClick('C2_CALP', event)">ⓘ</div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- 右側：結果表示エリア（搭乗券＆タイムライン） -->
         <div class="display-side">
+            <!-- 搭乗券チケット -->
             <div class="boarding-pass" id="mainTicket">
                 <div class="ticket-main">
                     <div class="ticket-header">
@@ -285,6 +291,7 @@
                 </div>
             </div>
 
+            <!-- 航路ロードマップ -->
             <div class="panel" id="milestonePanel">
                 <div class="milestone-title">📍 航路の経由地（マイルストーン・ロードマップ）</div>
                 <div class="timeline" id="timelineContainer"></div>
@@ -293,6 +300,7 @@
 
     </div>
 
+    <!-- 📋 オンボーディング・詳細共通モーダル -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
         <div class="modal-content" id="modalContent" onclick="event.stopPropagation()">
             <button class="close-btn" onclick="closeModal()">&times;</button>
@@ -304,6 +312,7 @@
         The Language Matrix ©︎2026 kodyork | All Rights Reserved.
     </footer>
 
+    <!-- 🕹️ app.jsの読み込み -->
     <script src="app.js"></script>
 </body>
 </html>
