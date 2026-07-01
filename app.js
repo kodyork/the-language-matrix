@@ -34,7 +34,6 @@ function formatDaysString(hours, dailyStudy) {
     return `${days}日 (約 ${(days / 365).toFixed(1)}年)`;
 }
 
-// マスクリック時の波紋(Ripple)アニメーション生成
 function createRipple(event, element) {
     const circle = document.createElement("span");
     const diameter = Math.max(element.clientWidth, element.clientHeight);
@@ -79,7 +78,6 @@ function updateHoursPerDay() {
     calculateRoute(true);
 }
 
-// 📋 必要学習時間の計算 ＆ インタラクション駆動
 function calculateRoute(isSliderMove = false) {
     const dailyStudy = parseFloat(document.getElementById("hoursPerDay").value);
     
@@ -137,13 +135,11 @@ function calculateRoute(isSliderMove = false) {
     lastCalculatedHours = neededHours;
     lastCalculatedDaysText = formatDaysString(neededHours, dailyStudy);
 
-    // チケット発券時のバウンドエフェクト
     const ticket = document.getElementById("mainTicket");
     ticket.classList.remove("ticket-issue");
     void ticket.offsetWidth;
     ticket.classList.add("ticket-issue");
 
-    // ✈️ 飛行機がスムーズに目的地に向かうアニメーション
     if (plane) {
         plane.style.left = "0%";
         setTimeout(() => {
@@ -236,9 +232,11 @@ function renderCheckInStep() {
             <label class="question-label">現在のあなたの英語資格、または最も近いスコアを選択してください。</label>
             <div class="option-grid" style="grid-template-columns: repeat(2, 1fr);">
                 <button class="option-btn" onclick="selectScoreType('none', this)">資格なし・初学者</button>
-                <button class="option-btn" onclick="selectScoreType('toeic', this)">TOEIC LR</button>
+                <button class="option-btn" onclick="selectScoreType('toeic', this)">TOEIC L&R</button>
                 <button class="option-btn" onclick="selectScoreType('eiken', this)">英検</button>
+                <button class="option-btn" onclick="selectScoreType('toefl', this)">TOEFL iBT</button>
                 <button class="option-btn" onclick="selectScoreType('ielts', this)">IELTS</button>
+                <button class="option-btn" onclick="selectScoreType('det', this)">DET (Duolingo)</button>
             </div>
             <div id="scoreInputArea" style="margin-top:15px;"></div>
             <div class="modal-footer">
@@ -274,7 +272,7 @@ function selectScoreType(type, btn) {
         selectedStartFromScore = "A1_BICS";
     } else if (type === 'toeic') {
         inputArea.innerHTML = `
-            <label style="font-size:0.8rem; color:#9ca3af; display:block; margin-bottom:5px;">TOEICスコアを入力 (10〜990):</label>
+            <label style="font-size:0.8rem; color:#9ca3af; display:block; margin-bottom:5px;">TOEIC L&R スコアを入力 (10〜990):</label>
             <input type="number" class="score-input" id="calcInputScore" min="10" max="990" value="400" oninput="calculateCefrFromScore('toeic')">
             <p id="calcPreview" style="font-size:0.85rem; color:var(--accent-bics); margin-top:5px;"></p>
         `;
@@ -293,6 +291,13 @@ function selectScoreType(type, btn) {
             <p id="calcPreview" style="font-size:0.85rem; color:var(--accent-bics); margin-top:5px;"></p>
         `;
         calculateCefrFromScore('eiken');
+    } else if (type === 'toefl') {
+        inputArea.innerHTML = `
+            <label style="font-size:0.8rem; color:#9ca3af; display:block; margin-bottom:5px;">TOEFL iBT スコアを入力 (0〜120):</label>
+            <input type="number" class="score-input" id="calcInputScore" min="0" max="120" value="45" oninput="calculateCefrFromScore('toefl')">
+            <p id="calcPreview" style="font-size:0.85rem; color:var(--accent-bics); margin-top:5px;"></p>
+        `;
+        calculateCefrFromScore('toefl');
     } else if (type === 'ielts') {
         inputArea.innerHTML = `
             <label style="font-size:0.8rem; color:#9ca3af; display:block; margin-bottom:5px;">IELTS バンドスコア (1.0〜9.0):</label>
@@ -300,6 +305,13 @@ function selectScoreType(type, btn) {
             <p id="calcPreview" style="font-size:0.85rem; color:var(--accent-bics); margin-top:5px;"></p>
         `;
         calculateCefrFromScore('ielts');
+    } else if (type === 'det') {
+        inputArea.innerHTML = `
+            <label style="font-size:0.8rem; color:#9ca3af; display:block; margin-bottom:5px;">DET スコアを入力 (10〜160):</label>
+            <input type="number" class="score-input" id="calcInputScore" min="10" max="160" step="5" value="70" oninput="calculateCefrFromScore('det')">
+            <p id="calcPreview" style="font-size:0.85rem; color:var(--accent-bics); margin-top:5px;"></p>
+        `;
+        calculateCefrFromScore('det');
     }
 }
 
@@ -319,11 +331,27 @@ function calculateCefrFromScore(type) {
         else if (val === 2) cefr = "B1_BICS";
         else if (val === 22) cefr = "A2_BICS";
         else cefr = "A1_BICS";
+    } else if (type === 'toefl') {
+        if (val >= 114) cefr = "C2_CALP";
+        else if (val >= 95) cefr = "C1_CALP";
+        else if (val >= 72) cefr = "B2_CALP";
+        else if (val >= 42) cefr = "B1_CALP";
+        else if (val >= 32) cefr = "A2_CALP";
+        else cefr = "A1_CALP";
     } else if (type === 'ielts') {
-        if (val >= 7.0) cefr = "C1_CALP";
+        if (val >= 8.5) cefr = "C2_CALP";
+        else if (val >= 7.0) cefr = "C1_CALP";
         else if (val >= 5.5) cefr = "B2_CALP";
         else if (val >= 4.0) cefr = "B1_CALP";
-        else cefr = "A2_CALP";
+        else if (val >= 3.5) cefr = "A2_CALP";
+        else cefr = "A1_CALP";
+    } else if (type === 'det') {
+        if (val >= 155) cefr = "C2_BICS";
+        else if (val >= 130) cefr = "C1_BICS";
+        else if (val >= 100) cefr = "B2_BICS";
+        else if (val >= 85) cefr = "B1_BICS";
+        else if (val >= 60) cefr = "A2_BICS";
+        else cefr = "A1_BICS";
     }
     
     selectedStartFromScore = cefr;
@@ -350,7 +378,6 @@ function finishCheckIn() {
     calculateRoute();
 }
 
-// ⓘ詳細モーダルの展開システム
 function handleInfoClick(levelId, event) {
     event.stopPropagation();
     const parts = levelId.split('_');
@@ -368,7 +395,7 @@ function handleInfoClick(levelId, event) {
         <div class="tab-body">
             <div id="tab-scores" class="tab-content active">
                 <div class="modal-section" style="border-left-color: #58a6ff;">
-                    <h4>各種試験・語彙力の公式目安</h4>
+                    <h4>資格試験・語彙力の目安</h4>
                     <p style="font-size:0.85rem; color:var(--accent-bics); line-height:1.6;">${data.vocab}</p>
                 </div>
                 <div class="modal-section" style="border-left-color: #38bdf8;">
@@ -376,7 +403,7 @@ function handleInfoClick(levelId, event) {
                     <p>${data.wpm}</p>
                 </div>
                 <div class="modal-section" style="border-left-color: #d29922;">
-                    <h4>累計必要学習時間目安</h4>
+                    <h4>Zeroからの累積必要学習時間目安</h4>
                     <p>${data.time}</p>
                 </div>
             </div>
@@ -422,25 +449,134 @@ function copyFlightPlan() {
     });
 }
 
+// 🗃️ 18個のセルすべての完全データマトリクス格納
 const matrixData = {
-    "A1_BICS": { title: "A1 × BICS (挨拶・単語の羅列)", vocab: "英検:3級 / TOEIC:120〜 / 語彙:約1,000語", time: "平均125時間", wpm: "Reading: 40-60 WPM / Speaking: 20-30 WPM", curation: "【できること】名前、出身地の単純なやり取り。\n【できないこと】相手の返答を予想してラリーを繋ぐこと。\n★明日からの最初のアクション:\n中学1年レベルの基本動詞（go, have, take）のコアイメージを掴みましょう。" },
-    "A1_Bridge": { title: "A1 × Bridge (超初歩の実務受信)", vocab: "TOEIC LR:120〜380 / 語彙:約1,200語", time: "平均150時間", wpm: "Reading: 50-70 WPM", curation: "【できること】単発のシンプルな社内通知のデータ読み取り。\n【できないこと】複数文メールの文脈把握、チャット返信。\n★明日からの最初のアクション:\n社内で使われる最も短い英文定型フォーマット（OK, Approved等）を覚える。" },
-    "A1_CALP": { title: "A1 × CALP (単発の事実認識)", vocab: "限定的リテラシー / 語彙:約1,500語", time: "平均180時間", wpm: "Reading: 30-50 WPM", curation: "【できること】図表のキャプションに書かれた明確な事実の視認。\n【できないこと】論理的な因果関係の理解、テキストの要約。\n★明日からの最初のアクション:\n単純な事実の短文（Water boils at 100 degrees）を主語と述語に分ける。" },
-    "A2_BICS": { title: "A2 × BICS (カタコト脱出・対人)", vocab: "英検:準2級 / IELTS:3.5 / 語彙:約2,500語", time: "平均187時間", wpm: "Reading: 80-100 WPM / Speaking: 40-60 WPM", curation: "【できること】ホテルでのトラブル対応、身近な情報交換。\n【できないこと】抽象的な話題の雑談、ネイティブ同士の高速な会話への参加。\n★明日からの最初のアクション:\n困った場面を想定し、3文構成（状況＋理由＋要求）の独り言を呟く。" },
-    "A2_Bridge": { title: "A2 × Bridge (指示書通りの受動実務)", vocab: "TOEIC LR:385〜780 / 語彙:約3,000語", time: "平均400時間", wpm: "Reading: 90-110 WPM", curation: "【できること】定型メールの解読、マニュアルに沿った単純データ処理。\n【できないこと】自由記述での複雑な進捗報告、突発的なクレーム応対。\n★明日からの最初のアクション:\n毎日届く定型のビジネスメールをフォルダ分けしてパターン化する。" },
-    "A2_CALP": { title: "A2 × CALP (基礎短文の読解)", vocab: "中学理科・社会教科書水準 / 語彙:約3,500語", time: "平均450時間", wpm: "Reading: 70-90 WPM", curation: "【できること】短くシンプルに書かれた百科事典の事実関係の把握。\n【できないこと】論文の段落同士の論理的な因果関係の読み取り。\n★明日からの最初のアクション:\nSimple English Wikipediaの短い1段落を、構造を意識して精読する。" },
-    "B1_BICS": { title: "B1 × BICS (日常雑談の完全自立)", vocab: "英検:2級 / IELTS:4.5 / 語彙:約5,000語", time: "平均465時間", wpm: "Reading: 110-130 WPM / Speaking: 70-95 WPM", curation: "【できること】身近な話題についての標準速度での雑談、自己意見の表明。\n【できないこと】込み入った感情の機微を伝えること、会話の主導権を握ること。\n★明日からの最初のアクション:\n海外の日常Vlogを観て、使われた相槌をそのまま1つ真記して発話する。" },
-    "B1_Bridge": { title: "B1 × Bridge (日常ビジネスメール)", vocab: "TOEIC LR:550〜780 / 語彙:約6,000語", time: "平均800時間", wpm: "Reading: 120-140 WPM / Speaking: 60-80 WPM", curation: "【できること】一般的な実務メールの送受信、ミーティングでの進捗報告。\n【できないこと】ブレストでの変則的な意見への即座の反論、顧客との値引き交渉。\n★明日からの最初のアクション:\nビジネスニュースを130WPMの目標速度を設定して速読訓練を行う。" },
-    "B1_CALP": { title: "B1 × CALP (一般論理の受信開始)", vocab: "TOEFL:42〜 / IELTS:4.0 / 語彙:約6,500語", time: "平均900時間", wpm: "Reading: 100-120 WPM", curation: "【できること】科学・歴史テーマの易しい解説記事の読解、講義メインアイデアの把握。\n【できないこと】学術論文の背景知識なしでの精読、論理的なカウンター質問。\n★明日からの最初のアクション:\n社会問題のニュースを読み、「原因・現状・対策」を箇条書きで抜き出す。" },
-    "B2_BICS": { title: "B2 × BICS (ネイティブとの雑談)", vocab: "英検:準1級 / 語彙:約9,000語", time: "平均1000時間", wpm: "Reading: 140-170 WPM / Speaking: 100-130 WPM", curation: "【できること】ネイティブと緊張感なくやり取りし、ジョークや皮肉のニュアンスも大枠理解できる。\n【できないこと】政治コンテクストや超ディープなローカルスラングへの完全な同調。\n★明日からの最初のアクション:\n海外ドラマを英語字幕で観て、役者のテンポのままシャドーイングする。" },
-    "B2_Bridge": { title: "B2 × Bridge (現場を回す圧倒的実務)", vocab: "TOEIC LR:785〜 / 語彙:約10,000語", time: "平均1350時間", wpm: "Reading: 150-180 WPM / Speaking: 90-120 WPM", curation: "【できること】ビジネス会議でのファシリテーション、複雑な仕様書の理解、プレゼン完遂。\n【できないこと】法的なリスクが激しく絡む、タフな契約交渉における微細な言葉の駆け引き。\n★明日からの最初のアクション:\nBBCビジネス記事を読み、企業の狙いを「PREP法」の論理で30秒で話す訓練。" },
-    "B2_CALP": { title: "B2 × CALP (教養講義・ロジックの核)", vocab: "TOEFL:72〜 / IELTS:5.5 / 語彙:約11,000語", time: "平均1450時間", wpm: "Reading: 130-160 WPM / Speaking: 80-110 WPM", curation: "【できること】TED Talksの字幕なし理解。自分の専門分野に関する論文の読解と要約。\n【できないこと】査読付き論文のハイスピードな乱読、ディベートでの鋭いカウンター突っ込み。\n★明日からの最初のアクション:\nTED Talksを1本選び、スクリプトの「論理の繋ぎ語（However等）」をマーキングする。" },
-    "C1_BICS": { title: "C1 × BICS (高速・即興の洗練討論)", vocab: "英検:1級 / 語彙:約15,000語", time: "平均2250時間", wpm: "Reading: 180-220 WPM / Speaking: 130-160 WPM", curation: "【できること】騒がしいカフェ等で、複数人のネイティブが行う超高速の雑談に完全参入。\n【できないこと】幼児期のカルチャーや地域方言が激しすぎるインサイド・トークへの100%同調。\n★明日からの最初のアクション:\n海外の海外ポッドキャストを1.1倍速で聴き、会話の切り替わりの相槌の入れ方を真似る。" },
-    "C1_Bridge": { title: "C1 × Bridge (最高級タフな国際交渉)", vocab: "TOEIC:945〜 / 語彙:約16,000語", time: "平均2600時間", wpm: "Reading: 190-230 WPM / Speaking: 120-150 WPM", curation: "【できること】国際M&Aや高度な知財交渉。ユーモアや皮肉を使った心理的な関係構築。\n【できないこと】古典文学や歴史的メタファーが重層的に隠された最高級文芸の完璧な解読。\n★明日からの最初のアクション:\n海外のタフな折衝ドキュメンタリーを観て、要求の裏にある「本音」の匂わせ方を分析する。" },
-    "C1_CALP": { title: "C1 × CALP (知性を研ぐエリート学術)", vocab: "TOEFL:95〜 / IELTS:7.0 / 語彙:約17,000語", time: "平均2800時間", wpm: "Reading: 170-210 WPM / Speaking: 110-140 WPM", curation: "【できること】『The Economist』や『Nature』などの論文を辞書なし精読。大学院ディスカッション完遂。\n【できないこと】未知の学術分野における、その道10年のトップ専門家レベルの新理論構築。\n★明日からの最初のアクション:\n『The Economist』の論説を読み、そのロジックへの反論を英語で200語のエッセイに書く。" },
-    "C2_BICS": { title: "C2 × BICS (文化・言葉の完全越境)", vocab: "ネイティブ知識人同等", time: "平均4750時間", wpm: "Reading: 240+ WPM", curation: "【できること】政治演説、演劇、古典小説を文化的背景も含めて100%理解。格調の自在な変化。\n【できないこと】特になし。\n★明日からの最初のアクション:\n歴史的演説をオーディオブックで聴き、言葉の持つリズムと思想を身体へ同期させる。" },
-    "C2_Bridge": { title: "C2 × Bridge (全方位支配のトップ交渉)", vocab: "実務の神域 / 満点圏", time: "平均5000時間", wpm: "Reading: 250+ WPM", curation: "【できること】あらゆる国際ビジネス文書の即時処理、最高戦略決定会議での英語によるトップガバナンス。\n【できないこと】特になし。\n★明日からの最初のアクション:\nグローバル企業の決算質疑を聴き、市場をコントロールするための極限の表現をトレースする。" },
-    "C2_CALP": { title: "C2 × CALP (最高峰の思想・人類の知性)", vocab: "IELTS:8.5〜9.0 / TOEFL:114〜", time: "平均5500時間", wpm: "Reading: 220+ WPM", curation: "【できること】国際学会での基調講演、査読付き最高峰論文の単独執筆、難解な政策・法案文書の立案。\n【できないこと】特になし。\n★明日からの最初のアクション:\n自分の研究あるいは専門領域の最先端の査読付き論文を読み、それに対する補足仮説のプロトタイプを英語で1,000語ビルドする。" }
+    "A1_BICS": {
+        title: "A1 × BICS (挨拶・単語の羅列)",
+        vocab: "英検:3級 / TOEIC L&R:120-220 / TOEFL:0-31 / IELTS:1.0-3.0 / DET:10-55 / 語彙目安:約1,000語",
+        time: "累積 125 時間",
+        wpm: "Reading: 40-60 WPM / Speaking: 20-30 WPM",
+        curation: "【できること】名前、出身地の極めて単純なやり取り。型通りの挨拶。\n【できないこと】相手の返答を予想して自発的にラリーを繋ぐこと。\n★明日からの最初のアクション:\n中学1年レベルの基本動詞（go, have, take）のコアイメージを音読して脳にログインさせてください。"
+    },
+    "A1_Bridge": {
+        title: "A1 × Bridge (超初歩の実務受信)",
+        vocab: "英検:3級 / TOEIC L&R:120-380 / TOEFL:10-34 / IELTS:2.0-3.5 / DET:20-55 / 語彙目安:約1,200語",
+        time: "累積 150 時間",
+        wpm: "Reading: 50-70 WPM / Speaking: 10-20 WPM",
+        curation: "【できること】単発のシンプルな社内通知や短い数字データの読み取り。\n【できないこと】複数文にまたがるメールの文脈把握、チャットへの英語での返信。\n★明日からの最初のアクション:\n社内で使われる最も短い英文定型フォーマット（OK, Approved等）を3パターン丸暗記してください。"
+    },
+    "A1_CALP": {
+        title: "A1 × CALP (単発の事実認識)",
+        vocab: "英検:3級 / TOEIC L&R:150-200 / TOEFL:0-23 / IELTS:1.5-2.5 / DET:10-40 / 語彙目安:約1,500語",
+        time: "累積 180 時間",
+        wpm: "Reading: 30-50 WPM / Speaking: 計測不可",
+        curation: "【できること】図表のキャプション、ラベルに書かれた単純な単語や明確な事実の視認。\n【できないこと】論理的な因果関係の理解、短いテキストの要約や推論。\n★明日からの最初のアクション:\n'Water boils at 100 degrees.'のような、もっとも単純な事実の短文を1日3つ主語と述語に分けてください。"
+    },
+    "A2_BICS": {
+        title: "A2 × BICS (カタコト脱出・対人)",
+        vocab: "英検:準2級 / TOEIC L&R:225-545 / TOEFL:32-41 / IELTS:3.5-4.5 / DET:60-80 / 語彙目安:約2,500語",
+        time: "累積 187 時間",
+        wpm: "Reading: 80-100 WPM / Speaking: 40-60 WPM",
+        curation: "【できること】ホテルや駅でのトラブル対応、趣味や家族についての簡単な情報交換。\n【できないこと】抽象的な話題の雑談、冗談やスラングが飛び交うネイティブ同士の輪への参加。\n★明日からの最初のアクション:\n海外旅行の「困った場面」を想定し、3文構成（状況説明＋理由＋要求）の独り言をつぶやいてみてください。"
+    },
+    "A2_Bridge": {
+        title: "A2 × Bridge (指示書通りの受動実務)",
+        vocab: "英検:準2級 / TOEIC L&R:385-780 / TOEFL:35-45 / IELTS:4.0 / DET:65-80 / 語彙目安:約3,000語",
+        time: "累積 400 時間",
+        wpm: "Reading: 90-110 WPM / Speaking: 30-50 WPM",
+        curation: "【できること】定型メールの解読、マニュアルに沿った単純データ処理、短い指示の理解。\n【できないこと】自由記述での複雑な進捗報告、突発的なクレームの電話応対。\n★明日からの最初のアクション:\n毎日届く定型の英語ビジネスメールを、返信フォームのテンプレートと照らし合わせてパターン化してください。"
+    },
+    "A2_CALP": {
+        title: "A2 × CALP (基礎短文の読解)",
+        vocab: "英検:準2級 / TOEIC L&R:400-500 / TOEFL:35-45 / IELTS:4.0 / DET:65-75 / 語彙目安:約3,500語",
+        time: "累積 450 時間",
+        wpm: "Reading: 70-90 WPM / Speaking: 20-40 WPM",
+        curation: "【できること】子供向けの科学書など、短くシンプルに書かれた百科事典等の事実関係の把握。\n【できないこと】論文の段落同士の関係性の読み取り、筆者の主張や仮説の論理的な批判検証。\n★明日からの最初のアクション:\n子供向けの科学百科事典（Simple English Wikipedia等）の短い1段落を、主語・動詞を意識して精読してください。"
+    },
+    "B1_BICS": {
+        title: "B1 × BICS (日常雑談の完全自立)",
+        vocab: "英検:2級 / TOEIC L&R:550-780 / TOEFL:42-71 / IELTS:4.0-5.0 / DET:85-95 / 語彙目安:約5,000語",
+        time: "累積 465 時間",
+        wpm: "Reading: 110-130 WPM / Speaking: 70-95 WPM",
+        curation: "【できること】身近な話題や時事ニュースについての標準速度での雑談、自己意見の簡単な表明。\n【できないこと】込み入った感情の機微を伝えること、会話の主導権を握って話をジャックすること。\n★明日からの最初のアクション:\nYouTubeの1分程度の海外日常Vlogを視聴し、そこで使われたフレーズを1つ自分の日常に置き換えて発話してください。"
+    },
+    "B1_Bridge": {
+        title: "B1 × Bridge (日常ビジネスメール)",
+        vocab: "英検:2級 / TOEIC L&R:790-1090 / TOEFL:55-71 / IELTS:4.5-5.0 / DET:85-100 / 語彙目安:約6,000語",
+        time: "累積 800 時間",
+        wpm: "Reading: 120-140 WPM / Speaking: 60-80 WPM",
+        curation: "【できること】一般的な実務メールの送受信、アジェンダに沿ったミーティングでの進捗報告。\n【できないこと】ブレインストーミングでの変則的な意見への即座の反論、タフな顧客対応や値引き交渉。\n★明日からの最初のアクション:\nVOAニュースの記事を1つ選び、130 WPMのタイマーをかけて時間内に内容の7割をキャッチする速読訓練を開始してください。"
+    },
+    "B1_CALP": {
+        title: "B1 × CALP (一般論理の受信開始)",
+        vocab: "英検:2級 / TOEIC L&R:700-800 / TOEFL:42-71 / IELTS:4.0-5.0 / DET:85-95 / 語彙目安:約6,500語",
+        time: "累積 900 時間",
+        wpm: "Reading: 100-120 WPM / Speaking: 50-70 WPM",
+        curation: "【できること】科学・歴史テーマの易しい解説（Wikipedia等）の読解、学校講義のメインアイデアの把握。\n【できないこと】学術論文の背景知識なしでの精読、自分の専門外の講義に対する論理的なカウンター質問。\n★明日からの最初のアクション:\n身近な社会問題のWikipedia記事を読み、「原因・現状・対策」の3つの要素を箇条書きで抜き出してみましょう。"
+    },
+    "B2_BICS": {
+        title: "B2 × BICS (ネイティブとの雑談)",
+        vocab: "英検:準1級 / TOEIC L&R:800-900 / TOEFL:72-94 / IELTS:5.5-6.5 / DET:100-115 / 語彙目安:約9,000語",
+        time: "累積 1,000 時間",
+        wpm: "Reading: 140-170 WPM / Speaking: 100-130 WPM",
+        curation: "【できること】ネイティブと緊張感なしにやり取りし、文化的なジョークや皮肉のニュアンスも大枠理解できる。\n【できないこと】海外の古いTV番組や政治コンテクストが絡む、超ディープなローカルスラングの100%完全同調。\n★明日からの最初のアクション:\n海外の人気コメディドラマを英語字幕付きで観て、登場人物のセリフのテンポに被せるようにシャドーイングしてください。"
+    },
+    "B2_Bridge": {
+        title: "B2 × Bridge (現場を回す圧倒的実務)",
+        vocab: "英検:準1級 / TOEIC L&R:785-940 / TOEFL:72-94 / IELTS:5.5-6.5 / DET:105-125 / 語彙目安:約10,000語",
+        time: "累積 1,350 時間",
+        wpm: "Reading: 150-180 WPM / Speaking: 90-120 WPM",
+        curation: "【できること】ビジネス会議でのファシリテーション、複雑な業務仕様書の理解、プレゼンと質疑応答。\n【できないこと】法的なリスクが激しく絡む、海外エリート相手の英文契約交渉における微細な言葉の駆け引き。\n★明日からの最初のアクション:\nBBCの時事ビジネス記事を1本読み、その背景にある企業の狙いを「PREP法」の論理で30秒で話す練習をしてください。"
+    },
+    "B2_CALP": {
+        title: "B2 × CALP (教養講義・ロジックの核)",
+        vocab: "英検:準1級 / TOEIC L&R:850-950 / TOEFL:72-94 / IELTS:5.5-6.5 / DET:105-125 / 語彙目安:約11,000語",
+        time: "累積 1,450 時間",
+        wpm: "Reading: 130-160 WPM / Speaking: 80-110 WPM",
+        curation: "【できること】TED Talksの字幕なし完全理解。自分の専門分野に関する海外入門論文の読解と要約記述。\n【できないこと】査読付き学術論文のハイスピードな乱読、英語ディベートでの学術的な鋭いカウンター突っ込み。\n★明日からの最初のアクション:\n関心のあるテーマのTED Talksを1本選び、スクリプトを読み込みながら、話者のロジック展開の「繋ぎ語」をマーキングしてください。"
+    },
+    "C1_BICS": {
+        title: "C1 × BICS (高速・即興の洗練討論)",
+        vocab: "英検:1級 / TOEIC L&R:950+ / TOEFL:95-113 / IELTS:7.0-8.0 / DET:130-140 / 語彙目安:約15,000語",
+        time: "累積 2,250 時間",
+        wpm: "Reading: 180-220 WPM / Speaking: 130-160 WPM",
+        curation: "【できること】騒がしいバー等で、複数人のネイティブが即興で行う超高速のローカル雑談に完全参入。\n【できないこと】ネイティブの幼児期のカルチャーや、地域方言が激しすぎるニッチなインサイド・トークへの完璧な同調。\n★明日からの最初のアクション:\n海外の人気ポッドキャストを1.1倍速で聴き、会話が切り替わる瞬間の相槌の入れ方をトレースしてください。"
+    },
+    "C1_Bridge": {
+        title: "C1 × Bridge (最高級タフな国際交渉)",
+        vocab: "英検:1級 / TOEIC L&R:945-990 / TOEFL:95-113 / IELTS:7.0-8.0 / DET:130-150 / 語彙目安:約16,000語",
+        time: "累積 2,600 時間",
+        wpm: "Reading: 190-230 WPM / Speaking: 120-150 WPM",
+        curation: "【できること】国際M&A契約や高度な知財交渉。ネイティブ向けの高度なユーモアや皮肉を使った心理的関係構築。\n【できないこと】ネイティブが「教養」として嗜む古典文学や歴史的メタファーが重層的に隠された最高級文芸の完璧な解読。\n★明日からの最初のアクション:\n海外の経済小説やタフな交渉ドキュメンタリーを読み、相手の要求の裏にある「本音」を匂わせる表現を分析してください。"
+    },
+    "C1_CALP": {
+        title: "C1 × CALP (知性を研ぐエリート学術)",
+        vocab: "英検:1級 / TOEIC L&R:960+ / TOEFL:95-113 / IELTS:7.0-8.0 / DET:130-150 / 語彙目安:約17,000語",
+        time: "累積 2,800 時間",
+        wpm: "Reading: 170-210 WPM / Speaking: 110-140 WPM",
+        curation: "【できること】『The Economist』や『Nature』誌などの論文を辞書なしで精読。海外大学院ディスカッションの完全完遂。\n【できないこと】未知の学術分野における、その道10年のトップ専門家レベルの超高難度な新理論構築。\n★明日からの最初のアクション:\n『The Economist』の最新論説を1本読み、著者の論理構造の欠陥（あるいは反論の余地）を英語で200語のエッセイに書き出してください。"
+    },
+    "C2_BICS": {
+        title: "C2 × BICS (文化・言葉の完全越境)",
+        vocab: "英検:1級満点圏 / 各種試験:最高値 / DET:150-160 / 語彙目安:約20,000語",
+        time: "累積 4,750 時間",
+        wpm: "Reading: 240+ WPM / Speaking: 150-180 WPM",
+        curation: "【できること】政治演説、演劇、古典小説、映画のセリフなどを文化的背景も含めて100%理解。言葉遣いの格の自在な変化。\n【できないこと】ほぼなし（ネイティブの知識人層と同等）。\n★明日からの最初のアクション:\n海外の名作文学や歴史的演説をオーディオブックで聴き、言葉の持つ「リズム」と「思想」を完全に身体へ同期させてください。"
+    },
+    "C2_Bridge": {
+        title: "C2 × Bridge (全方位支配のトップ交渉)",
+        vocab: "TOEIC L&R:満点圏 / 各種換算:上限値 / DET:155-160 / 語彙目安:約22,000語",
+        time: "累積 5,000 時間",
+        wpm: "Reading: 250+ WPM / Speaking: 140-170 WPM",
+        curation: "【できること】あらゆる国際ビジネス文書の即時処理、企業の最高戦略決定会議での英語によるトップ交渉や宣言。\n【できないこと】なし。\n★明日からの最初のアクション:\nグローバル企業の決算発表の質疑応答の音声を聴き、経営陣が放つ「市場をコントロールするための極限の表現」をシャドーイングしてください。"
+    },
+    "C2_CALP": {
+        title: "C2 × CALP (最高峰の思想・人類の知性)",
+        vocab: "TOEFL iBT:114-120 / IELTS:8.5-9.0 / DET:155-160 / 語彙目安:約25,000語",
+        time: "累積 5,500 時間",
+        wpm: "Reading: 220+ WPM / Speaking: 130-160 WPM",
+        curation: "【できること】国際学会での基調講演、査読付き最高峰論文の単独執筆、超難解なグローバル政策・法案文書の立案。\n【できないこと】なし。\n★明日からの最初のアクション:\n自分の研究あるいは専門領域の最先端の査読付き論文を読み、それに対する補足仮説のプロトタイプを英語で1,000語ビルドしてください。"
+    }
 };
 
 window.onload = function() {
