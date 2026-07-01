@@ -700,3 +700,11 @@ footer { margin-top: 40px; padding: 20px 0; text-align: center; color: var(--tex
 .matrix-cell:hover .cell-meta {
     opacity: 1; /* マウスを乗せた時だけクッキリ見せる（段階的開示） */
 }
+.text-link-btn:hover {
+    color: #fff !important;
+    cursor: pointer;
+}
+/* 縦の3つの列（軸）をうっすら色分けして直感性を極限まで高める */
+.matrix-grid div:nth-child(4n+2) { background: rgba(88, 166, 255, 0.01) !important; }  /* BICSの列 */
+.matrix-grid div:nth-child(4n+3) { background: rgba(210, 153, 34, 0.01) !important; }  /* Bridgeの列 */
+.matrix-grid div:nth-child(4n+4) { background: rgba(188, 140, 255, 0.01) !important; } /* CALPの列 */
