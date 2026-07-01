@@ -1,0 +1,654 @@
+:root {
+    --bg-color: #0d1117;
+    --panel-bg: #161b22;
+    --panel-border: #30363d;
+    --text-main: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent-bics: #58a6ff;
+    --accent-bridge: #d29922;
+    --accent-calp: #bc8cff;
+    --cell-hover: #21262d;
+    --skyscanner-blue: #0073ea;
+    --dest-green: #10b981;
+    --ticket-bg: #1f2937;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    margin-bottom: 5px;
+    color: #f0f6fc;
+}
+
+header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin: 5px 0 0 0;
+}
+
+.tagline-en {
+    font-family: "Georgia", serif;
+    font-style: italic;
+    color: var(--accent-bics);
+    font-size: 1.1rem;
+}
+
+/* 🛠️ 左右2カラムメインレイアウト */
+.app-layout {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+    max-width: 1240px;
+    margin-bottom: 40px;
+}
+
+.control-side {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+}
+
+.display-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    min-width: 0;
+}
+
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.search-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.search-group {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.search-group label {
+    font-size: 0.85rem;
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+.search-select {
+    background: #111827;
+    border: 1px solid #374151;
+    color: #f3f4f6;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+}
+
+.search-select:focus {
+    border-color: var(--skyscanner-blue);
+}
+
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid var(--panel-border);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.slider-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #f3f4f6;
+}
+
+.slider-header span mark {
+    background: none;
+    color: var(--accent-bics);
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.slider-input {
+    width: 100%;
+    -webkit-appearance: none;
+    background: #374151;
+    height: 6px;
+    border-radius: 4px;
+    outline: none;
+}
+
+.slider-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--skyscanner-blue);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.slider-input::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* 🛫 搭乗券 UI */
+.boarding-pass {
+    background: var(--ticket-bg);
+    border: 1px solid #4b5563;
+    border-radius: 16px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ticket-issue {
+    animation: ticketPop 0.4s ease;
+}
+
+@keyframes ticketPop {
+    0% { transform: scale(0.95) translateY(10px); opacity: 0.8; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.ticket-main {
+    flex: 2.5;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #4b5563;
+    padding-bottom: 10px;
+}
+
+.ticket-logo {
+    font-weight: bold;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--skyscanner-blue);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ticket-flight-class {
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.1);
+    padding: 2px 8px;
+    border-radius: 20px;
+    color: #9ca3af;
+}
+
+.ticket-route {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.route-node {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.route-node.destination {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.route-code {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.route-name {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ✈️ 飛行機線アニメーション */
+.route-arrow {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 0 15px;
+    height: 20px;
+}
+
+.route-line {
+    width: 100%;
+    height: 2px;
+    background: #4b5563;
+    position: relative;
+}
+
+.plane-icon {
+    position: absolute;
+    top: -10px;
+    left: 0%;
+    font-size: 1rem;
+    transform: translateX(-50%);
+    transition: left 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ticket-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.meta-label {
+    font-size: 0.65rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+}
+
+.meta-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f3f4f6;
+}
+
+.meta-value.highlight {
+    color: var(--dest-green);
+}
+
+.ticket-divider {
+    width: 1px;
+    border-left: 2px dashed #374151;
+    position: relative;
+    background: var(--ticket-bg);
+}
+.ticket-divider::before, .ticket-divider::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: var(--bg-color);
+    border-radius: 50%;
+    left: -9px;
+}
+.ticket-divider::before { top: -8px; border-bottom: 1px solid #4b5563;}
+.ticket-divider::after { bottom: -8px; border-top: 1px solid #4b5563;}
+
+.ticket-stub {
+    flex: 1;
+    padding: 20px;
+    background: rgba(255,255,255,0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 150px;
+    gap: 10px;
+}
+
+.stub-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.75rem;
+}
+
+.stub-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stub-label { color: #9ca3af; }
+.stub-value { font-weight: bold; color: #fff; }
+
+.share-btn {
+    width: 100%;
+    background: var(--skyscanner-blue);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: background 0.2s, transform 0.1s;
+}
+.share-btn:hover { background: #0056b3; }
+.share-btn:active { transform: scale(0.98); }
+
+.qr-code-wrapper {
+    background: white;
+    padding: 6px;
+    border-radius: 6px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    justify-content: center;
+    align-items: center;
+}
+.qr-row { display: flex; gap: 2px; width: 100%; height: 3px; }
+.qr-pixel { flex: 1; height: 100%; background: #fff; }
+.qr-pixel.b { background: #000; }
+
+/* 📍 マイルストーン */
+.milestone-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #9ca3af;
+    margin-bottom: 10px;
+}
+.timeline {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding: 10px 0;
+    overflow-x: auto;
+}
+.timeline::before {
+    content: "";
+    position: absolute;
+    top: 21px; left: 0; right: 0;
+    height: 2px; background: #374151;
+    z-index: 1;
+}
+.timeline-item {
+    flex: 1;
+    min-width: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 0.3s ease both;
+}
+.timeline-badge {
+    width: 24px; height: 24px;
+    border-radius: 50%; background: #111827;
+    border: 2px solid #4b5563; color: #9ca3af;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: bold; margin-bottom: 6px;
+}
+.timeline-item.active .timeline-badge {
+    background: var(--skyscanner-blue); border-color: #fff; color: white;
+    box-shadow: 0 0 10px rgba(0, 115, 234, 0.6);
+}
+.timeline-item.passed .timeline-badge {
+    background: rgba(16, 185, 129, 0.2); border-color: var(--dest-green); color: var(--dest-green);
+}
+.timeline-name { font-size: 0.75rem; font-weight: 600; color: #f3f4f6; }
+.timeline-time { font-size: 0.65rem; color: var(--text-muted); }
+
+/* 🗺️ マトリクスコンテナ */
+.matrix-container {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.matrix-instructions {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-align: center;
+    background: rgba(255,255,255,0.02);
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.matrix-grid {
+    display: grid;
+    grid-template-columns: 60px repeat(3, 1fr);
+    gap: 10px;
+}
+
+.grid-header {
+    font-weight: 600;
+    text-align: center;
+    padding: 8px;
+    color: #f0f6fc;
+    border-bottom: 2px solid var(--panel-border);
+    font-size: 0.85rem;
+}
+
+.axis-bics { color: var(--accent-bics); }
+.axis-bridge { color: var(--accent-bridge); }
+.axis-calp { color: var(--accent-calp); }
+
+.cefr-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-muted);
+    border-right: 1px solid var(--panel-border);
+}
+
+/* ✨ インタラクションマス設計（ホバーフロート＆波紋エフェクト） */
+.matrix-cell {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s, border-color 0.2s;
+}
+
+.matrix-cell:hover {
+    background: var(--cell-hover);
+    transform: translateY(-4px);
+    border-color: #8b949e;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+.ripple {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: rippleEffect 0.4s linear;
+    pointer-events: none;
+}
+
+@keyframes rippleEffect {
+    to { transform: scale(4); opacity: 0; }
+}
+
+.info-trigger {
+    position: absolute;
+    bottom: 6px; right: 6px;
+    width: 18px; height: 18px;
+    border-radius: 50%; background: rgba(255,255,255,0.05);
+    border: 1px solid var(--panel-border); color: var(--text-muted);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: bold; transition: all 0.2s;
+    z-index: 5;
+}
+.info-trigger:hover {
+    background: var(--skyscanner-blue); color: white; border-color: transparent; transform: scale(1.1);
+}
+
+.matrix-cell.highlight-start { border: 2px solid var(--skyscanner-blue) !important; background: rgba(0, 115, 234, 0.12) !important; }
+.matrix-cell.highlight-start::after { content: "🛫 出発"; position: absolute; top: 2px; right: 2px; background: var(--skyscanner-blue); color: white; font-size: 0.6rem; padding: 1px 4px; border-radius: 4px; font-weight: bold; }
+.matrix-cell.highlight-end { border: 2px solid var(--dest-green) !important; background: rgba(16, 185, 129, 0.12) !important; }
+.matrix-cell.highlight-end::after { content: "🛬 目標"; position: absolute; top: 2px; right: 2px; background: var(--dest-green); color: white; font-size: 0.6rem; padding: 1px 4px; border-radius: 4px; font-weight: bold; }
+.matrix-cell.highlight-both { border: 2px solid #e3b341 !important; background: rgba(227, 179, 65, 0.12) !important; }
+.matrix-cell.highlight-both::after { content: "🗺️ 現在地＆目標"; position: absolute; top: 2px; right: 2px; background: #e3b341; color: black; font-size: 0.6rem; padding: 1px 4px; border-radius: 4px; font-weight: bold; }
+
+.cell-summary { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: #f0f6fc; line-height: 1.2; padding-right: 10px; }
+.cell-meta { font-size: 0.65rem; color: var(--text-muted); }
+
+/* 📋 モーダル基本構造 */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+    backdrop-filter: blur(4px);
+}
+
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.modal-content {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    padding: 24px;
+    width: 92%;
+    max-width: 550px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    position: relative;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-btn {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: none; border: none;
+    color: var(--text-muted);
+    font-size: 1.3rem; cursor: pointer;
+    z-index: 10;
+}
+
+.modal-title { font-size: 1.2rem; margin-bottom: 15px; color: #fff; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+
+/* 問診フォーム装飾 */
+.question-step { display: none; animation: fadeIn 0.3s ease; }
+.question-step.active { display: block; }
+.question-label { font-size: 1rem; color: #f3f4f6; font-weight: 600; margin-bottom: 12px; display: block; }
+
+.score-input-box { display: flex; gap: 10px; margin-bottom: 15px; }
+.score-input { background: #111827; border: 1px solid #374151; color: white; padding: 12px; border-radius: 6px; font-size: 1rem; flex: 1; }
+
+.option-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px; }
+.option-btn {
+    background: #1f2937; border: 1px solid #4b5563; color: #e5e7eb; padding: 12px; border-radius: 8px; text-align: left; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.2s;
+}
+.option-btn:hover { background: #374151; border-color: var(--skyscanner-blue); }
+.option-btn.selected { background: rgba(0, 115, 234, 0.2); border-color: var(--skyscanner-blue); color: white; }
+
+.modal-footer { display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid var(--panel-border); padding-top: 15px; }
+.nav-btn {
+    background: #374151; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
+}
+.nav-btn.primary { background: var(--skyscanner-blue); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* 詳細表示用タブ */
+.modal-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--panel-border); margin-bottom: 15px; }
+.modal-tab { background: none; border: none; color: var(--text-muted); padding: 8px 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer; position: relative; }
+.modal-tab.active { color: var(--skyscanner-blue); }
+.modal-tab.active::after { content: ""; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--skyscanner-blue); }
+.tab-body { overflow-y: auto; flex: 1; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.score-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; margin-top: 8px; }
+.score-card { background: rgba(255,255,255,0.02); border: 1px solid var(--panel-border); border-radius: 6px; padding: 8px; text-align: center; }
+.score-card-name { font-size: 0.7rem; color: var(--text-muted); }
+.score-card-value { font-size: 0.95rem; font-weight: bold; color: #fff; }
+
+.modal-section { margin-bottom: 12px; background: rgba(255,255,255,0.01); padding: 10px; border-radius: 6px; border-left: 4px solid var(--panel-border); white-space: pre-line; }
+.modal-section h4 { margin: 0 0 6px 0; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; }
+.modal-section p { margin: 0; font-size: 0.85rem; color: #f0f6fc; line-height: 1.5; }
+
+.tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+.tag-bics { background: rgba(88,166,255,0.15); color: var(--accent-bics); }
+.tag-bridge { background: rgba(210,153,34,0.15); color: var(--accent-bridge); }
+.tag-calp { background: rgba(188,140,255,0.15); color: var(--accent-calp); }
+
+.mobile-row-title { display: none; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* 📱 スマホ・タブレット向けレスポンシブ */
+@media (max-width: 900px) {
+    .app-layout { flex-direction: column; }
+    .display-side { position: static; height: auto; }
+    .boarding-pass { flex-direction: column; }
+    .ticket-divider { width: 100%; height: 1px; border-left: none; border-top: 2px dashed #374151; margin: 5px 0; }
+    .ticket-divider::before, .ticket-divider::after { top: -9px; left: auto; }
+    .ticket-divider::before { left: -8px; }
+    .ticket-divider::after { right: -8px; }
+    .matrix-grid { display: flex; flex-direction: column; min-width: 100%; gap: 15px; }
+    .grid-header, .cefr-label { display: none; }
+    .mobile-row-title { display: block; font-size: 1rem; font-weight: bold; color: #fff; border-bottom: 2px solid var(--panel-border); padding-bottom: 4px; margin-top: 10px; }
+}
+
+footer { margin-top: 40px; padding: 20px 0; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--panel-border); width: 100%; max-width: 1240px; }
