@@ -34,6 +34,7 @@ function formatDaysString(hours, dailyStudy) {
     return `${days}日 (約 ${(days / 365).toFixed(1)}年)`;
 }
 
+// マスクリック時の波紋(Ripple)アニメーション生成
 function createRipple(event, element) {
     const circle = document.createElement("span");
     const diameter = Math.max(element.clientWidth, element.clientHeight);
@@ -78,6 +79,7 @@ function updateHoursPerDay() {
     calculateRoute(true);
 }
 
+// 📋 直感UI：必要学習時間の計算 ＆ 幅（信頼区間）のメイン統合
 function calculateRoute(isSliderMove = false) {
     const dailyStudy = parseFloat(document.getElementById("hoursPerDay").value);
     
@@ -117,7 +119,7 @@ function calculateRoute(isSliderMove = false) {
         if (startCell) startCell.classList.add('highlight-start');
         if (endCell) endCell.classList.add('highlight-end');
         document.getElementById("ticketHours").innerText = "別ルート航路 ↩️";
-        document.getElementById("ticketDays").innerText = "スキルが目標を上回っています。";
+        document.getElementById("ticketDays").innerText = "目標レベルを上回っています。";
         document.getElementById("stubRange").innerText = "REVERSE";
         document.getElementById("flightType").innerText = "REVERSE";
         if(plane) plane.style.left = "0%";
@@ -130,16 +132,28 @@ function calculateRoute(isSliderMove = false) {
     document.getElementById("flightType").innerText = "DIRECT ROUTE";
 
     const neededHours = cumulativeHours[currentEnd] - cumulativeHours[currentStart];
-    document.getElementById("stubRange").innerText = `${Math.round(neededHours*0.6)}h - ${Math.round(neededHours*1.3)}h`;
+    
+    // 95%信頼区間を想定した幅の計算（下限60%〜上限130%）
+    const minHours = Math.max(0, Math.round(neededHours * 0.6));
+    const maxHours = Math.round(neededHours * 1.3);
+    
+    // ごちゃごちゃしていた半券の文字はスッキリした表記へ変更
+    document.getElementById("stubRange").innerText = `±35% RANGE`;
     
     lastCalculatedHours = neededHours;
-    lastCalculatedDaysText = formatDaysString(neededHours, dailyStudy);
+    
+    // 達成日数も幅（最短〜最長）で計算
+    const minDaysText = formatDaysString(minHours, dailyStudy);
+    const maxDaysText = formatDaysString(maxHours, dailyStudy);
+    lastCalculatedDaysText = `${minDaysText} 〜 ${maxDaysText}`;
 
+    // チケット発券時のバウンドエフェクト
     const ticket = document.getElementById("mainTicket");
     ticket.classList.remove("ticket-issue");
     void ticket.offsetWidth;
     ticket.classList.add("ticket-issue");
 
+    // ✈️ 飛行機がスムーズに目的地に向かうアニメーション
     if (plane) {
         plane.style.left = "0%";
         setTimeout(() => {
@@ -150,7 +164,7 @@ function calculateRoute(isSliderMove = false) {
     }
 
     if (isSliderMove) {
-        document.getElementById("ticketHours").innerText = `${neededHours} 時間`;
+        document.getElementById("ticketHours").innerText = `${minHours}h 〜 ${maxHours}h`;
         document.getElementById("ticketDays").innerText = lastCalculatedDaysText;
     } else {
         animateHours(neededHours, dailyStudy);
@@ -160,20 +174,27 @@ function calculateRoute(isSliderMove = false) {
     generateTimeline(pathLevels, dailyStudy);
 }
 
+// カウントアップ中も連動して幅が上がっていくアニメーション
 function animateHours(targetHours, dailyStudy) {
     clearInterval(currentAnimationInterval);
     let current = 0;
     const steps = 20;
     const increment = targetHours / steps;
+    
+    const minTarget = Math.max(0, Math.round(targetHours * 0.6));
+    const maxTarget = Math.round(targetHours * 1.3);
+
     currentAnimationInterval = setInterval(() => {
         current += increment;
         if (current >= targetHours) {
             clearInterval(currentAnimationInterval);
-            document.getElementById("ticketHours").innerText = `${targetHours} 時間`;
-            document.getElementById("ticketDays").innerText = formatDaysString(targetHours, dailyStudy);
+            document.getElementById("ticketHours").innerText = `${minTarget}h 〜 ${maxTarget}h`;
+            document.getElementById("ticketDays").innerText = lastCalculatedDaysText;
         } else {
-            document.getElementById("ticketHours").innerText = `${Math.round(current)} 時間`;
-            document.getElementById("ticketDays").innerText = formatDaysString(Math.round(current), dailyStudy);
+            const currentMin = Math.max(0, Math.round(current * 0.6));
+            const currentMax = Math.round(current * 1.3);
+            document.getElementById("ticketHours").innerText = `${currentMin}h 〜 ${currentMax}h`;
+            document.getElementById("ticketDays").innerText = `Calculating...`;
         }
     }, 15);
 }
@@ -440,7 +461,11 @@ function closeModal() { document.getElementById('modalOverlay').classList.remove
 function copyFlightPlan() {
     if (currentStart === currentEnd) { alert("出発地と目的地が同じ航路です。"); return; }
     const dailyStudy = document.getElementById("hoursPerDay").value;
-    const textToCopy = `✈️ 私の英語学習フライトプラン ✈️\n━━━━━━━━━━━━━━━━━\n🛫 出発地: ${currentStart.replace('_', ' × ')}\n🛬 目的地: ${currentEnd.replace('_', ' × ')}\n⏱️ 必要フライト時間: ${lastCalculatedHours} 時間\n📅 達成目標期間: ${lastCalculatedDaysText} (1日${dailyStudy}hペース)\n━━━━━━━━━━━━━━━━━\nLet's skyscan your English!\n#TheLanguageMatrix #英語学習 #LEMMA`;
+    
+    const minTarget = Math.max(0, Math.round(lastCalculatedHours * 0.6));
+    const maxTarget = Math.round(lastCalculatedHours * 1.3);
+
+    const textToCopy = `✈️ 私の英語学習フライトプラン ✈️\n━━━━━━━━━━━━━━━━━\n🛫 出発地: ${currentStart.replace('_', ' × ')}\n🛬 目的地: ${currentEnd.replace('_', ' × ')}\n⏱️ 必要フライト時間: ${minTarget}h 〜 ${maxTarget}h\n📅 達成目標期間: ${lastCalculatedDaysText} (1日${dailyStudy}hペース)\n━━━━━━━━━━━━━━━━━\nLet's skyscan your English!\n#TheLanguageMatrix #英語学習 #LEMMA`;
     navigator.clipboard.writeText(textToCopy).then(() => {
         const btn = document.querySelector('.share-btn');
         const originalText = btn.innerText;
@@ -512,7 +537,7 @@ const matrixData = {
         vocab: "英検:2級 / TOEIC L&R:700-800 / TOEFL:42-71 / IELTS:4.0-5.0 / DET:85-95 / 語彙目安:約6,500語",
         time: "累積 900 時間",
         wpm: "Reading: 100-120 WPM / Speaking: 50-70 WPM",
-        curation: "【できること】科学・歴史テーマの易しい解説（Wikipedia等）の読解、学校講義のメインアイデアの把握。\n【できないこと】学術論文の背景知識なしでの精読、自分の専門外の講義に対する論理的なカウンター質問。\n★明日からの最初のアクション:\n身近な社会問題のWikipedia記事を読み、「原因・現状・対策」の3つの要素を箇条書きで抜き出してみましょう。"
+        curation: "【できること】科学・歴史テーマの易しい解説（Wikipedia等）の読解、学校講義のメインアイデアの把握。\n【できないこと】学術論文の背景知識なしでの精読、自分の専門外の講義に対する論理的なカウンター質問。\n★明日からの最初のアクション:\n身近な社会問題のWikipedia記事を読み、「原因・現状・対策」の3つの要素を箇取りで抜き出してみましょう。"
     },
     "B2_BICS": {
         title: "B2 × BICS (ネイティブとの雑談)",
