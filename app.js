@@ -515,3 +515,139 @@ const matrixData = {
         wpm: "Reading: 50-70 WPM / Speaking: 10-20 WPM",
         shortDisplay: { time: "累積 150h", vocab: "語彙 1.2k語", japan: "英検3級 / TOEIC 120〜", global: "TOEFL 10〜 / IELTS 2.0 / DET 20" },
         curation: "【できること】単発のシンプルな社内通知や短い数字データの読み取り。\n【できないこと】複数文にまたがるメールの文脈把握、チャットへの英語での返信。\n★明日からの最初のアクション:\n社内で使われる最も短い英文定型フォーマット（OK, Approved等）を3パターン丸暗記してください。"
+    },
+    "A1_CALP": {
+        title: "A1 × CALP (単発の事実認識)",
+        vocab: "英検:3級 / TOEIC L&R:150-200 / TOEFL:0-23 / IELTS:1.5-2.5 / DET:10-40 / 語彙目安:約1,500語",
+        time: "累積 180 時間",
+        wpm: "Reading: 30-50 WPM / Speaking: 計測不可",
+        shortDisplay: { time: "累積 180h", vocab: "語彙 1.5k語", japan: "英検3級 / TOEIC 150〜", global: "TOEFL 0〜 / IELTS 1.5 / DET 10" },
+        curation: "【できること】図表のキャプション、ラベルに書かれた単純な単語や明確な事実の視認。\n【できないこと】論理的な因果関係の理解、短いテキストの要約や推論。\n★明日からの最初のアクション:\n'Water boils at 100 degrees.'のような、もっとも単純な事実の短文を1日3つ主語と述語に分けてください。"
+    },
+    "A2_BICS": {
+        title: "A2 × BICS (カタコト脱出・対人)",
+        vocab: "英検:準2級 / TOEIC L&R:225-545 / TOEFL:32-41 / IELTS:3.5-4.5 / DET:60-80 / 語彙目安:約2,500語",
+        time: "累積 187 時間",
+        wpm: "Reading: 80-100 WPM / Speaking: 40-60 WPM",
+        shortDisplay: { time: "累積 187h", vocab: "語彙 2.5k語", japan: "英検準2 / TOEIC 225〜", global: "TOEFL 32〜 / IELTS 3.5 / DET 60" },
+        curation: "【できること】ホテルや駅でのトラブル対応、趣味や家族についての簡単な情報交換。\n【できないこと】抽象的な話題の雑談、冗談やスラングが飛び交うネイティブ同士の輪への参加。\n★明日からの最初のアクション:\n海外旅行の「困った場面」を想定し、3文構成（状況説明＋理由＋要求）の独り言をつぶやいてみてください。"
+    },
+    "A2_Bridge": {
+        title: "A2 × Bridge (指示書通りの受動実務)",
+        vocab: "英検:準2級 / TOEIC L&R:385-780 / TOEFL:35-45 / IELTS:4.0 / DET:65-80 / 語彙目安:約3,000語",
+        time: "累積 400 時間",
+        wpm: "Reading: 90-110 WPM / Speaking: 30-50 WPM",
+        shortDisplay: { time: "累積 400h", vocab: "語彙 3.0k語", japan: "英検準2 / TOEIC 385〜", global: "TOEFL 35〜 / IELTS 4.0 / DET 65" },
+        curation: "【できること】定型メールの解読、マニュアルに沿った単純データ処理、短い指示の理解。\n【できないこと】自由記述での複雑な進捗報告、突発的なクレームの電話応対。\n★明日からの最初のアクション:\n毎日届く定型の英語ビジネスメールを、返信フォームのテンプレートと照らし合わせてパターン化してください。"
+    },
+    "A2_CALP": {
+        title: "A2 × CALP (基礎短文の読解)",
+        vocab: "英検:準2級 / TOEIC L&R:400-500 / TOEFL:35-45 / IELTS:4.0 / DET:65-75 / 語彙目安:約3,500語",
+        time: "累積 450 時間",
+        wpm: "Reading: 70-90 WPM / Speaking: 20-40 WPM",
+        shortDisplay: { time: "累積 450h", vocab: "語彙 3.5k語", japan: "英検準2 / TOEIC 400〜", global: "TOEFL 35〜 / IELTS 4.0 / DET 65" },
+        curation: "【できること】短くシンプルに書かれた百科事典等の事実関係の把握。'Plants need sunlight.'等の理解。\n【できないこと】論文の段落同士の関係性の読み取り、筆者の主張や仮説の論理的な批判検証。\n★明日からの最初のアクション:\n子供向けの科学百科事典（Simple English Wikipedia等）の短い1段落を、主語・動詞を意識して精読してください。"
+    },
+    "B1_BICS": {
+        title: "B1 × BICS (日常雑談の完全自立)",
+        vocab: "英検:2級 / TOEIC L&R:550-780 / TOEFL:42-71 / IELTS:4.0-5.0 / DET:85-95 / 語彙目安:約5,000語",
+        time: "累積 465 時間",
+        wpm: "Reading: 110-130 WPM / Speaking: 70-95 WPM",
+        shortDisplay: { time: "累積 465h", vocab: "語彙 5.0k語", japan: "英検2級 / TOEIC 550〜", global: "TOEFL 42〜 / IELTS 4.0 / DET 85" },
+        curation: "【できること】身近な話題や時事ニュースについての標準速度での雑談、自己意見の簡単な表明。\n【できないこと】込み入った感情の機微を伝えること、会話の主導権を握って話をジャックすること。\n★明日からの最初のアクション:\nYouTubeの1分程度の海外日常Vlogを視聴し、そこで使われたフレーズを1つ自分の日常に置き換えて発話してください。"
+    },
+    "B1_Bridge": {
+        title: "B1 × Bridge (日常ビジネスメール)",
+        vocab: "英検:2級 / TOEIC L&R:790-1090 / TOEFL:55-71 / IELTS:4.5-5.0 / DET:85-100 / 語彙目安:約6,000語",
+        time: "累積 800 時間",
+        wpm: "Reading: 120-140 WPM / Speaking: 60-80 WPM",
+        shortDisplay: { time: "累積 800h", vocab: "語彙 6.0k語", japan: "英検2級 / TOEIC 790〜", global: "TOEFL 55〜 / IELTS 4.5 / DET 85" },
+        curation: "【できること】一般的な実務メールの送受信、アジェンダに沿ったミーティングでの進捗報告。\n【できないこと】ブレインストーミングでの変則的な意見への即座の反論、タフな顧客対応や値引き交渉。\n★明日からの最初のアクション:\nVOAニュースの記事を1つ選び、130 WPMのタイマーをかけて時間内に内容の7割をキャッチする速読訓練を開始してください。"
+    },
+    "B1_CALP": {
+        title: "B1 × CALP (一般論理の受信開始)",
+        vocab: "英検:2級 / TOEIC L&R:700-800 / TOEFL:42-71 / IELTS:4.0-5.0 / DET:85-95 / 語彙目安:約6,500語",
+        time: "累積 900 時間",
+        wpm: "Reading: 100-120 WPM / Speaking: 50-70 WPM",
+        shortDisplay: { time: "累積 900h", vocab: "語彙 6.5k語", japan: "英検2級 / TOEIC 700〜", global: "TOEFL 42〜 / IELTS 4.0 / DET 85" },
+        curation: "【できること】科学・歴史テーマの易しい解説（Wikipedia等）の読解、学校講義のメインアイデアの把握。\n【できないこと】学術論文の背景知識なしでの精読、自分の専門外の講義に対する論理的なカウンター質問。\n★明日からの最初のアクション:\n身近な社会問題のWikipedia記事を読み、「原因・現状・対策」の3つの要素を箇条書きで抜き出してみましょう。"
+    },
+    "B2_BICS": {
+        title: "B2 × BICS (ネイティブとの雑談)",
+        vocab: "英検:準1級 / TOEIC L&R:800-900 / TOEFL:72-94 / IELTS:5.5-6.5 / DET:100-115 / 語彙目安:約9,000語",
+        time: "累積 1,000 時間",
+        wpm: "Reading: 140-170 WPM / Speaking: 100-130 WPM",
+        shortDisplay: { time: "累積 1.0k h", vocab: "語彙 9.0k語", japan: "英検準1 / TOEIC 800〜", global: "TOEFL 72〜 / IELTS 5.5 / DET 100" },
+        curation: "【できること】ネイティブと緊張感なしにやり取りし、文化的なジョークや皮肉のニュアンスも大枠理解できる。\n【できないこと】海外の古いTV番組や政治コンテクストが絡む、超ディープなローカルスラングの100%完全同調。\n★明日からの最初のアクション:\n海外の人気コメディドラマを英語字幕付きで観て、登場人物のセリフのテンポに被せるようにシャドーイングしてください。"
+    },
+    "B2_Bridge": {
+        title: "B2 × Bridge (現場を回す圧倒的実務)",
+        vocab: "英検:準1級 / TOEIC L&R:785-940 / TOEFL:72-94 / IELTS:5.5-6.5 / DET:105-125 / 語彙目安:約10,000語",
+        time: "累積 1,350 時間",
+        wpm: "Reading: 150-180 WPM / Speaking: 90-120 WPM",
+        shortDisplay: { time: "累積 1.3k h", vocab: "語彙 10k語", japan: "英検準1 / TOEIC 785〜", global: "TOEFL 72〜 / IELTS 5.5 / DET 105" },
+        curation: "【できること】ビジネス会議でのファシリテーション、複雑な業務仕様書の理解、プレゼンと質疑応答。\n【できないこと】法的なリスクが激しく絡む、海外エリート相手の英文契約交渉における微細な言葉の駆け引き。\n★明日からの最初のアクション:\nBBCの時事ビジネス記事を1本読み、その背景にある企業の狙いを「PREP法」の論理で30秒で話す練習をしてください。"
+    },
+    "B2_CALP": {
+        title: "B2 × CALP (教養講義・ロジックの核)",
+        vocab: "英検:準1級 / TOEIC L&R:850-950 / TOEFL:72-94 / IELTS:5.5-6.5 / DET:105-125 / 語彙目安:約11,000語",
+        time: "累積 1,450 時間",
+        wpm: "Reading: 130-160 WPM / Speaking: 80-110 WPM",
+        shortDisplay: { time: "累積 1.4k h", vocab: "語彙 11k語", japan: "英検準1 / TOEIC 850〜", global: "TOEFL 72〜 / IELTS 5.5 / DET 105" },
+        curation: "【できること】TED Talksの字幕なし完全理解。自分の専門分野に関する海外入門論文の読解と要約記述。\n【できないこと】査読付き学術論文のハイスピードな乱読、英語ディベートでの学術的な鋭いカウンター突っ込み。\n★明日からの最初のアクション:\n関心のあるテーマのTED Talksを1本選び、スクリプトを読み込みながら、話者のロジック展開の「繋ぎ語」をマーキングしてください。"
+    },
+    "C1_BICS": {
+        title: "C1 × BICS (高速・即興の洗練討論)",
+        vocab: "英検:1級 / TOEIC L&R:950+ / TOEFL:95-113 / IELTS:7.0-8.0 / DET:130-140 / 語彙目安:約15,000語",
+        time: "累積 2,250 時間",
+        wpm: "Reading: 180-220 WPM / Speaking: 130-160 WPM",
+        shortDisplay: { time: "累積 2.2k h", vocab: "語彙 15k語", japan: "英検1級 / TOEIC 950+", global: "TOEFL 95〜 / IELTS 7.0 / DET 130" },
+        curation: "【できること】騒がしいバー等で、複数人のネイティブが即興で行う超高速のローカル雑談に完全参入。\n【できないこと】ネイティブの幼児期のカルチャーや、地域方言が激しすぎるニッチなインサイド・トークへの完璧な同調。\n★明日からの最初のアクション:\n海外の人気ポッドキャストを1.1倍速で聴き、会話が切り替わる瞬間の相槌の入れ方をトレースしてください。"
+    },
+    "C1_Bridge": {
+        title: "C1 × Bridge (最高級タフな国際交渉)",
+        vocab: "英検:1級 / TOEIC L&R:945-990 / TOEFL:95-113 / IELTS:7.0-8.0 / DET:130-150 / 語彙目安:約16,000語",
+        time: "累積 2,600 時間",
+        wpm: "Reading: 190-230 WPM / Speaking: 120-150 WPM",
+        shortDisplay: { time: "累積 2.6k h", vocab: "語彙 16k語", japan: "英検1級 / TOEIC 945〜", global: "TOEFL 95〜 / IELTS 7.0 / DET 130" },
+        curation: "【できること】国際M&A契約や高度な知財交渉。ネイティブ向けの高度なユーモアや皮肉を使った心理的関係構築。\n【できないこと】ネイティブが「教養」として嗜む古典文学や歴史的メタファーが重層的に隠された最高級文芸の完璧な解読。\n★明日からの最初のアクション:\n海外の経済小説やタフな交渉ドキュメンタリーを読み、相手の要求の裏にある「本音」を匂わせる表現を分析してください。"
+    },
+    "C1_CALP": {
+        title: "C1 × CALP (知性を研ぐエリート学術)",
+        vocab: "英検:1級 / TOEIC L&R:960+ / TOEFL:95-113 / IELTS:7.0-8.0 / DET:130-150 / 語彙目安:約17,000語",
+        time: "累積 2,800 時間",
+        wpm: "Reading: 170-210 WPM / Speaking: 110-140 WPM",
+        shortDisplay: { time: "累積 2.8k h", vocab: "語彙 17k語", japan: "英検1級 / TOEIC 960+", global: "TOEFL 95〜 / IELTS 7.0 / DET 130" },
+        curation: "【できること】『The Economist』や『Nature』誌などの論文を辞書なしで精読。海外大学院ディスカッションの完全完遂。\n【できないこと】未知の学術分野における、その道10年のトップ専門家レベルの超高難度な新理論構築。\n★明日からの最初のアクション:\n『The Economist』の最新論説を1本読み、著者の論理構造の欠陥（あるいは反論の余地）を英語で200語のエッセイに書き出してください。"
+    },
+    "C2_BICS": {
+        title: "C2 × BICS (文化・言葉の完全越境)",
+        vocab: "英検:1級満点圏 / 各種試験:最高値 / DET:150-160 / 語彙目安:約20,000語",
+        time: "累積 4,750 時間",
+        wpm: "Reading: 240+ WPM / Speaking: 150-180 WPM",
+        shortDisplay: { time: "累積 4.7k h", vocab: "語彙 20k語", japan: "ネイティブ同等換算", global: "TOEFL 114〜 / DET 150+" },
+        curation: "【できること】政治演説、演劇、古典小説、映画のセリフなどを文化的背景も含めて100%理解。言葉遣いの格の自在な変化。\n【できないこと】ほぼなし（ネイティブの知識人層と同等）。\n★明日からの最初のアクション:\n海外の名作文学や歴史的演説をオーディオブックで聴き、言葉の持つ「リズム」と「思想」を完全に身体へ同期させてください。"
+    },
+    "C2_Bridge": {
+        title: "C2 × Bridge (全方位支配のトップ交渉)",
+        vocab: "TOEIC L&R:満点圏 / 各種換算:上限値 / DET:155-160 / 語彙目安:約22,000語",
+        time: "累積 5,000 時間",
+        wpm: "Reading: 250+ WPM / Speaking: 140-170 WPM",
+        shortDisplay: { time: "累積 5.0k h", vocab: "語彙 22k語", japan: "実務神域 / TOEIC 満点", global: "DET 155-160上限" },
+        curation: "【できること】あらゆる国際ビジネス文書の即時処理、企業の最高戦略決定会議での英語によるトップ交渉や宣言。\n【できないこと】なし。\n★明日からの最初のアクション:\nグローバル企業の決算発表の質疑応答の音声を聴き、経営陣が放つ「市場をコントロールするための極限の表現」をシャドーイングしてください。"
+    },
+    "C2_CALP": {
+        title: "C2 × CALP (最高峰の思想・人類の知性)",
+        vocab: "TOEFL iBT:114-120 / IELTS:8.5-9.0 / DET:155-160 / 語彙目安:約25,000語",
+        time: "累積 5,500 時間",
+        wpm: "Reading: 220+ WPM / Speaking: 130-160 WPM",
+        shortDisplay: { time: "累積 5.5k h", vocab: "語彙 25k語", japan: "最上位最高学術レイヤー", global: "TOEFL 114 / IELTS 8.5" },
+        curation: "【できること】国際学会での基調講演、査読付き最高峰論文の単独執筆、超難解なグローバル政策・法案文書の立案。\n【できないこと】なし。\n★明日からの最初のアクション:\n自分の研究あるいは専門領域の最先端の査読付き論文を読み、それに対する補足仮説のプロトタイプを英語で1,000語ビルドしてください。"
+    }
+};
+
+window.onload = function() {
+    // 起動時にマトリクスセルを初期ロード（timeモード）
+    switchCellDisplayMode('time', null);
+    openCheckInModal();
+};
