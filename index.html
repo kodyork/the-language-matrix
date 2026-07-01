@@ -25,63 +25,80 @@
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 40px 20px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             box-sizing: border-box;
+            overflow-x: hidden;
         }
 
         header {
             text-align: center;
-            margin-bottom: 30px;
-            max-width: 900px;
+            margin-bottom: 20px;
+            max-width: 1200px;
+            width: 100%;
         }
 
         header h1 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 600;
             letter-spacing: -0.05em;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             color: #f0f6fc;
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-top: 5px;
+            font-size: 1rem;
+            margin: 5px 0 0 0;
         }
 
         .tagline-en {
             font-family: "Georgia", serif;
             font-style: italic;
-            color: #58a6ff;
-            font-size: 1.2rem;
-            margin-bottom: 8px;
+            color: var(--accent-bics);
+            font-size: 1.1rem;
         }
 
-        /* ダッシュボードコンテナ */
-        .dashboard-container {
-            width: 100%;
-            max-width: 1050px;
+        /* 🛠️ 動線改革：左右2カラムのメインレイアウト */
+        .app-layout {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            gap: 24px;
+            width: 100%;
+            max-width: 1240px;
             margin-bottom: 40px;
         }
 
-        /* コントロールパネル */
-        .control-panel {
+        /* 左カラム：操作エリア */
+        .control-side {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-width: 0;
+        }
+
+        /* 右カラム：結果表示エリア（スクロール追従） */
+        .display-side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            min-width: 0;
+        }
+
+        /* 各種パネル共通 */
+        .panel {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
         }
 
         .search-row {
@@ -92,7 +109,7 @@
 
         .search-group {
             flex: 1;
-            min-width: 250px;
+            min-width: 200px;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -108,9 +125,9 @@
             background: #111827;
             border: 1px solid #374151;
             color: #f3f4f6;
-            padding: 12px;
+            padding: 10px;
             border-radius: 6px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
             outline: none;
             transition: border-color 0.2s;
@@ -127,12 +144,13 @@
             gap: 10px;
             border-top: 1px solid var(--panel-border);
             padding-top: 15px;
+            margin-top: 15px;
         }
 
         .slider-header {
             display: flex;
             justify-content: space-between;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: #f3f4f6;
         }
@@ -140,7 +158,7 @@
         .slider-header span mark {
             background: none;
             color: var(--accent-bics);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
         }
 
@@ -148,15 +166,15 @@
             width: 100%;
             -webkit-appearance: none;
             background: #374151;
-            height: 8px;
+            height: 6px;
             border-radius: 4px;
             outline: none;
         }
 
         .slider-input::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: var(--skyscanner-blue);
             cursor: pointer;
@@ -167,7 +185,7 @@
             transform: scale(1.2);
         }
 
-        /* 搭乗券 UI */
+        /* 🛫 搭乗券 UI (アニメーション強化) */
         .boarding-pass {
             background: var(--ticket-bg);
             border: 1px solid #4b5563;
@@ -176,15 +194,26 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             position: relative;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* 発券時のバウンドアニメーション用クラス */
+        .ticket-issue {
+            animation: ticketPop 0.4s ease;
+        }
+
+        @keyframes ticketPop {
+            0% { transform: scale(0.95) translateY(10px); opacity: 0.8; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
         }
 
         .ticket-main {
-            flex: 3;
-            padding: 24px;
+            flex: 2.5;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 20px;
+            gap: 15px;
         }
 
         .ticket-header {
@@ -192,12 +221,12 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px dashed #4b5563;
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
 
         .ticket-logo {
             font-weight: bold;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             letter-spacing: 0.1em;
             color: var(--skyscanner-blue);
             display: flex;
@@ -206,9 +235,9 @@
         }
 
         .ticket-flight-class {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             background: rgba(255,255,255,0.1);
-            padding: 4px 10px;
+            padding: 2px 8px;
             border-radius: 20px;
             color: #9ca3af;
         }
@@ -217,7 +246,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 5px 0;
         }
 
         .route-node {
@@ -232,27 +261,28 @@
         }
 
         .route-code {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: #fff;
         }
 
         .route-name {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            max-width: 250px;
+            max-width: 150px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
+        /* ✈️ 飛行機がスムーズに飛ぶアニメーション線 */
         .route-arrow {
             flex: 1;
             display: flex;
-            flex-direction: column;
             align-items: center;
             position: relative;
-            margin: 0 20px;
+            margin: 0 15px;
+            height: 20px;
         }
 
         .route-line {
@@ -262,36 +292,35 @@
             position: relative;
         }
 
-        .route-line::after {
-            content: "✈️";
+        .plane-icon {
             position: absolute;
             top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0%;
             font-size: 1rem;
+            transform: translateX(-50%);
+            transition: left 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .ticket-meta-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 10px;
         }
 
         .meta-item {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
         }
 
         .meta-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #9ca3af;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
 
         .meta-value {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #f3f4f6;
         }
@@ -300,7 +329,6 @@
             color: var(--dest-green);
         }
 
-        /* ミシン線 */
         .ticket-divider {
             width: 1px;
             border-left: 2px dashed #374151;
@@ -310,34 +338,33 @@
         .ticket-divider::before, .ticket-divider::after {
             content: "";
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             background: var(--bg-color);
             border-radius: 50%;
-            left: -11px;
+            left: -9px;
         }
-        .ticket-divider::before { top: -10px; border-bottom: 1px solid #4b5563;}
-        .ticket-divider::after { bottom: -10px; border-top: 1px solid #4b5563;}
+        .ticket-divider::before { top: -8px; border-bottom: 1px solid #4b5563;}
+        .ticket-divider::after { bottom: -8px; border-top: 1px solid #4b5563;}
 
-        /* チケット半券 (Stub) */
         .ticket-stub {
-            flex: 1.2;
-            padding: 24px;
+            flex: 1;
+            padding: 20px;
             background: rgba(255,255,255,0.02);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            min-width: 180px;
-            gap: 15px;
+            min-width: 150px;
+            gap: 10px;
         }
 
         .stub-info {
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            font-size: 0.8rem;
+            gap: 6px;
+            font-size: 0.75rem;
         }
 
         .stub-row {
@@ -348,74 +375,47 @@
         .stub-label { color: #9ca3af; }
         .stub-value { font-weight: bold; color: #fff; }
 
-        /* SNSコピーボタン */
         .share-btn {
             width: 100%;
             background: var(--skyscanner-blue);
             color: white;
             border: none;
-            padding: 10px;
+            padding: 8px;
             border-radius: 6px;
             font-weight: bold;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
             transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 4px 10px rgba(0, 115, 234, 0.3);
         }
-        .share-btn:hover {
-            background: #0056b3;
-        }
-        .share-btn:active {
-            transform: scale(0.98);
-        }
+        .share-btn:hover { background: #0056b3; }
+        .share-btn:active { transform: scale(0.98); }
 
-        /* ダミーQRコード */
         .qr-code-wrapper {
             background: white;
-            padding: 8px;
-            border-radius: 8px;
-            width: 80px;
-            height: 80px;
+            padding: 6px;
+            border-radius: 6px;
+            width: 60px;
+            height: 60px;
             display: flex;
             flex-direction: column;
             gap: 2px;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .qr-row {
-            display: flex;
-            gap: 2px;
-            width: 100%;
-            height: 4px;
-        }
-        .qr-pixel {
-            flex: 1;
-            height: 100%;
-            background: #fff;
-        }
+        .qr-row { display: flex; gap: 2px; width: 100%; height: 3px; }
+        .qr-pixel { flex: 1; height: 100%; background: #fff; }
         .qr-pixel.b { background: #000; }
 
-        /* マイルストーン タイムライン UI */
-        .milestone-panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
+        /* 📍 マイルストーン */
         .milestone-title {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #9ca3af;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            margin-bottom: 10px;
         }
         .timeline {
             display: flex;
@@ -427,96 +427,67 @@
         .timeline::before {
             content: "";
             position: absolute;
-            top: 25px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #374151;
+            top: 21px; left: 0; right: 0;
+            height: 2px; background: #374151;
             z-index: 1;
         }
         .timeline-item {
             flex: 1;
-            min-width: 120px;
+            min-width: 90px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             position: relative;
             z-index: 2;
+            animation: fadeIn 0.3s ease both;
         }
         .timeline-badge {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #111827;
-            border: 2px solid #4b5563;
-            color: #9ca3af;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-            transition: all 0.3s;
+            width: 24px; height: 24px;
+            border-radius: 50%; background: #111827;
+            border: 2px solid #4b5563; color: #9ca3af;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: bold; margin-bottom: 6px;
         }
         .timeline-item.active .timeline-badge {
-            background: var(--skyscanner-blue);
-            border-color: #fff;
-            color: white;
+            background: var(--skyscanner-blue); border-color: #fff; color: white;
             box-shadow: 0 0 10px rgba(0, 115, 234, 0.6);
         }
         .timeline-item.passed .timeline-badge {
-            background: rgba(16, 185, 129, 0.2);
-            border-color: var(--dest-green);
-            color: var(--dest-green);
+            background: rgba(16, 185, 129, 0.2); border-color: var(--dest-green); color: var(--dest-green);
         }
-        .timeline-name {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #f3f4f6;
-            margin-bottom: 4px;
-        }
-        .timeline-time {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
+        .timeline-name { font-size: 0.75rem; font-weight: 600; color: #f3f4f6; }
+        .timeline-time { font-size: 0.65rem; color: var(--text-muted); }
 
-        /* マトリクスコンテナ */
+        /* 🗺️ マトリクスコンテナ */
         .matrix-container {
             width: 100%;
-            max-width: 1050px;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
             box-sizing: border-box;
-            margin-bottom: 40px;
         }
 
         .matrix-instructions {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             text-align: center;
             background: rgba(255,255,255,0.02);
-            padding: 8px;
+            padding: 6px;
             border-radius: 6px;
         }
 
         .matrix-grid {
             display: grid;
-            grid-template-columns: 80px repeat(3, 1fr);
-            gap: 12px;
-            min-width: 800px;
+            grid-template-columns: 60px repeat(3, 1fr);
+            gap: 10px;
         }
 
         .grid-header {
             font-weight: 600;
             text-align: center;
-            padding: 12px;
+            padding: 8px;
             color: #f0f6fc;
             border-bottom: 2px solid var(--panel-border);
+            font-size: 0.85rem;
         }
 
         .axis-bics { color: var(--accent-bics); }
@@ -527,158 +498,94 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--text-muted);
             border-right: 1px solid var(--panel-border);
         }
 
+        /* ✨ 触りたくなるマス設計（Rippleウェーブ & ホバーホイスト） */
         .matrix-cell {
             background: rgba(255,255,255,0.02);
             border: 1px solid var(--panel-border);
-            border-radius: 6px;
-            padding: 16px;
+            border-radius: 8px;
+            padding: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
             position: relative;
+            overflow: hidden; /* 波紋を閉じ込める */
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s, border-color 0.2s;
         }
 
         .matrix-cell:hover {
             background: var(--cell-hover);
-            transform: translateY(-2px);
+            transform: translateY(-4px); /* フワッと浮き上がる */
             border-color: #8b949e;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
         }
 
-        /* 詳細モーダル用インフォアイコン */
+        /* 波紋エフェクト */
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: rippleEffect 0.4s linear;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to { transform: scale(4); opacity: 0; }
+        }
+
         .info-trigger {
             position: absolute;
-            bottom: 8px;
-            right: 8px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--panel-border);
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: bold;
-            transition: all 0.2s;
+            bottom: 6px; right: 6px;
+            width: 18px; height: 18px;
+            border-radius: 50%; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--panel-border); color: var(--text-muted);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: bold; transition: all 0.2s;
             z-index: 5;
         }
         .info-trigger:hover {
-            background: var(--skyscanner-blue);
-            color: white;
-            border-color: transparent;
-            transform: scale(1.1);
+            background: var(--skyscanner-blue); color: white; border-color: transparent; transform: scale(1.1);
         }
 
-        /* 動的ハイライト用クラス */
-        .matrix-cell.highlight-start {
-            border: 2px solid var(--skyscanner-blue) !important;
-            background: rgba(0, 115, 234, 0.15) !important;
-            box-shadow: 0 0 12px rgba(0, 115, 234, 0.5);
-        }
+        /* 動的ハイライト */
+        .matrix-cell.highlight-start { border: 2px solid var(--skyscanner-blue) !important; background: rgba(0, 115, 234, 0.12) !important; }
+        .matrix-cell.highlight-start::after { content: "🛫 出発"; position: absolute; top: 2px; right: 2px; background: var(--skyscanner-blue); color: white; font-size: 0.6rem; padding: 1px 4px; border-radius: 4px; font-weight: bold; }
+        .matrix-cell.highlight-end { border: 2px solid var(--dest-green) !important; background: rgba(16, 185, 129, 0.12) !important; }
+        .matrix-cell.highlight-end::after { content: "🛬 目標"; position: absolute; top: 2px; right: 2px; background: var(--dest-green); color: white; font-size: 0.6rem; padding: 1px 4px; border-radius: 4px; font-weight: bold; }
+        .matrix-cell.highlight-both { border: 2px solid #e3b341 !important; background: rgba(227, 179, 65, 0.12) !important; }
+        .matrix-cell.highlight-both::after { content: "🗺️ 現在地＆目標"; position: absolute; top: 2px; right: 2px; background: #e3b341; color: black; font-size: 0.6rem; padding: 1px 4px; border-radius: 4px; font-weight: bold; }
 
-        .matrix-cell.highlight-start::after {
-            content: "出発地";
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            background: var(--skyscanner-blue);
-            color: white;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            z-index: 4;
-        }
+        .cell-summary { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: #f0f6fc; line-height: 1.2; padding-right: 10px; }
+        .cell-meta { font-size: 0.65rem; color: var(--text-muted); }
 
-        .matrix-cell.highlight-end {
-            border: 2px solid var(--dest-green) !important;
-            background: rgba(16, 185, 129, 0.15) !important;
-            box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
-        }
-
-        .matrix-cell.highlight-end::after {
-            content: "目的地";
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            background: var(--dest-green);
-            color: white;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            z-index: 4;
-        }
-
-        .matrix-cell.highlight-both {
-            border: 2px solid #e3b341 !important;
-            background: rgba(227, 179, 65, 0.15) !important;
-            box-shadow: 0 0 12px rgba(227, 179, 65, 0.5);
-        }
-
-        .matrix-cell.highlight-both::after {
-            content: "現在地＆目標";
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            background: #e3b341;
-            color: black;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            z-index: 4;
-        }
-
-        .cell-summary {
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #f0f6fc;
-            line-height: 1.2;
-            padding-right: 15px;
-        }
-
-        .cell-meta {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            line-height: 1.3;
-        }
-
-        /* モーダル基本構造 */
+        /* 📋 オンボーディング（問診）モーダル基本構造 */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.75);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: rgba(0,0,0,0.8);
+            display: flex; justify-content: center; align-items: center;
             opacity: 0; pointer-events: none;
             transition: opacity 0.3s ease;
             z-index: 100;
+            backdrop-filter: blur(4px);
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-content {
             background: var(--panel-bg);
             border: 1px solid var(--panel-border);
             border-radius: 16px;
-            padding: 28px;
+            padding: 24px;
             width: 92%;
-            max-width: 650px;
+            max-width: 550px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             position: relative;
-            max-height: 85vh;
+            max-height: 90vh;
             display: flex;
             flex-direction: column;
         }
@@ -688,198 +595,86 @@
             top: 16px; right: 16px;
             background: none; border: none;
             color: var(--text-muted);
-            font-size: 1.5rem; cursor: pointer;
+            font-size: 1.3rem; cursor: pointer;
             z-index: 10;
         }
 
-        .modal-title {
-            font-size: 1.3rem; 
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+        .modal-title { font-size: 1.2rem; margin-bottom: 15px; color: #fff; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+
+        /* 問診フォームの装飾 */
+        .question-step { display: none; animation: fadeIn 0.3s ease; }
+        .question-step.active { display: block; }
+        .question-label { font-size: 1rem; color: #f3f4f6; font-weight: 600; margin-bottom: 12px; display: block; }
+        
+        .score-input-box {
             display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            color: #fff;
-        }
-
-        /* タブシステム */
-        .modal-tabs {
-            display: flex;
-            gap: 4px;
-            border-bottom: 1px solid var(--panel-border);
-            margin-bottom: 20px;
-        }
-        .modal-tab {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            padding: 10px 16px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            position: relative;
-            transition: color 0.2s;
-        }
-        .modal-tab:hover { color: #fff; }
-        .modal-tab.active {
-            color: var(--skyscanner-blue);
-        }
-        .modal-tab.active::after {
-            content: "";
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--skyscanner-blue);
-        }
-
-        .tab-body {
-            overflow-y: auto;
-            flex: 1;
-            padding-right: 5px;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.25s ease;
-        }
-
-        /* スコアカード & ミニバッジ */
-        .score-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 10px;
-            margin-top: 10px;
+            margin-bottom: 15px;
         }
-        .score-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--panel-border);
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-        }
-        .score-card-name {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-        .score-card-value {
-            font-size: 1.05rem;
-            font-weight: bold;
-            color: #fff;
+        .score-input {
+            background: #111827; border: 1px solid #374151; color: white; padding: 12px; border-radius: 6px; font-size: 1rem; flex: 1;
         }
 
-        .modal-section {
-            margin-bottom: 16px;
-            background: rgba(255,255,255,0.01);
-            padding: 14px;
-            border-radius: 8px;
-            border-left: 4px solid var(--panel-border);
-            white-space: pre-line;
+        .option-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px; }
+        .option-btn {
+            background: #1f2937; border: 1px solid #4b5563; color: #e5e7eb; padding: 12px; border-radius: 8px; text-align: left; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.2s;
         }
-        .modal-section h4 {
-            margin: 0 0 8px 0; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .modal-section p {
-            margin: 0; font-size: 0.95rem; color: #f0f6fc; line-height: 1.6;
-        }
+        .option-btn:hover { background: #374151; border-color: var(--skyscanner-blue); }
+        .option-btn.selected { background: rgba(0, 115, 234, 0.2); border-color: var(--skyscanner-blue); color: white; }
 
-        .tag {
-            display: inline-block;
-            padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;
+        .modal-footer { display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid var(--panel-border); padding-top: 15px; }
+        .nav-btn {
+            background: #374151; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.9rem;
         }
+        .nav-btn.primary { background: var(--skyscanner-blue); }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* 詳細表示用モーダル内部タブ */
+        .modal-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--panel-border); margin-bottom: 15px; }
+        .modal-tab { background: none; border: none; color: var(--text-muted); padding: 8px 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer; position: relative; }
+        .modal-tab.active { color: var(--skyscanner-blue); }
+        .modal-tab.active::after { content: ""; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--skyscanner-blue); }
+        .tab-body { overflow-y: auto; flex: 1; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .score-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; margin-top: 8px; }
+        .score-card { background: rgba(255,255,255,0.02); border: 1px solid var(--panel-border); border-radius: 6px; padding: 8px; text-align: center; }
+        .score-card-name { font-size: 0.7rem; color: var(--text-muted); }
+        .score-card-value { font-size: 0.95rem; font-weight: bold; color: #fff; }
+
+        .modal-section { margin-bottom: 12px; background: rgba(255,255,255,0.01); padding: 10px; border-radius: 6px; border-left: 4px solid var(--panel-border); white-space: pre-line; }
+        .modal-section h4 { margin: 0 0 6px 0; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; }
+        .modal-section p { margin: 0; font-size: 0.85rem; color: #f0f6fc; line-height: 1.5; }
+
+        .tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
         .tag-bics { background: rgba(88,166,255,0.15); color: var(--accent-bics); }
         .tag-bridge { background: rgba(210,153,34,0.15); color: var(--accent-bridge); }
         .tag-calp { background: rgba(188,140,255,0.15); color: var(--accent-calp); }
 
-        .mobile-row-title {
-            display: none;
-        }
+        .mobile-row-title { display: none; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 📱 スマートフォン・タブレット向けの完全レスポンシブメディアクエリ */
-        @media (max-width: 768px) {
-            body {
-                padding: 20px 10px;
-            }
-            header h1 {
-                font-size: 1.6rem;
-            }
-            .boarding-pass {
-                flex-direction: column;
-            }
-            .ticket-divider {
-                width: 100%;
-                height: 1px;
-                border-left: none;
-                border-top: 2px dashed #374151;
-                margin: 5px 0;
-            }
-            .ticket-divider::before, .ticket-divider::after {
-                top: -11px;
-                left: auto;
-            }
-            .ticket-divider::before { left: -10px; }
-            .ticket-divider::after { right: -10px; }
-
-            .route-code {
-                font-size: 1.4rem;
-            }
-            .route-name {
-                max-width: 110px;
-                font-size: 0.75rem;
-            }
-
-            /* 💡 【最重要】マトリクスの横スクロールを廃止し、縦並びカードに変形 */
-            .matrix-grid {
-                display: flex;
-                flex-direction: column;
-                min-width: 100%;
-                gap: 20px;
-            }
-            /* 横並びのヘッダーと左端のCEFRラベルをスマホ時は非表示にする */
-            .grid-header, .cefr-label {
-                display: none;
-            }
-            /* スマホ時のみ各レイヤーの区切りタイトルを割り込ませる */
-            .mobile-row-title {
-                display: block;
-                font-size: 1.1rem;
-                font-weight: bold;
-                color: #fff;
-                border-bottom: 2px solid var(--panel-border);
-                padding-bottom: 6px;
-                margin-top: 10px;
-            }
-            .matrix-cell {
-                padding: 14px;
-            }
-            /* 横軸の種類が分かるようにスマホのみ擬似要素等でラベル情報を少し補足する設計 */
+        /* 📱 スマホ対応 */
+        @media (max-width: 900px) {
+            .app-layout { flex-direction: column; }
+            .display-side { position: static; height: auto; }
+            .boarding-pass { flex-direction: column; }
+            .ticket-divider { width: 100%; height: 1px; border-left: none; border-top: 2px dashed #374151; margin: 5px 0; }
+            .ticket-divider::before, .ticket-divider::after { top: -9px; left: auto; }
+            .ticket-divider::before { left: -8px; }
+            .ticket-divider::after { right: -8px; }
+            .matrix-grid { display: flex; flex-direction: column; min-width: 100%; gap: 15px; }
+            .grid-header, .cefr-label { display: none; }
+            .mobile-row-title { display: block; font-size: 1rem; font-weight: bold; color: #fff; border-bottom: 2px solid var(--panel-border); padding-bottom: 4px; margin-top: 10px; }
+            
             #cell-A1-BICS::before, #cell-A2-BICS::before, #cell-B1-BICS::before, #cell-B2-BICS::before, #cell-C1-BICS::before, #cell-C2-BICS::before { content: "【BICS - 日常会話】"; color: var(--accent-bics); font-size: 0.7rem; font-weight: bold; display: block; margin-bottom: 4px; }
             #cell-A1-Bridge::before, #cell-A2-Bridge::before, #cell-B1-Bridge::before, #cell-B2-Bridge::before, #cell-C1-Bridge::before, #cell-C2-Bridge::before { content: "【Bridge - ビジネス】"; color: var(--accent-bridge); font-size: 0.7rem; font-weight: bold; display: block; margin-bottom: 4px; }
             #cell-A1-CALP::before, #cell-A2-CALP::before, #cell-B1-CALP::before, #cell-B2-CALP::before, #cell-C1-CALP::before, #cell-C2-CALP::before { content: "【CALP - アカデミック】"; color: var(--accent-calp); font-size: 0.7rem; font-weight: bold; display: block; margin-bottom: 4px; }
         }
 
-        footer {
-            margin-top: 40px;
-            padding: 20px 0;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--panel-border);
-            width: 100%;
-            max-width: 1050px;
-        }
+        footer { margin-top: 40px; padding: 20px 0; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--panel-border); width: 100%; max-width: 1240px; }
     </style>
 </head>
 <body>
@@ -888,330 +683,290 @@
         <h1>The Language Matrix©︎2026 kodyork</h1>
         <div class="tagline-en">Let's skyscan your English, shall we?</div>
         <p>現在地と目的地を設定する時間計算ナビゲーター</p>
+        <button class="nav-btn primary" onclick="openCheckInModal()" style="margin-top: 10px; padding: 6px 14px; font-size: 0.8rem;">✈️ 搭乗手続き（問診リセット）</button>
     </header>
 
-    <div class="dashboard-container">
-        <div class="control-panel">
-            <div class="search-row">
-                <div class="search-group">
-                    <label for="startLoc">🛫 出発地 (現在のレベル)</label>
-                    <select id="startLoc" class="search-select" onchange="handleSelectChange()">
-                        <optgroup label="A1 レイヤー">
-                            <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
-                            <option value="A1_Bridge">A1 × Bridge (超初歩の実務)</option>
-                            <option value="A1_CALP">A1 × CALP (単発の事実認識)</option>
-                        </optgroup>
-                        <optgroup label="A2 レイヤー">
-                            <option value="A2_BICS" selected>A2 × BICS (カタコト脱出・対人)</option>
-                            <option value="A2_Bridge">A2 × Bridge (指示書通りの受動実務)</option>
-                            <option value="A2_CALP">A2 × CALP (基礎短文の読解)</option>
-                        </optgroup>
-                        <optgroup label="B1 レイヤー">
-                            <option value="B1_BICS">B1 × BICS (日常会話の自立)</option>
-                            <option value="B1_Bridge">B1 × Bridge (日常ビジネスメール)</option>
-                            <option value="B1_CALP">B1 × CALP (論理的なやりとりも少しずつ)</option>
-                        </optgroup>
-                        <optgroup label="B2 レイヤー">
-                            <option value="B2_BICS">B2 × BICS (ネイティブとの雑談)</option>
-                            <option value="B2_Bridge">B2 × Bridge (現場を回す圧倒的実務)</option>
-                            <option value="B2_CALP">B2 × CALP (教養講義・ロジックの核)</option>
-                        </optgroup>
-                        <optgroup label="C1 レイヤー">
-                            <option value="C1_BICS">C1 × BICS (高速・即興の洗練討論)</option>
-                            <option value="C1_Bridge">C1 × Bridge (最高級タフな国際交渉)</option>
-                            <option value="C1_CALP">C1 × CALP (知性を研ぐエリート学術)</option>
-                        </optgroup>
-                        <optgroup label="C2 レイヤー">
-                            <option value="C2_BICS">C2 × BICS (文化・言葉の完全越境)</option>
-                            <option value="C2_Bridge">C2 × Bridge (全方位支配のトップ交渉)</option>
-                            <option value="C2_CALP">C2 × CALP (最高峰の思想・人類の知性)</option>
-                        </optgroup>
-                    </select>
+    <div class="app-layout">
+        
+        <div class="control-side">
+            <div class="panel">
+                <div class="search-row">
+                    <div class="search-group">
+                        <label for="startLoc">🛫 出発地 (現在のレベル)</label>
+                        <select id="startLoc" class="search-select" onchange="handleSelectChange()">
+                            <optgroup label="A1 レイヤー">
+                                <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
+                                <option value="A1_Bridge">A1 × Bridge (超初歩の実務)</option>
+                                <option value="A1_CALP">A1 × CALP (単発の事実認識)</option>
+                            </optgroup>
+                            <optgroup label="A2 レイヤー">
+                                <option value="A2_BICS" selected>A2 × BICS (カタコト脱出・対人)</option>
+                                <option value="A2_Bridge">A2 × Bridge (指示書通りの受動実務)</option>
+                                <option value="A2_CALP">A2 × CALP (基礎短文の読解)</option>
+                            </optgroup>
+                            <optgroup label="B1 レイヤー">
+                                <option value="B1_BICS">B1 × BICS (日常会話の自立)</option>
+                                <option value="B1_Bridge">B1 × Bridge (日常ビジネスメール)</option>
+                                <option value="B1_CALP">B1 × CALP (論理的なやりとりも少しずつ)</option>
+                            </optgroup>
+                            <optgroup label="B2 レイヤー">
+                                <option value="B2_BICS">B2 × BICS (ネイティブとの雑談)</option>
+                                <option value="B2_Bridge">B2 × Bridge (現場を回す圧倒的実務)</option>
+                                <option value="B2_CALP">B2 × CALP (教養講義・ロジックの核)</option>
+                            </optgroup>
+                            <optgroup label="C1 レイヤー">
+                                <option value="C1_BICS">C1 × BICS (高速・即興の洗練討論)</option>
+                                <option value="C1_Bridge">C1 × Bridge (最高級タフな国際交渉)</option>
+                                <option value="C1_CALP">C1 × CALP (知性を研ぐエリート学術)</option>
+                            </optgroup>
+                            <optgroup label="C2 レイヤー">
+                                <option value="C2_BICS">C2 × BICS (文化・言葉の完全越境)</option>
+                                <option value="C2_Bridge">C2 × Bridge (全方位支配のトップ交渉)</option>
+                                <option value="C2_CALP">C2 × CALP (最高峰の思想・人類の知性)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="search-group">
+                        <label for="endLoc">🛬 目的地 (目標のレベル)</label>
+                        <select id="endLoc" class="search-select" onchange="handleSelectChange()">
+                            <optgroup label="A1 レイヤー">
+                                <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
+                                <option value="A1_Bridge">A1 × Bridge (超初歩の実務受信)</option>
+                                <option value="A1_CALP">A1 × CALP (単発の事実認識)</option>
+                            </optgroup>
+                            <optgroup label="A2 レイヤー">
+                                <option value="A2_BICS">A2 × BICS (カタコト脱出・対人)</option>
+                                <option value="A2_Bridge">A2 × Bridge (指示書通りの受動実務)</option>
+                                <option value="A2_CALP">A2 × CALP (基礎短文の読解)</option>
+                            </optgroup>
+                            <optgroup label="B1 レイヤー">
+                                <option value="B1_BICS">B1 × BICS (日常会話の自立)</option>
+                                <option value="B1_Bridge">B1 × Bridge (日常ビジネスメール)</option>
+                                <option value="B1_CALP">B1 × CALP (論理的なやりとりも少しずつ)</option>
+                            </optgroup>
+                            <optgroup label="B2 レイヤー">
+                                <option value="B2_BICS">B2 × BICS (ネイティブとの雑談)</option>
+                                <option value="B2_Bridge" selected>B2 × Bridge (現場を回す圧倒的実務)</option>
+                                <option value="B2_CALP">B2 × CALP (教養講義・ロジックの核)</option>
+                            </optgroup>
+                            <optgroup label="C1 レイヤー">
+                                <option value="C1_BICS">C1 × BICS (高速・即興の洗練討論)</option>
+                                <option value="C1_Bridge">C1 × Bridge (最高級タフな国際交渉)</option>
+                                <option value="C1_CALP">C1 × CALP (知性を研ぐエリート学術)</option>
+                            </optgroup>
+                            <optgroup label="C2 レイヤー">
+                                <option value="C2_BICS">C2 × BICS (文化・言葉の完全越境)</option>
+                                <option value="C2_Bridge">C2 × Bridge (全方位支配のトップ交渉)</option>
+                                <option value="C2_CALP">C2 × CALP (最高峰の思想・人類の知性)</option>
+                            </optgroup>
+                        </select>
+                    </div>
                 </div>
-                
-                <div class="search-group">
-                    <label for="endLoc">🛬 目的地 (目標のレベル)</label>
-                    <select id="endLoc" class="search-select" onchange="handleSelectChange()">
-                        <optgroup label="A1 レイヤー">
-                            <option value="A1_BICS">A1 × BICS (挨拶・単語の羅列)</option>
-                            <option value="A1_Bridge">A1 × Bridge (超初歩の実務受信)</option>
-                            <option value="A1_CALP">A1 × CALP (単発の事実認識)</option>
-                        </optgroup>
-                        <optgroup label="A2 レイヤー">
-                            <option value="A2_BICS">A2 × BICS (カタコト脱出・対人)</option>
-                            <option value="A2_Bridge">A2 × Bridge (指示書通りの受動実務)</option>
-                            <option value="A2_CALP">A2 × CALP (基礎短文の読解)</option>
-                        </optgroup>
-                        <optgroup label="B1 レイヤー">
-                            <option value="B1_BICS">B1 × BICS (日常会話の自立)</option>
-                            <option value="B1_Bridge">B1 × Bridge (日常ビジネスメール)</option>
-                            <option value="B1_CALP">B1 × CALP (論理的なやりとりも少しずつ)</option>
-                        </optgroup>
-                        <optgroup label="B2 レイヤー">
-                            <option value="B2_BICS">B2 × BICS (ネイティブとの雑談)</option>
-                            <option value="B2_Bridge" selected>B2 × Bridge (現場を回す圧倒的実務)</option>
-                            <option value="B2_CALP">B2 × CALP (教養講義・ロジックの核)</option>
-                        </optgroup>
-                        <optgroup label="C1 レイヤー">
-                            <option value="C1_BICS">C1 × BICS (高速・即興の洗練討論)</option>
-                            <option value="C1_Bridge">C1 × Bridge (最高級タフな国際交渉)</option>
-                            <option value="C1_CALP">C1 × CALP (知性を研ぐエリート学術)</option>
-                        </optgroup>
-                        <optgroup label="C2 レイヤー">
-                            <option value="C2_BICS">C2 × BICS (文化・言葉の完全越境)</option>
-                            <option value="C2_Bridge">C2 × Bridge (全方位支配のトップ交渉)</option>
-                            <option value="C2_CALP">C2 × CALP (最高峰の思想・人類の知性)</option>
-                        </optgroup>
-                    </select>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label for="hoursPerDay">📅 コミットメント設定 (1日あたりの勉強時間)</label>
+                        <span>毎日 <mark id="hoursDisplay">1.5</mark> 時間 </span>
+                    </div>
+                    <input type="range" id="hoursPerDay" class="slider-input" min="0.5" max="5" step="0.5" value="1.5" oninput="updateHoursPerDay()">
                 </div>
             </div>
 
-            <div class="slider-group">
-                <div class="slider-header">
-                    <label for="hoursPerDay">📅 コミットメント設定 (1日あたりの勉強時間)</label>
-                    <span>毎日 <mark id="hoursDisplay">1.5</mark> 時間 </span>
+            <div class="panel matrix-container">
+                <div class="matrix-instructions">
+                    💡 <b>操作方法:</b> マスを直接タップすると「現在地➔目標」が交互にセットされます。右下の <b>ⓘ ボタン</b> で各マスの詳細が開きます。
                 </div>
-                <input type="range" id="hoursPerDay" class="slider-input" min="0.5" max="5" step="0.5" value="1.5" oninput="updateHoursPerDay()">
+                <div class="matrix-grid">
+                    <div class="grid-header"></div>
+                    <div class="grid-header axis-bics">BICS<br><small>日常・対人</small></div>
+                    <div class="grid-header axis-bridge">Bridge<br><small>社会・ビジネス</small></div>
+                    <div class="grid-header axis-calp">CALP<br><small>学術・論理</small></div>
+
+                    <div class="mobile-row-title">A1 レイヤー</div>
+                    <div class="cefr-label">A1</div>
+                    <div class="matrix-cell" id="cell-A1-BICS" onclick="handleCellClick('A1_BICS', event)">
+                        <div class="cell-summary">挨拶・単語の羅列</div>
+                        <div class="cell-meta">英検:3級 / 語彙:1k</div>
+                        <div class="info-trigger" onclick="handleInfoClick('A1_BICS', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-A1-Bridge" onclick="handleCellClick('A1_Bridge', event)">
+                        <div class="cell-summary">超初歩の実務受信</div>
+                        <div class="cell-meta">TOEIC:120〜</div>
+                        <div class="info-trigger" onclick="handleInfoClick('A1_Bridge', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-A1-CALP" onclick="handleCellClick('A1_CALP', event)">
+                        <div class="cell-summary">単発の事実認識</div>
+                        <div class="cell-meta">限定的リテラシー</div>
+                        <div class="info-trigger" onclick="handleInfoClick('A1_CALP', event)">ⓘ</div>
+                    </div>
+
+                    <div class="mobile-row-title">A2 レイヤー</div>
+                    <div class="cefr-label">A2</div>
+                    <div class="matrix-cell" id="cell-A2-BICS" onclick="handleCellClick('A2_BICS', event)">
+                        <div class="cell-summary">カタコト脱出・対人</div>
+                        <div class="cell-meta">英検:準2 / 語彙:2.5k</div>
+                        <div class="info-trigger" onclick="handleInfoClick('A2_BICS', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-A2-Bridge" onclick="handleCellClick('A2_Bridge', event)">
+                        <div class="cell-summary">指示書通りの受動実務</div>
+                        <div class="cell-meta">TOEIC:225〜</div>
+                        <div class="info-trigger" onclick="handleInfoClick('A2_Bridge', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-A2-CALP" onclick="handleCellClick('A2_CALP', event)">
+                        <div class="cell-summary">基礎短文の読解</div>
+                        <div class="cell-meta">中学理科水準</div>
+                        <div class="info-trigger" onclick="handleInfoClick('A2_CALP', event)">ⓘ</div>
+                    </div>
+
+                    <div class="mobile-row-title">B1 レイヤー</div>
+                    <div class="cefr-label">B1</div>
+                    <div class="matrix-cell" id="cell-B1-BICS" onclick="handleCellClick('B1_BICS', event)">
+                        <div class="cell-summary">日常雑談の完全自立</div>
+                        <div class="cell-meta">英検:2級 / 語彙:5k</div>
+                        <div class="info-trigger" onclick="handleInfoClick('B1_BICS', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-B1-Bridge" onclick="handleCellClick('B1_Bridge', event)">
+                        <div class="cell-summary">日常ビジネスメール</div>
+                        <div class="cell-meta">TOEIC:550〜</div>
+                        <div class="info-trigger" onclick="handleInfoClick('B1_Bridge', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-B1-CALP" onclick="handleCellClick('B1_CALP', event)">
+                        <div class="cell-summary">一般論理の受信開始</div>
+                        <div class="cell-meta">IELTS:4.0</div>
+                        <div class="info-trigger" onclick="handleInfoClick('B1_CALP', event)">ⓘ</div>
+                    </div>
+
+                    <div class="mobile-row-title">B2 レイヤー</div>
+                    <div class="cefr-label">B2</div>
+                    <div class="matrix-cell" id="cell-B2-BICS" onclick="handleCellClick('B2_BICS', event)">
+                        <div class="cell-summary">ネイティブとの雑談</div>
+                        <div class="cell-meta">英検:準1 / 語彙:9k</div>
+                        <div class="info-trigger" onclick="handleInfoClick('B2_BICS', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-B2-Bridge" onclick="handleCellClick('B2_Bridge', event)">
+                        <div class="cell-summary">現場を回す圧倒的実務</div>
+                        <div class="cell-meta">TOEIC:785〜</div>
+                        <div class="info-trigger" onclick="handleInfoClick('B2_Bridge', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-B2-CALP" onclick="handleCellClick('B2_CALP', event)">
+                        <div class="cell-summary">教養講義・ロジックの核</div>
+                        <div class="cell-meta">IELTS:5.5</div>
+                        <div class="info-trigger" onclick="handleInfoClick('B2_CALP', event)">ⓘ</div>
+                    </div>
+
+                    <div class="mobile-row-title">C1 レイヤー</div>
+                    <div class="cefr-label">C1</div>
+                    <div class="matrix-cell" id="cell-C1-BICS" onclick="handleCellClick('C1_BICS', event)">
+                        <div class="cell-summary">高速・即興の洗練討論</div>
+                        <div class="cell-meta">英検:1級 / 語彙:15k</div>
+                        <div class="info-trigger" onclick="handleInfoClick('C1_BICS', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-C1-Bridge" onclick="handleCellClick('C1_Bridge', event)">
+                        <div class="cell-summary">最高級タフな国際交渉</div>
+                        <div class="cell-meta">TOEIC:945〜</div>
+                        <div class="info-trigger" onclick="handleInfoClick('C1_Bridge', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-C1-CALP" onclick="handleCellClick('C1_CALP', event)">
+                        <div class="cell-summary">知性を研ぐエリート学術</div>
+                        <div class="cell-meta">IELTS:7.0</div>
+                        <div class="info-trigger" onclick="handleInfoClick('C1_CALP', event)">ⓘ</div>
+                    </div>
+
+                    <div class="mobile-row-title">C2 レイヤー</div>
+                    <div class="cefr-label">C2</div>
+                    <div class="matrix-cell" id="cell-C2-BICS" onclick="handleCellClick('C2_BICS', event)">
+                        <div class="cell-summary">文化・言葉の完全越境</div>
+                        <div class="cell-meta">ネイティブ同等</div>
+                        <div class="info-trigger" onclick="handleInfoClick('C2_BICS', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-C2-Bridge" onclick="handleCellClick('C2_Bridge', event)">
+                        <div class="cell-summary">全方位支配のトップ交渉</div>
+                        <div class="cell-meta">実務の神域</div>
+                        <div class="info-trigger" onclick="handleInfoClick('C2_Bridge', event)">ⓘ</div>
+                    </div>
+                    <div class="matrix-cell" id="cell-C2-CALP" onclick="handleCellClick('C2_CALP', event)">
+                        <div class="cell-summary">最高峰の思想・人類の知性</div>
+                        <div class="cell-meta">IELTS:8.5</div>
+                        <div class="info-trigger" onclick="handleInfoClick('C2_CALP', event)">ⓘ</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="boarding-pass">
-            <div class="ticket-main">
-                <div class="ticket-header">
-                    <div class="ticket-logo">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-                        LEMMA FLIGHT NAVI
+        <div class="display-side">
+            <div class="boarding-pass" id="mainTicket">
+                <div class="ticket-main">
+                    <div class="ticket-header">
+                        <div class="ticket-logo">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                            LEMMA FLIGHT NAVI
+                        </div>
+                        <div class="ticket-flight-class" id="flightType">DIRECT ROUTE</div>
                     </div>
-                    <div class="ticket-flight-class" id="flightType">DIRECT ROUTE</div>
+
+                    <div class="ticket-route">
+                        <div class="route-node">
+                            <div class="route-code" id="ticketStartCode">A2</div>
+                            <div class="route-name" id="ticketStartName">BICS</div>
+                        </div>
+                        <div class="route-arrow">
+                            <div class="route-line"></div>
+                            <div class="plane-icon" id="ticketPlane">✈️</div>
+                        </div>
+                        <div class="route-node destination">
+                            <div class="route-code" id="ticketEndCode">B2</div>
+                            <div class="route-name" id="ticketEndName">Bridge</div>
+                        </div>
+                    </div>
+
+                    <div class="ticket-meta-grid">
+                        <div class="meta-item">
+                            <div class="meta-label">EST. FLIGHT TIME (総必要学習時間)</div>
+                            <div class="meta-value highlight" id="ticketHours">0 時間</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">REQUIRED DAYS (推定達成日数)</div>
+                            <div class="meta-value" id="ticketDays">-</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="ticket-route">
-                    <div class="route-node">
-                        <div class="route-code" id="ticketStartCode">A2</div>
-                        <div class="route-name" id="ticketStartName">BICS (カタコト脱出・対人)</div>
-                    </div>
-                    <div class="route-arrow">
-                        <div class="route-line"></div>
-                    </div>
-                    <div class="route-node destination">
-                        <div class="route-code" id="ticketEndCode">B2</div>
-                        <div class="route-name" id="ticketEndName">Bridge (現場を回す圧倒的実務)</div>
-                    </div>
-                </div>
+                <div class="ticket-divider"></div>
 
-                <div class="ticket-meta-grid">
-                    <div class="meta-item">
-                        <div class="meta-label">EST. FLIGHT TIME (必要総学習時間)</div>
-                        <div class="meta-value highlight" id="ticketHours">0 時間</div>
+                <div class="ticket-stub">
+                    <div class="stub-info">
+                        <div class="stub-row"><span class="stub-label">BOARDING</span><span class="stub-value" style="color:var(--dest-green)">NOW</span></div>
+                        <div class="stub-row"><span class="stub-label">START</span><span class="stub-value" id="stubStart">A2_BICS</span></div>
+                        <div class="stub-row"><span class="stub-label">TARGET</span><span class="stub-value" id="stubEnd">B2_Bridge</span></div>
+                        <div class="stub-row"><span class="stub-label">INTERVAL</span><span class="stub-value" id="stubRange">-</span></div>
                     </div>
-                    <div class="meta-item">
-                        <div class="meta-label">REQUIRED DAYS (推定達成日数)</div>
-                        <div class="meta-value" id="ticketDays">-</div>
+
+                    <button class="share-btn" onclick="copyFlightPlan()">
+                        📋 フライトプランをコピー
+                    </button>
+
+                    <div class="qr-code-wrapper">
+                        <div class="qr-row"><div class="qr-pixel b"></div><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div><div class="qr-pixel b"></div></div>
+                        <div class="qr-row"><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div></div>
+                        <div class="qr-row"><div class="qr-pixel"></div><div class="qr-pixel b"></div><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel"></div></div>
+                        <div class="qr-row"><div class="qr-pixel b"></div><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div><div class="qr-pixel b"></div></div>
                     </div>
                 </div>
             </div>
 
-            <div class="ticket-divider"></div>
-
-            <div class="ticket-stub">
-                <div class="stub-info">
-                    <div class="stub-row"><span class="stub-label">BOARDING</span><span class="stub-value">NOW</span></div>
-                    <div class="stub-row"><span class="stub-label">START</span><span class="stub-value" id="stubStart">A2_BICS</span></div>
-                    <div class="stub-row"><span class="stub-label">TARGET</span><span class="stub-value" id="stubEnd">B2_Bridge</span></div>
-                    <div class="stub-row"><span class="stub-label">INTERVAL</span><span class="stub-value" id="stubRange">-</span></div>
-                </div>
-
-                <button class="share-btn" onclick="copyFlightPlan()">
-                    📋 フライトプランをコピー
-                </button>
-
-                <div class="qr-code-wrapper">
-                    <div class="qr-row"><div class="qr-pixel b"></div><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div><div class="qr-pixel b"></div></div>
-                    <div class="qr-row"><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div></div>
-                    <div class="qr-row"><div class="qr-pixel"></div><div class="qr-pixel b"></div><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel"></div></div>
-                    <div class="qr-row"><div class="qr-pixel b"></div><div class="qr-pixel b"></div><div class="qr-pixel"></div><div class="qr-pixel b"></div><div class="qr-pixel b"></div></div>
-                </div>
+            <div class="panel" id="milestonePanel">
+                <div class="milestone-title">📍 航路の経由地（マイルストーン・ロードマップ）</div>
+                <div class="timeline" id="timelineContainer"></div>
             </div>
         </div>
 
-        <div class="milestone-panel" id="milestonePanel">
-            <div class="milestone-title">
-                📍 航路の経由地（マイルストーン・ロードマップ）
-            </div>
-            <div class="timeline" id="timelineContainer">
-                </div>
-        </div>
-    </div>
-
-    <div class="matrix-container">
-        <div class="matrix-instructions">
-            💡 <b>操作方法:</b> マスを直接タップすると「1回目現在地➔2回目目標」がセットされます。右下の <b>ⓘ ボタン</b> で詳細が開きます。
-        </div>
-        <div class="matrix-grid">
-            <div class="grid-header"></div>
-            <div class="grid-header axis-bics">BICS<br><small>日常・対人</small></div>
-            <div class="grid-header axis-bridge">Bridge<br><small>社会・ビジネス</small></div>
-            <div class="grid-header axis-calp">CALP<br><small>学術・論理</small></div>
-
-            <div class="mobile-row-title">A1 レイヤー</div>
-            <div class="cefr-label">A1</div>
-            <div class="matrix-cell" id="cell-A1-BICS" onclick="handleCellClick('A1_BICS', event)">
-                <div class="cell-summary">挨拶・単語の羅列</div>
-                <div class="cell-meta">英検:3級 / 語彙:1k</div>
-                <div class="info-trigger" onclick="handleInfoClick('A1_BICS', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-A1-Bridge" onclick="handleCellClick('A1_Bridge', event)">
-                <div class="cell-summary">超初歩の実務受信</div>
-                <div class="cell-meta">TOEIC LR:120〜</div>
-                <div class="info-trigger" onclick="handleInfoClick('A1_Bridge', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-A1-CALP" onclick="handleCellClick('A1_CALP', event)">
-                <div class="cell-summary">単発の事実認識</div>
-                <div class="cell-meta">限定的リテラシー</div>
-                <div class="info-trigger" onclick="handleInfoClick('A1_CALP', event)">ⓘ</div>
-            </div>
-
-            <div class="mobile-row-title">A2 レイヤー</div>
-            <div class="cefr-label">A2</div>
-            <div class="matrix-cell" id="cell-A2-BICS" onclick="handleCellClick('A2_BICS', event)">
-                <div class="cell-summary">カタコト脱出・対人</div>
-                <div class="cell-meta">英検:準2 / 語彙:2.5k</div>
-                <div class="info-trigger" onclick="handleInfoClick('A2_BICS', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-A2-Bridge" onclick="handleCellClick('A2_Bridge', event)">
-                <div class="cell-summary">指示書通りの受動実務</div>
-                <div class="cell-meta">TOEIC LR:225〜</div>
-                <div class="info-trigger" onclick="handleInfoClick('A2_Bridge', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-A2-CALP" onclick="handleCellClick('A2_CALP', event)">
-                <div class="cell-summary">基礎短文の読解</div>
-                <div class="cell-meta">中学理科水準</div>
-                <div class="info-trigger" onclick="handleInfoClick('A2_CALP', event)">ⓘ</div>
-            </div>
-
-            <div class="mobile-row-title">B1 レイヤー</div>
-            <div class="cefr-label">B1</div>
-            <div class="matrix-cell" id="cell-B1-BICS" onclick="handleCellClick('B1_BICS', event)">
-                <div class="cell-summary">日常雑談の完全自立</div>
-                <div class="cell-meta">英検:2級 / 語彙:5k</div>
-                <div class="info-trigger" onclick="handleInfoClick('B1_BICS', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-B1-Bridge" onclick="handleCellClick('B1_Bridge', event)">
-                <div class="cell-summary">日常ビジネスメール</div>
-                <div class="cell-meta">TOEIC LR:550〜</div>
-                <div class="info-trigger" onclick="handleInfoClick('B1_Bridge', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-B1-CALP" onclick="handleCellClick('B1_CALP', event)">
-                <div class="cell-summary">一般論理の受信開始</div>
-                <div class="cell-meta">TOEFL:42〜 / IELTS:4.0</div>
-                <div class="info-trigger" onclick="handleInfoClick('B1_CALP', event)">ⓘ</div>
-            </div>
-
-            <div class="mobile-row-title">B2 レイヤー</div>
-            <div class="cefr-label">B2</div>
-            <div class="matrix-cell" id="cell-B2-BICS" onclick="handleCellClick('B2_BICS', event)">
-                <div class="cell-summary">ネイティブとの雑談</div>
-                <div class="cell-meta">英検:準1 / 語彙:9k</div>
-                <div class="info-trigger" onclick="handleInfoClick('B2_BICS', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-B2-Bridge" onclick="handleCellClick('B2_Bridge', event)">
-                <div class="cell-summary">現場を回す圧倒的実務</div>
-                <div class="cell-meta">TOEIC LR:785〜</div>
-                <div class="info-trigger" onclick="handleInfoClick('B2_Bridge', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-B2-CALP" onclick="handleCellClick('B2_CALP', event)">
-                <div class="cell-summary">教養講義・ロジックの核</div>
-                <div class="cell-meta">TOEFL:72〜 / IELTS:5.5</div>
-                <div class="info-trigger" onclick="handleInfoClick('B2_CALP', event)">ⓘ</div>
-            </div>
-
-            <div class="mobile-row-title">C1 レイヤー</div>
-            <div class="cefr-label">C1</div>
-            <div class="matrix-cell" id="cell-C1-BICS" onclick="handleCellClick('C1_BICS', event)">
-                <div class="cell-summary">高速・即興の洗練討論</div>
-                <div class="cell-meta">英検:1級 / 語彙:15k</div>
-                <div class="info-trigger" onclick="handleInfoClick('C1_BICS', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-C1-Bridge" onclick="handleCellClick('C1_Bridge', event)">
-                <div class="cell-summary">最高級タフな国際交渉</div>
-                <div class="cell-meta">TOEIC LR:945〜</div>
-                <div class="info-trigger" onclick="handleInfoClick('C1_Bridge', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-C1-CALP" onclick="handleCellClick('C1_CALP', event)">
-                <div class="cell-summary">知性を研ぐエリート学術</div>
-                <div class="cell-meta">TOEFL:95〜 / IELTS:7.0</div>
-                <div class="info-trigger" onclick="handleInfoClick('C1_CALP', event)">ⓘ</div>
-            </div>
-
-            <div class="mobile-row-title">C2 レイヤー</div>
-            <div class="cefr-label">C2</div>
-            <div class="matrix-cell" id="cell-C2-BICS" onclick="handleCellClick('C2_BICS', event)">
-                <div class="cell-summary">文化・言葉の完全越境</div>
-                <div class="cell-meta">ネイティブ同等</div>
-                <div class="info-trigger" onclick="handleInfoClick('C2_BICS', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-C2-Bridge" onclick="handleCellClick('C2_Bridge', event)">
-                <div class="cell-summary">全方位支配のトップ交渉</div>
-                <div class="cell-meta">実務の神域</div>
-                <div class="info-trigger" onclick="handleInfoClick('C2_Bridge', event)">ⓘ</div>
-            </div>
-            <div class="matrix-cell" id="cell-C2-CALP" onclick="handleCellClick('C2_CALP', event)">
-                <div class="cell-summary">最高峰の思想・人類の知性</div>
-                <div class="cell-meta">TOEFL:114〜 / IELTS:8.5</div>
-                <div class="info-trigger" onclick="handleInfoClick('C2_CALP', event)">ⓘ</div>
-            </div>
-        </div>
     </div>
 
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-content" id="modalContent" onclick="event.stopPropagation()">
             <button class="close-btn" onclick="closeModal()">&times;</button>
-            <div class="modal-title" id="modalTitle">詳細カード</div>
-            
-            <div class="modal-tabs">
-                <button class="modal-tab active" onclick="switchTab('tab-scores', this)">📊 スコア・語彙</button>
-                <button class="modal-tab" onclick="switchTab('tab-curation', this)">💡 運用イメージ</button>
-                <button class="modal-tab" onclick="switchTab('tab-action', this)">🚀 明日からの行動</button>
-            </div>
-
-            <div class="tab-body">
-                <div id="tab-scores" class="tab-content active">
-                    <div class="modal-section" style="border-left-color: #58a6ff;">
-                        <h4>推定語彙力 (LEMMA基準)</h4>
-                        <p id="modalVocabText" style="font-size: 1.2rem; font-weight: bold; color: var(--accent-bics);">-</p>
-                    </div>
-                    <div class="modal-section" style="border-left-color: #58a6ff;">
-                        <h4>各種資格試験の目安</h4>
-                        <div class="score-cards-grid" id="modalBadgesContainer"></div>
-                    </div>
-                    <div class="modal-section" style="border-left-color: #38bdf8;">
-                        <h4>処理速度・WPM指標 (かっこ内はネイティブ基準)</h4>
-                        <p id="modalWpmText">-</p>
-                    </div>
-                    <div class="modal-section" style="border-left-color: #d29922;">
-                        <h4>Zeroからの累積学習時間目安</h4>
-                        <p id="modalTimeText">-</p>
-                    </div>
-                </div>
-
-                <div id="tab-curation" class="tab-content">
-                    <div class="modal-section" style="border-left-color: #bc8cff;">
-                        <h4>対応可能 / できること</h4>
-                        <p id="modalCanText">-</p>
-                    </div>
-                    <div class="modal-section" style="border-left-color: #eb5757;">
-                        <h4>限界 / できないこと</h4>
-                        <p id="modalCannotText">-</p>
-                    </div>
-                </div>
-
-                <div id="tab-action" class="tab-content">
-                    <div class="modal-section" style="border-left-color: #10b981;">
-                        <h4>次の一歩 (アクションプラン)</h4>
-                        <p id="modalActionText" style="font-size: 1rem; color: #fff;"></p>
-                    </div>
-                </div>
-            </div>
+            <div id="modalDynamicBody"></div>
         </div>
     </div>
 
@@ -1245,21 +1000,38 @@
         let lastCalculatedHours = 0;
         let lastCalculatedDaysText = "";
 
+        // 問診（オンボーディング）用の一時変数
+        let checkInStep = 1;
+        let selectedStartFromScore = "A1_BICS";
+
         function formatDaysString(hours, dailyStudy) {
             const days = Math.round(hours / dailyStudy);
-            if (days < 30) {
-                return `${days}日`;
-            } else if (days < 365) {
-                const months = (days / 30.4).toFixed(1);
-                return `${days}日 (約 ${months}ヶ月)`;
-            } else {
-                const years = (days / 365).toFixed(1);
-                return `${days}日 (約 ${years}年)`;
-            }
+            if (days < 30) return `${days}日`;
+            if (days < 365) return `${days}日 (約 ${(days / 30.4).toFixed(1)}ヶ月)`;
+            return `${days}日 (約 ${(days / 365).toFixed(1)}年)`;
         }
 
-        // マスクリック制御
+        // 触りたくなるエフェクト：クリック時の波紋エフェクト生成
+        function createRipple(event, element) {
+            const circle = document.createElement("span");
+            const diameter = Math.max(element.clientWidth, element.clientHeight);
+            const radius = diameter / 2;
+
+            const rect = element.getBoundingClientRect();
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - rect.left - radius}px`;
+            circle.style.top = `${event.clientY - rect.top - radius}px`;
+            circle.classList.add("ripple");
+
+            const prevRipple = element.querySelector(".ripple");
+            if (prevRipple) prevRipple.remove();
+
+            element.appendChild(circle);
+        }
+
         function handleCellClick(levelId, event) {
+            createRipple(event, document.getElementById(`cell-${levelId.split('_')[0]}-${levelId.split('_')[1]}`));
+            
             if (!clickToggle) {
                 currentStart = levelId;
                 document.getElementById("startLoc").value = levelId;
@@ -1272,85 +1044,44 @@
             calculateRoute();
         }
 
-        // プルダウン変更制御
         function handleSelectChange() {
             currentStart = document.getElementById("startLoc").value;
             currentEnd = document.getElementById("endLoc").value;
             calculateRoute();
         }
 
-        // ℹ️ボタン制御
-        function handleInfoClick(levelId, event) {
-            event.stopPropagation();
-            const parts = levelId.split('_');
-            openModal(parts[0], parts[1]);
-        }
-
-        // スライダー制御
         function updateHoursPerDay() {
             const val = document.getElementById("hoursPerDay").value;
             document.getElementById("hoursDisplay").innerText = parseFloat(val).toFixed(1);
             calculateRoute(true);
         }
 
-        // 📋 SNS用テキストコピー機能の実装
-        function copyFlightPlan() {
-            if (currentStart === currentEnd) {
-                alert("出発地と目的地が同じ航路です。");
-                return;
-            }
-            const startIndex = levelsOrder.indexOf(currentStart);
-            const endIndex = levelsOrder.indexOf(currentEnd);
-            if (startIndex > endIndex) {
-                alert("逆流ルートのためプランを作成できません。");
-                return;
-            }
-
-            const dailyStudy = document.getElementById("hoursPerDay").value;
-            
-            // クリップボードに渡す綺麗な定型文を動的生成
-            const textToCopy = `✈️ 私の英語学習フライトプラン ✈️\n` +
-                               `━━━━━━━━━━━━━━━━━\n` +
-                               `🛫 出発地: ${currentStart.replace('_', ' × ')}\n` +
-                               `🛬 目的地: ${currentEnd.replace('_', ' × ')}\n` +
-                               `⏱️ 必要フライト時間: ${lastCalculatedHours} 時間\n` +
-                               `📅 達成目標期間: ${lastCalculatedDaysText} (1日${dailyStudy}hペース)\n` +
-                               `━━━━━━━━━━━━━━━━━\n` +
-                               `Let's skyscan your English!\n` +
-                               `#TheLanguageMatrix #英語学習 #LEMMA`;
-
-            // クリップボードへのコピーAPIを実行
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const btn = document.querySelector('.share-btn');
-                const originalText = btn.innerText;
-                btn.innerText = "✅ コピー完了！";
-                btn.style.background = "var(--dest-green)";
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.style.background = "var(--skyscanner-blue)";
-                }, 1500);
-            }).catch(err => {
-                alert("コピーに失敗しました。お使いのブラウザの権限設定を確認してください。");
-            });
-        }
-
-        // コア計算
+        // 📋 コアナビゲーション計算＆インタラクション駆動
         function calculateRoute(isSliderMove = false) {
             const dailyStudy = parseFloat(document.getElementById("hoursPerDay").value);
             
-            document.getElementById("ticketStartCode").innerText = currentStart.split('_')[0];
-            document.getElementById("ticketStartName").innerText = currentStart.split('_')[1] + " (" + document.getElementById(`cell-${currentStart.split('_')[0]}-${currentStart.split('_')[1]}`).querySelector('.cell-summary').innerText + ")";
-            document.getElementById("ticketEndCode").innerText = currentEnd.split('_')[0];
-            document.getElementById("ticketEndName").innerText = currentEnd.split('_')[1] + " (" + document.getElementById(`cell-${currentEnd.split('_')[0]}-${currentEnd.split('_')[1]}`).querySelector('.cell-summary').innerText + ")";
+            const startParts = currentStart.split('_');
+            const endParts = currentEnd.split('_');
+
+            document.getElementById("ticketStartCode").innerText = startParts[0];
+            document.getElementById("ticketStartName").innerText = startParts[1];
+            document.getElementById("ticketEndCode").innerText = endParts[0];
+            document.getElementById("ticketEndName").innerText = endParts[1];
             
             document.getElementById("stubStart").innerText = currentStart;
             document.getElementById("stubEnd").innerText = currentEnd;
 
+            // マトリクスのハイライト全初期化
             document.querySelectorAll('.matrix-cell').forEach(cell => {
                 cell.classList.remove('highlight-start', 'highlight-end', 'highlight-both');
             });
-            const startCell = document.getElementById(`cell-${currentStart.split('_')[0]}-${currentStart.split('_')[1]}`);
-            const endCell = document.getElementById(`cell-${currentEnd.split('_')[0]}-${currentEnd.split('_')[1]}`);
+            const startCell = document.getElementById(`cell-${startParts[0]}-${startParts[1]}`);
+            const endCell = document.getElementById(`cell-${endParts[0]}-${endParts[1]}`);
+
+            const startIndex = levelsOrder.indexOf(currentStart);
+            const endIndex = levelsOrder.indexOf(currentEnd);
+
+            const plane = document.getElementById("ticketPlane");
 
             if (currentStart === currentEnd) {
                 if (startCell) startCell.classList.add('highlight-both');
@@ -1358,35 +1089,49 @@
                 document.getElementById("ticketDays").innerText = "目的地にいます。";
                 document.getElementById("stubRange").innerText = "SAME LOC";
                 document.getElementById("flightType").innerText = "STAY";
+                if(plane) plane.style.left = "50%";
                 generateTimeline([], dailyStudy);
                 return;
-            } else {
-                if (startCell) startCell.classList.add('highlight-start');
-                if (endCell) endCell.classList.add('highlight-end');
             }
 
-            const startIndex = levelsOrder.indexOf(currentStart);
-            const endIndex = levelsOrder.indexOf(currentEnd);
-
             if (startIndex > endIndex) {
+                if (startCell) startCell.classList.add('highlight-start');
+                if (endCell) endCell.classList.add('highlight-end');
                 document.getElementById("ticketHours").innerText = "別ルート航路 ↩️";
                 document.getElementById("ticketDays").innerText = "スキルが目標を上回っています。";
                 document.getElementById("stubRange").innerText = "REVERSE";
                 document.getElementById("flightType").innerText = "REVERSE";
+                if(plane) plane.style.left = "0%";
                 generateTimeline([], dailyStudy);
                 return;
             }
 
+            if (startCell) startCell.classList.add('highlight-start');
+            if (endCell) endCell.classList.add('highlight-end');
             document.getElementById("flightType").innerText = "DIRECT ROUTE";
-            const neededHours = cumulativeHours[currentEnd] - cumulativeHours[currentStart];
-            const minHours = Math.max(0, Math.round(neededHours * 0.55));
-            const maxHours = Math.round(neededHours * 1.45);
 
-            document.getElementById("stubRange").innerText = `${minHours}h - ${maxHours}h`;
+            const neededHours = cumulativeHours[currentEnd] - cumulativeHours[currentStart];
+            document.getElementById("stubRange").innerText = `${Math.round(neededHours*0.6)}h - ${Math.round(neededHours*1.3)}h`;
             
-            // グローバル変数にキャッシュを退避（SNSコピー用）
             lastCalculatedHours = neededHours;
             lastCalculatedDaysText = formatDaysString(neededHours, dailyStudy);
+
+            // チケットの発券感・変更感エフェクト（バウンド）
+            const ticket = document.getElementById("mainTicket");
+            ticket.classList.remove("ticket-issue");
+            void ticket.offsetWidth; // リフローを起こしてアニメーションを再トリガー
+            ticket.classList.add("ticket-issue");
+
+            // ✈️ 飛行機がスムーズに目的地に向かうアニメーション
+            if (plane) {
+                plane.style.left = "0%";
+                setTimeout(() => {
+                    // 出発から到着の割合を計算して飛行機を動かす
+                    const totalPathLength = levelsOrder.length;
+                    const progress = (endIndex / (totalPathLength - 1)) * 100;
+                    plane.style.left = `${Math.min(progress, 95)}%`;
+                }, 50);
+            }
 
             if (isSliderMove) {
                 document.getElementById("ticketHours").innerText = `${neededHours} 時間`;
@@ -1402,11 +1147,8 @@
         function animateHours(targetHours, dailyStudy) {
             clearInterval(currentAnimationInterval);
             let current = 0;
-            const duration = 400;
-            const stepTime = 20;
-            const steps = duration / stepTime;
+            const steps = 20;
             const increment = targetHours / steps;
-
             currentAnimationInterval = setInterval(() => {
                 current += increment;
                 if (current >= targetHours) {
@@ -1417,27 +1159,35 @@
                     document.getElementById("ticketHours").innerText = `${Math.round(current)} 時間`;
                     document.getElementById("ticketDays").innerText = formatDaysString(Math.round(current), dailyStudy);
                 }
-            }, stepTime);
+            }, 15);
         }
 
         function generateTimeline(pathLevels, dailyStudy) {
             const container = document.getElementById("timelineContainer");
             container.innerHTML = "";
-
             if (pathLevels.length === 0) {
                 document.getElementById("milestonePanel").style.display = "none";
                 return;
             }
             document.getElementById("milestonePanel").style.display = "block";
-
             createTimelineItem(container, currentStart, "出発", true);
 
-            pathLevels.forEach((level) => {
+            // 表示制限（経由地が多すぎる場合は間引いてすっきり見せる）
+            const maxVisible = 5;
+            let step = 1;
+            if (pathLevels.length > maxVisible) {
+                step = Math.ceil(pathLevels.length / maxVisible);
+            }
+
+            for(let i=0; i<pathLevels.length; i+=step) {
+                const level = pathLevels[i];
                 const stepHours = cumulativeHours[level] - cumulativeHours[currentStart];
-                const daysText = formatDaysString(stepHours, dailyStudy);
-                const isTarget = (level === currentEnd);
-                createTimelineItem(container, level, daysText, false, isTarget);
-            });
+                const isTarget = (level === currentEnd || i + step >= pathLevels.length);
+                const finalLevel = isTarget ? currentEnd : level;
+                const finalHours = cumulativeHours[finalLevel] - cumulativeHours[currentStart];
+                createTimelineItem(container, finalLevel, formatDaysString(finalHours, dailyStudy), false, isTarget);
+                if(isTarget) break;
+            }
         }
 
         function createTimelineItem(container, levelId, timeText, isStart = false, isTarget = false) {
@@ -1445,199 +1195,243 @@
             item.className = "timeline-item";
             if (isStart) item.classList.add("passed");
             if (isTarget) item.classList.add("active");
-
-            const label = levelId.split('_')[0] + " " + levelId.split('_')[1];
-            
             item.innerHTML = `
                 <div class="timeline-badge">${isStart ? '✈️' : isTarget ? '🏁' : '⚓'}</div>
-                <div class="timeline-name">${label}</div>
+                <div class="timeline-name">${levelId.replace('_', ' ')}</div>
                 <div class="timeline-time">${timeText}</div>
             `;
             container.appendChild(item);
         }
 
-        function switchTab(tabId, btnElement) {
-            document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            btnElement.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        function openModal(cefr, type) {
-            const key = `${cefr}_${type}`;
-            const data = matrixData[key];
-            if (!data) return;
-
-            document.getElementById('modalTitle').innerHTML = `<span class="tag tag-${type.toLowerCase()}">${type}</span> ${data.title}`;
-            
-            const vocabMatch = data.vocab.match(/約.*語/);
-            document.getElementById('modalVocabText').innerText = vocabMatch ? vocabMatch[0] : "定義データ参照";
-
-            const badgesContainer = document.getElementById('modalBadgesContainer');
-            badgesContainer.innerHTML = "";
-            const rawScores = data.vocab.split(' / ');
-            rawScores.forEach(scoreStr => {
-                if (scoreStr.includes(':')) {
-                    const cleanStr = scoreStr.replace(/【公式目安】/, "");
-                    const parts = cleanStr.split(':');
-                    const card = document.createElement('div');
-                    card.className = 'score-card';
-                    card.innerHTML = `<div class="score-card-name">${parts[0].trim()}</div><div class="score-card-value">${parts[1].trim()}</div>`;
-                    badgesContainer.appendChild(card);
-                }
-            });
-
-            document.getElementById('modalWpmText').innerHTML = data.wpm;
-            document.getElementById('modalTimeText').innerText = data.time;
-
-            const canMatch = data.curation.match(/【できること】([\s\S]*?)【できないこと】/);
-            const cannotMatch = data.curation.match(/【できないこと】([\s\S]*?)★/);
-            const actionMatch = data.curation.match(/★明日からの最初のアクション:([\s\S]*)$/);
-
-            document.getElementById('modalCanText').innerText = canMatch ? canMatch[1].trim() : "-";
-            document.getElementById('modalCannotText').innerText = cannotMatch ? cannotMatch[1].trim() : "-";
-            document.getElementById('modalActionText').innerText = actionMatch ? actionMatch[1].trim() : "-";
-
-            switchTab('tab-scores', document.querySelectorAll('.modal-tab')[0]);
+        // 📋 問診（オンボーディングシステム）の実装
+        function openCheckInModal() {
+            checkInStep = 1;
+            renderCheckInStep();
             document.getElementById('modalOverlay').classList.add('active');
         }
 
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('active');
+        function renderCheckInStep() {
+            const body = document.getElementById('modalDynamicBody');
+            if (checkInStep === 1) {
+                body.innerHTML = `
+                    <div class="modal-title">🛫 Flight Check-in (搭乗手続き - 1/2)</div>
+                    <label class="question-label">現在のあなたの英語資格、または最も近いスコアを選択してください。</label>
+                    <div class="option-grid" style="grid-template-columns: repeat(2, 1fr);">
+                        <button class="option-btn" onclick="selectScoreType('none', this)">資格なし・初学者</button>
+                        <button class="option-btn" onclick="selectScoreType('toeic', this)">TOEIC LR</button>
+                        <button class="option-btn" onclick="selectScoreType('eiken', this)">英検</button>
+                        <button class="option-btn" onclick="selectScoreType('ielts', this)">IELTS</button>
+                    </div>
+                    <div id="scoreInputArea" style="margin-top:15px;"></div>
+                    <div class="modal-footer">
+                        <div></div>
+                        <button class="nav-btn primary" id="checkinNextBtn" onclick="nextCheckInStep()">次へ進む ➔</button>
+                    </div>
+                `;
+                selectScoreType('none', document.querySelector('.option-btn'));
+            } else if (checkInStep === 2) {
+                body.innerHTML = `
+                    <div class="modal-title">🛬 Flight Check-in (目的地の設定 - 2/2)</div>
+                    <label class="question-label">今回の英語学習フライトの「最も重要な目的」は何ですか？</label>
+                    <div class="option-grid">
+                        <button class="option-btn" onclick="selectTargetPurpose('BICS', this)">🌴 旅行・日常会話をマスターしたい (BICS)</button>
+                        <button class="option-btn" onclick="selectTargetPurpose('Bridge', this)">💼 実務・海外出張・ビジネスを回したい (Bridge)</button>
+                        <button class="option-btn" onclick="selectTargetPurpose('CALP', this)">🎓 論文・教養・留学・学術的な議論をしたい (CALP)</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="nav-btn" onclick="prevCheckInStep()">↩️ 戻る</button>
+                        <button class="nav-btn primary" onclick="finishCheckIn()">フライトプランを発券する 🎫</button>
+                    </div>
+                `;
+            }
         }
 
-        const matrixData = {
-            "A1_BICS": {
-                title: "A1 × BICS (挨拶・単語の羅列) — 生存の防衛本能",
-                vocab: "【公式目安】英検: 3級 / TOEIC LR: 120-220 / TOEIC SW: 80-150 / TOEFL: 0-31 / IELTS: 1.0-3.0 / DET: 10-55",
-                time: "平均 125時間",
-                wpm: "【Reading】40-60 WPM (200-250)<br>【Listening】60-80 WPM (150-180)<br>【Speaking】20-30 WPM (130-150)",
-                curation: "【できること】名前、出身地の極めて単純なやり取り。型通りの挨拶。\n【できないこと】相手の返答を予想して自発的にラリーを繋ぐこと。\n\n★明日からの最初のアクション:\n中学1年レベルの基本動詞（go, have, take）のコアイメージを音読して脳にログインさせてください。"
-            },
-            "A1_Bridge": {
-                title: "A1 × Bridge (超初歩の実務受信) — 受動のデータ視認",
-                vocab: "【公式目安】英検: 3級 / TOEIC LR: 120-380 / TOEIC SW: 80-190 / TOEFL: 10-34 / IELTS: 2.0-3.5 / DET: 20-55",
-                time: "平均 150時間",
-                wpm: "【Reading】50-70 WPM (200-250)<br>【Listening】60-80 WPM (150-180)<br>【Speaking】10-20 WPM (130-150)",
-                curation: "【できること】単発のシンプルな社内通知や短い数字データの読み取り。\n【できないこと】複数文にまたがるメールの文脈把握、チャットへの英語での返信。\n\n★明日からの最初のアクション:\n社内で使われる最も短い英文定型フォーマット（OK, Approved等）を3パターン丸暗記してください。"
-            },
-            "A1_CALP": {
-                title: "A1 × CALP (単発の事実認識) — 静的なリテラシー",
-                vocab: "【公式目安】英検: 3級 / TOEIC LR: 150-200 / TOEIC SW: 60-90 / TOEFL: 0-23 / IELTS: 1.5-2.5 / DET: 10-40",
-                time: "平均 180時間",
-                wpm: "【Reading】30-50 WPM (200-250)<br>【Listening】50-70 WPM (150-180)<br>【Speaking】計測不可",
-                curation: "【できること】図表のキャプション、ラベルに書かれた単純な単語や明確な事実の視認。\n【できないこと】論理的な因果関係の理解、短いテキストの要約や推論。\n\n★明日からの最初のアクション:\n'Water boils at 100 degrees.'のような、もっとも単純な事実の短文を1日3つ主語と述語に分けてください。"
-            },
-            "A2_BICS": {
-                title: "A2 × BICS (カタコト脱出・対人) — サバイバル会話",
-                vocab: "【公式目安】英検: 準2級 / TOEIC LR: 225-545 / TOEIC SW: 160-230 / TOEFL: 32-41 / IELTS: 3.5-4.5 / DET: 60-80",
-                time: "平均 187時間",
-                wpm: "【Reading】80-100 WPM (200-250)<br>【Listening】90-110 WPM (150-180)<br>【Speaking】40-60 WPM (130-150)",
-                curation: "【できること】ホテルや駅でのトラブル対応、趣味や家族についての簡単な情報交換。\n【できないこと】抽象的な話題の雑談、冗談やスラングが飛び交うネイティブ同士の輪への参加。\n\n★明日からの最初のアクション:\n海外旅行の「困った場面」を想定し、3文構成（状況説明＋理由＋要求）の独り言をつぶやいてみてください。"
-            },
-            "A2_Bridge": {
-                title: "A2 × Bridge (指示書通りの受動実務) — テンプレート遂行",
-                vocab: "【公式目安】英検: 準2級 / TOEIC LR: 385-780 / TOEIC SW: 200-300 / TOEFL: 35-45 / IELTS: 4.0 / DET: 65-80",
-                time: "平均 400時間",
-                wpm: "【Reading】90-110 WPM (200-250)<br>【Listening】100-120 WPM (150-180)<br>【Speaking】30-50 WPM (130-150)",
-                curation: "【できること】定型メールの解読、マニュアルに沿った単純データ処理、短い指示の理解。\n【できないこと】自由記述での複雑な進捗報告、突発的なクレームの電話応対。\n\n★明日からの最初のアクション:\n毎日届く定型の英語ビジネスメールを、返信フォームのテンプレートと照らし合わせてパターン化してください。"
-            },
-            "A2_CALP": {
-                title: "A2 × CALP (基礎短文の読解) — 教科書リテラシー",
-                vocab: "【公式目安】英検: 準2級 / TOEIC LR: 400-500 / TOEIC SW: 180-220 / TOEFL: 35-45 / IELTS: 4.0 / DET: 65-75",
-                time: "平均 450時間",
-                wpm: "【Reading】70-90 WPM (200-250)<br>【Listening】80-100 WPM (150-180)<br>【Speaking】20-40 WPM (130-150)",
-                curation: "【できること】短くシンプルに書かれた百科事典等の事実関係の把握。'Plants need sunlight.'等の理解。\n【できないこと】論文の段落同士の関係性の読み取り、筆者の主張や仮説の論理的な批判検証。\n\n★明日からの最初のアクション:\n子供向けの科学百科事典（Simple English Wikipedia等）の短い1段落を、主語・動詞を意識して精読してください。"
-            },
-            "B1_BICS": {
-                title: "B1 × BICS (日常会話の自立) — 親密圏のインプット/アウトプット",
-                vocab: "【公式目安】英検: 2級 / TOEIC LR: 550-780 / TOEIC SW: 240-300 / TOEFL: 42-71 / IELTS: 4.0-5.0 / DET: 85-95",
-                time: "平均 465時間",
-                wpm: "【Reading】110-130 WPM (200-250)<br>【Listening】120-140 WPM (150-180)<br>【Speaking】70-95 WPM (130-150)",
-                curation: "【できること】身近な話題や時事ニュースについての標準速度での雑談、自己意見の簡単な表明。\n【できないこと】込み入った感情の機微を伝えること、会話の主導権を握って話をジャックすること。\n\n★明日からの最初のアクション:\nYouTubeの1分程度の海外日常Vlogを視聴し、そこで使われたフレーズを1つ自分の日常に置き換えて発話してください。"
-            },
-            "B1_Bridge": {
-                title: "B1 × Bridge (日常ビジネスメール) — 一般実務のハンドリング",
-                vocab: "【公式目安】英検: 2級 / TOEIC LR: 790-1090 / TOEIC SW: 310-390 / TOEFL: 55-71 / IELTS: 4.5-5.0 / DET: 85-100",
-                time: "平均 800時間",
-                wpm: "【Reading】120-140 WPM (200-250)<br>【Listening】130-150 WPM (150-180)<br>【Speaking】60-80 WPM (130-150)",
-                curation: "【できること】一般的な実務メールの送受信、アジェンダに沿ったミーティングでの進捗報告。\n【できないこと】ブレインストーミングでの変則的な意見への即座の反論、タフな顧客対応や値引き交渉。\n\n★明日からの最初のアクション:\nVOAニュースの記事を1つ選び、130 WPMのタイマーをかけて時間内に内容の7割をキャッチする速読訓練を開始してください。"
-            },
-            "B1_CALP": {
-                title: "B1 × CALP (論理的なやりとりも少しずつ) — アカデミックの門戸",
-                vocab: "【公式目安】英検: 2級 / TOEIC LR: 700-800 / TOEIC SW: 280-320 / TOEFL: 42-71 / IELTS: 4.0-5.0 / DET: 85-95",
-                time: "平均 900時間",
-                wpm: "【Reading】100-120 WPM (200-250)<br>【Listening】110-130 WPM (150-180)<br>【Speaking】50-70 WPM (130-150)",
-                curation: "【できること】科学・歴史テーマの易しい解説（Wikipedia等）の読解、学校講義のメインアイデアの把握。\n【できないこと】学術論文の背景知識なしでの精読、自分の専門外の講義に対する論理的なカウンター質問。\n\n★明日からの最初のアクション:\n身近な社会問題のWikipedia記事を読み、「原因・現状・対策」の3つの要素を箇条書きで抜き出してみましょう。"
-            },
-            "B2_BICS": {
-                title: "B2 × BICS (ネイティブとの雑談) — 文化的ユーモアの同期",
-                vocab: "【公式目安】英検: 準1級 / TOEIC LR: 800-900 / TOEIC SW: 320-350 / TOEFL: 72-94 / IELTS: 5.5-6.5 / DET: 100-115",
-                time: "平均 1,000時間",
-                wpm: "【Reading】140-170 WPM (200-250)<br>【Listening】150-180 WPM (150-180)<br>【Speaking】100-130 WPM (130-150)",
-                curation: "【できること】ネイティブと緊張感なしにやり取りし、文化的なジョークや皮肉のニュアンスも大枠理解できる。\n【できないこと】海外の古いTV番組や政治コンテクストが絡む、超ディープなローカルスラングの100%完全同調。\n\n★明日からの最初のアクション:\n海外の人気コメディドラマを英語字幕付きで観て、登場人物のセリフのテンポに被せるようにシャドーイングしてください。"
-            },
-            "B2_Bridge": {
-                title: "B2 × Bridge (現場を回す圧倒的実務) — 丁々発止 of リアルビジネス",
-                vocab: "【公式目安】英検: 準1級 / TOEIC LR: 785-940 / TOEIC SW: 310-350 / TOEFL: 72-94 / IELTS: 5.5-6.5 / DET: 105-125",
-                time: "平均 1,350時間",
-                wpm: "【Reading】150-180 WPM (200-250)<br>【Listening】150-180 WPM (150-180)<br>【Speaking】90-120 WPM (130-150)",
-                curation: "【できること】ビジネス会議でのファシリテーション、複雑な業務仕様書の理解、プレゼンと質疑応答。\n【できないこと】法的なリスクが激しく絡む、海外エリート相手の英文契約交渉における微細な言葉の駆け引き。\n\n★明日からの最初のアクション:\nBBCの時事ビジネス記事を1本読み、その背景にある企業の狙いを「PREP法」の論理で30秒で話す練習をしてください。"
-            },
-            "B2_CALP": {
-                title: "B2 × CALP (教養講義・ロジックの核) — 大人の論理OSマウント",
-                vocab: "【公式目安】英検: 準1級 / TOEIC LR: 850-950 / TOEIC SW: 330-370 / TOEFL: 72-94 / IELTS: 5.5-6.5 / DET: 105-125",
-                time: "平均 1,450時間",
-                wpm: "【Reading】130-160 WPM (200-250)<br>【Listening】140-170 WPM (150-180)<br>【Speaking】80-110 WPM (130-150)",
-                curation: "【できること】TED Talksの字幕なし完全理解。自分の専門分野に関する海外入門論文の読解と要約記述。\n【できないこと】査読付き学術論文のハイスピードな乱読、英語ディベートでの学術的な鋭いカウンター突っ込み。\n\n★明日からの最初のアクション:\n関心のあるテーマのTED Talksを1本選び、スクリプトを読み込みながら、話者のロジック展開の「繋ぎ語」をマーキングしてください。"
-            },
-            "C1_BICS": {
-                title: "C1 × BICS (高速・即興の洗練討論) — 喧騒のネイティブ包囲網突破",
-                vocab: "【公式目安】英検: 1級 / TOEIC LR: 950+ / TOEIC SW: 360+ / TOEFL: 95-113 / IELTS: 7.0-8.0 / DET: 130-140",
-                time: "平均 2,250時間",
-                wpm: "【Reading】180-220 WPM (200-250)<br>【Listening】180-220 WPM (150-180)<br>【Speaking】130-160 WPM (130-150)",
-                curation: "【できること】騒がしいバー等で、複数人のネイティブが即興で行う超高速のローカル雑談に完全参入。\n【できないこと】ネイティブの幼児期のカルチャーや、地域方言が激しすぎるニッチなインサイド・トークへの完璧な同調。\n\n★明日からの最初のアクション:\n海外の人気ポッドキャストを1.1倍速で聴き、会話が切り替わる瞬間の相槌の入れ方をトレースしてください。"
-            },
-            "C1_Bridge": {
-                title: "C1 × Bridge (最高級タフな国際交渉) — 知略と駆け引きのガバナンス",
-                vocab: "【公式目安】英検: 1級 / TOEIC LR: 945-990 / TOEIC SW: 360-400 / TOEFL: 95-113 / IELTS: 7.0-8.0 / DET: 130-150",
-                time: "平均 2,600時間",
-                wpm: "【Reading】190-230 WPM (200-250)<br>【Listening】180-220 WPM (150-180)<br>【Speaking】120-150 WPM (130-150)",
-                curation: "【できること】国際M&A契約や高度な知財交渉。ネイティブ向けの高度なユーモアや皮肉を使った心理的関係構築。\n【できないこと】ネイティブが「教養」として嗜む古典文学や歴史的メタファーが重層的に隠された最高級文芸の完璧な解読。\n\n★明日からの最初のアクション:\n海外の経済小説やタフな交渉ドキュメンタリーを読み、相手の要求の裏にある「本音」を匂わせる表現を分析してください。"
-            },
-            "C1_CALP": {
-                title: "C1 × CALP (知性を研ぐエリート学術) — 世界標準の知的覇権",
-                vocab: "【公式目安】英検: 1級 / TOEIC LR: 960+ / TOEFL: 95-113 / IELTS: 7.0-8.0 / DET: 130-150",
-                time: "平均 2,800時間",
-                wpm: "【Reading】170-210 WPM (200-250)<br>【Listening】170-210 WPM (150-180)<br>【Speaking】110-140 WPM (130-150)",
-                curation: "【できること】『The Economist』や『Nature』誌などの論文を辞書なしで精読。海外大学院ディスカッションの完全完遂。\n【できないこと】未知の学術分野における、その道10年のトップ専門家レベルの超高難度な新理論構築。\n\n★明日からの最初のアクション:\n『The Economist』の最新論説を1本読み、著者の論理構造の欠陥（あるいは反論の余地）を英語で200語のエッセイに書き出してください。"
-            },
-            "C2_BICS": {
-                title: "C2 × BICS (母語話者完全同調) — 文化・言葉の完全越境",
-                vocab: "【公式目安】英検: 1級満点圏 / 各種試験: 最高値 / DET: 150-160",
-                time: "平均 4,750時間",
-                wpm: "【Reading】240+ WPM (200-250)<br>【Listening】220+ WPM (150-180)<br>【Speaking】150-180 WPM (130-150)",
-                curation: "【できること】政治演説、演劇、古典小説、映画のセリフなどを文化的背景も含めて100%理解。言葉遣いの格の自在な変化。\n【できないこと】ほぼなし（ネイティブの知識人層と同等）。\n\n★明日からの最初のアクション:\n海外の名作文学や歴史的演説をオーディオブックで聴き、言葉の持つ「リズム」と「思想」を完全に身体へ同期させてください。"
-            },
-            "C2_Bridge": {
-                title: "C2 × Bridge (全方位的ビジネス談話) — 全方位支配のトップ交渉",
-                vocab: "【公式目安】TOEIC: 満点圏 / 各種換算: 上限値 / DET: 155-160",
-                time: "平均 5,000時間",
-                wpm: "【Reading】250+ WPM (200-250)<br>【Listening】220+ WPM (150-180)<br>【Speaking】140-170 WPM (130-150)",
-                curation: "【できること】あらゆる国際ビジネス文書の即時処理、企業の最高戦略決定会議での英語によるトップ交渉や宣言。\n【できないこと】なし。\n\n★明日からの最初のアクション:\nグローバル企業の決算発表の質疑応答の音声を聴き、経営陣が放つ「市場をコントロールするための極限の表現」をシャドーイングしてください。"
-            },
-            "C2_CALP": {
-                title: "C2 × CALP (知識人・研究者レイヤー) — 最高峰の思想・人類の知性",
-                vocab: "【公式目安】TOEFL: 114-120 / IELTS: 8.5-9.0 / DET: 155-160",
-                time: "平均 5,500時間",
-                wpm: "【Reading】220+ WPM (200-250)<br>【Listening】220+ WPM (150-180)<br>【Speaking】130-160 WPM (130-150)",
-                curation: "【できること】国際学会での基調講演、査読付き最高峰論文の単独執筆、超難解なグローバル政策・法案文書の立案。\n【できないこと】なし。\n\n★明日からの最初のアクション:\n自分の研究あるいは専門領域の最先端の査読付き論文を読み、それに対する補足仮説のプロトタイプを英語で1,000語ビルドしてください。"
+        function selectScoreType(type, btn) {
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const inputArea = document.getElementById('scoreInputArea');
+            
+            if (type === 'none') {
+                inputArea.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted);">スタート地点：A1 × BICS (挨拶レイイヤー) から出発します。</p>`;
+                selectedStartFromScore = "A1_BICS";
+            } else if (type === 'toeic') {
+                inputArea.innerHTML = `
+                    <label style="font-size:0.8rem; color:#9ca3af; display:block; margin-bottom:5px;">TOEICスコアを入力 (10〜990):</label>
+                    <input type="number" class="score-input" id="calcInputScore" min="10" max="990" value="400" oninput="calculateCefrFromScore('toeic')">
+                    <p id="calcPreview" style="font-size:0.85rem; color:var(--accent-bics); margin-top:5px;"></p>
+                `;
+                calculateCefrFromScore('toeic');
+            } else if (type === 'eiken') {
+                inputArea.innerHTML = `
+                    <label style="font-size:0.8rem; color:#9ca3af; display:block; margin-bottom:5px;">取得級を選択:</label>
+                    <select class="search-select" id="calcInputScore" onchange="calculateCefrFromScore('eiken')">
+                        <option value="5">5級 / 4級</option>
+                        <option value="3">3級</option>
+                        <option value="22">準2級</option>
+                        <option value="2">2級</option>
+                        <option value="11">準1級</option>
+                        <option value="1">1級</option>
+                    </select>
+                    <p id="calcPreview" style="font-size:0.85rem; color:var(--accent-bics); margin-top:5px;"></p>
+                `;
+                calculateCefrFromScore('eiken');
+            } else if (type === 'ielts') {
+                inputArea.innerHTML = `
+                    <label style="font-size:0.8rem; color:#9ca3af; display:block; margin-bottom:5px;">IELTS バンドスコア (1.0〜9.0):</label>
+                    <input type="number" class="score-input" id="calcInputScore" min="1.0" max="9.0" step="0.5" value="4.5" oninput="calculateCefrFromScore('ielts')">
+                    <p id="calcPreview" style="font-size:0.85rem; color:var(--accent-bics); margin-top:5px;"></p>
+                `;
+                calculateCefrFromScore('ielts');
             }
+        }
+
+        // スコアからCEFR現在地を自動判別するロジック
+        function calculateCefrFromScore(type) {
+            const val = parseFloat(document.getElementById('calcInputScore').value);
+            let cefr = "A1_BICS";
+            
+            if (type === 'toeic') {
+                if (val >= 945) cefr = "C1_Bridge";
+                else if (val >= 785) cefr = "B2_Bridge";
+                else if (val >= 550) cefr = "B1_Bridge";
+                else if (val >= 225) cefr = "A2_Bridge";
+                else cefr = "A1_Bridge";
+            } else if (type === 'eiken') {
+                if (val === 1) cefr = "C1_BICS";
+                else if (val === 11) cefr = "B2_BICS";
+                else if (val === 2) cefr = "B1_BICS";
+                else if (val === 22) cefr = "A2_BICS";
+                else cefr = "A1_BICS";
+            } else if (type === 'ielts') {
+                if (val >= 7.0) cefr = "C1_CALP";
+                else if (val >= 5.5) cefr = "B2_CALP";
+                else if (val >= 4.0) cefr = "B1_CALP";
+                else cefr = "A2_CALP";
+            }
+            
+            selectedStartFromScore = cefr;
+            document.getElementById('calcPreview').innerText = `判定現在地 🛫: ${cefr.replace('_', ' × ')}`;
+        }
+
+        let selectedTargetPurposeCode = "Bridge";
+        function selectTargetPurpose(purpose, btn) {
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedTargetPurposeCode = purpose;
+        }
+
+        function nextCheckInStep() { checkInStep++; renderCheckInStep(); }
+        function prevCheckInStep() { checkInStep--; renderCheckInStep(); }
+
+        function finishCheckIn() {
+            currentStart = selectedStartFromScore;
+            // 目的別で自動的に現実的な目標目的地（B2レベル）をセット
+            currentEnd = `B2_${selectedTargetPurposeCode}`;
+            
+            document.getElementById("startLoc").value = currentStart;
+            document.getElementById("endLoc").value = currentEnd;
+            
+            closeModal();
+            calculateRoute();
+        }
+
+        // ℹ️詳細モーダル展開システム
+        function handleInfoClick(levelId, event) {
+            event.stopPropagation();
+            const parts = levelId.split('_');
+            const data = matrixData[levelId];
+            if (!data) return;
+
+            const body = document.getElementById('modalDynamicBody');
+            body.innerHTML = `
+                <div class="modal-title" id="modalTitle"><span class="tag tag-${parts[1].toLowerCase()}">${parts[1]}</span> ${data.title}</div>
+                <div class="modal-tabs">
+                    <button class="modal-tab active" onclick="switchModalTab('tab-scores', this)">📊 スコア・語彙</button>
+                    <button class="modal-tab" onclick="switchModalTab('tab-curation', this)">💡 運用イメージ</button>
+                    <button class="modal-tab" onclick="switchModalTab('tab-action', this)">🚀 明日からの行動</button>
+                </div>
+                <div class="tab-body">
+                    <div id="tab-scores" class="tab-content active">
+                        <div class="modal-section" style="border-left-color: #58a6ff;">
+                            <h4>各種試験・語彙力の公式目安</h4>
+                            <p style="font-size:0.85rem; color:var(--accent-bics); line-height:1.6;">${data.vocab}</p>
+                        </div>
+                        <div class="modal-section" style="border-left-color: #38bdf8;">
+                            <h4>処理速度・WPM指標</h4>
+                            <p>${data.wpm}</p>
+                        </div>
+                        <div class="modal-section" style="border-left-color: #d29922;">
+                            <h4>累計必要学習時間目安</h4>
+                            <p>${data.time}</p>
+                        </div>
+                    </div>
+                    <div id="tab-curation" class="tab-content">
+                        <div class="modal-section" style="border-left-color: #bc8cff;">
+                            <h4>対応可能 / できること</h4>
+                            <p>${data.curation.match(/【できること】([\s\S]*?)【できないこと】/)[1].trim()}</p>
+                        </div>
+                        <div class="modal-section" style="border-left-color: #eb5757;">
+                            <h4>限界 / できないこと</h4>
+                            <p>${data.curation.match(/【できないこと】([\s\S]*?)★/)[1].trim()}</p>
+                        </div>
+                    </div>
+                    <div id="tab-action" class="tab-content">
+                        <div class="modal-section" style="border-left-color: #10b981;">
+                            <h4>次の一歩 (アクションプラン)</h4>
+                            <p style="color:#fff; font-weight:600;">${data.curation.match(/★明日からの最初のアクション:([\s\S]*)$/)[1].trim()}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function switchModalTab(tabId, btn) {
+            document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+
+        function copyFlightPlan() {
+            if (currentStart === currentEnd) { alert("出発地と目的地が同じ航路です。"); return; }
+            const dailyStudy = document.getElementById("hoursPerDay").value;
+            const textToCopy = `✈️ 私の英語学習フライトプラン ✈️\n━━━━━━━━━━━━━━━━━\n🛫 出発地: ${currentStart.replace('_', ' × ')}\n🛬 目的地: ${currentEnd.replace('_', ' × ')}\n⏱️ 必要フライト時間: ${lastCalculatedHours} 時間\n📅 達成目標期間: ${lastCalculatedDaysText} (1日${dailyStudy}hペース)\n━━━━━━━━━━━━━━━━━\nLet's skyscan your English!\n#TheLanguageMatrix #英語学習 #LEMMA`;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = document.querySelector('.share-btn');
+                const originalText = btn.innerText;
+                btn.innerText = "✅ コピー完了！";
+                setTimeout(() => { btn.innerText = originalText; }, 1500);
+            });
+        }
+
+        // 定義データ
+        const matrixData = {
+            "A1_BICS": { title: "A1 × BICS (挨拶・単語の羅列)", vocab: "英検:3級 / TOEIC:120〜 / 語彙:約1,000語", time: "平均125時間", wpm: "Reading: 40-60 WPM / Speaking: 20-30 WPM", curation: "【できること】名前、出身地の単純なやり取り。\n【できないこと】相手の返答を予想してラリーを繋ぐこと。\n★明日からの最初のアクション:\n中学1年レベルの基本動詞（go, have, take）のコアイメージを掴みましょう。" },
+            "A1_Bridge": { title: "A1 × Bridge (超初歩の実務受信)", vocab: "TOEIC LR:120〜380 / 語彙:約1,200語", time: "平均150時間", wpm: "Reading: 50-70 WPM", curation: "【できること】単発のシンプルな社内通知のデータ読み取り。\n【できないこと】複数文メールの文脈把握、チャット返信。\n★明日からの最初のアクション:\n社内で使われる最も短い英文定型フォーマット（OK, Approved等）を覚える。" },
+            "A1_CALP": { title: "A1 × CALP (単発の事実認識)", vocab: "限定的リテラシー / 語彙:約1,500語", time: "平均180時間", wpm: "Reading: 30-50 WPM", curation: "【できること】図表のキャプションに書かれた明確な事実の視認。\n【できないこと】論理的な因果関係の理解、テキストの要約。\n★明日からの最初のアクション:\n単純な事実の短文（Water boils at 100 degrees）を主語と述語に分ける。" },
+            "A2_BICS": { title: "A2 × BICS (カタコト脱出・対人)", vocab: "英検:準2級 / IELTS:3.5 / 語彙:約2,500語", time: "平均187時間", wpm: "Reading: 80-100 WPM / Speaking: 40-60 WPM", curation: "【できること】ホテルでのトラブル対応、身近な情報交換。\n【できないこと】抽象的な話題の雑談、ネイティブ同士の高速な会話への参加。\n★明日からの最初のアクション:\n困った場面を想定し、3文構成（状況＋理由＋要求）の独り言を呟く。" },
+            "A2_Bridge": { title: "A2 × Bridge (指示書通りの受動実務)", vocab: "TOEIC LR:385〜780 / 語彙:約3,000語", time: "平均400時間", wpm: "Reading: 90-110 WPM", curation: "【できること】定型メールの解読、マニュアルに沿った単純データ処理。\n【できないこと】自由記述での複雑な進捗報告、突発的なクレーム応対。\n★明日からの最初のアクション:\n毎日届く定型のビジネスメールをフォルダ分けしてパターン化する。" },
+            "A2_CALP": { title: "A2 × CALP (基礎短文の読解)", vocab: "中学理科・社会教科書水準 / 語彙:約3,500語", time: "平均450時間", wpm: "Reading: 70-90 WPM", curation: "【できること】短くシンプルに書かれた百科事典の事実関係の把握。\n【できないこと】論文の段落同士の論理的な因果関係の読み取り。\n★明日からの最初のアクション:\nSimple English Wikipediaの短い1段落を、構造を意識して精読する。" },
+            "B1_BICS": { title: "B1 × BICS (日常雑談の完全自立)", vocab: "英検:2級 / IELTS:4.5 / 語彙:約5,000語", time: "平均465時間", wpm: "Reading: 110-130 WPM / Speaking: 70-95 WPM", curation: "【できること】身近な話題についての標準速度での雑談、自己意見の表明。\n【できないこと】込み入った感情の機微を伝えること、会話の主導権を握ること。\n★明日からの最初のアクション:\n海外の日常Vlogを観て、使われた相槌をそのまま1つ真似して発話する。" },
+            "B1_Bridge": { title: "B1 × Bridge (日常ビジネスメール)", vocab: "TOEIC LR:550〜780 / 語彙:約6,000語", time: "平均800時間", wpm: "Reading: 120-140 WPM / Speaking: 60-80 WPM", curation: "【できること】一般的な実務メールの送受信、ミーティングでの進捗報告。\n【できないこと】ブレストでの変則的な意見への即座の反論、顧客との値引き交渉。\n★明日からの最初のアクション:\nビジネスニュースを130WPMの目標速度を設定して速読訓練を行う。" },
+            "B1_CALP": { title: "B1 × CALP (一般論理の受信開始)", vocab: "TOEFL:42〜 / IELTS:4.0 / 語彙:約6,500語", time: "平均900時間", wpm: "Reading: 100-120 WPM", curation: "【できること】科学・歴史テーマの易しい解説記事の読解、講義メインアイデアの把握。\n【できないこと】学術論文の背景知識なしでの精読、論理的なカウンター質問。\n★明日からの最初のアクション:\n社会問題のニュースを読み、「原因・現状・対策」を箇条書きで抜き出す。" },
+            "B2_BICS": { title: "B2 × BICS (ネイティブとの雑談)", vocab: "英検:準1級 / 語彙:約9,000語", time: "平均1000時間", wpm: "Reading: 140-170 WPM / Speaking: 100-130 WPM", curation: "【できること】ネイティブと緊張感なくやり取りし、ジョークや皮肉のニュアンスも大枠理解できる。\n【できないこと】政治コンテクストや超ディープなローカルスラングへの完全な同調。\n★明日からの最初のアクション:\n海外ドラマを英語字幕で観て、役者のテンポのままシャドーイングする。" },
+            "B2_Bridge": { title: "B2 × Bridge (現場を回す圧倒的実務)", vocab: "TOEIC LR:785〜 / 語彙:約10,000語", time: "平均1350時間", wpm: "Reading: 150-180 WPM / Speaking: 90-120 WPM", curation: "【できること】ビジネス会議でのファシリテーション、複雑な仕様書の理解、プレゼン完遂。\n【できないこと】法的なリスクが激しく絡む、タフな契約交渉における微細な言葉の駆け引き。\n★明日からの最初のアクション:\nBBCビジネス記事を読み、企業の狙いを「PREP法」の論理で30秒で話す訓練。" },
+            "B2_CALP": { title: "B2 × CALP (教養講義・ロジックの核)", vocab: "TOEFL:72〜 / IELTS:5.5 / 語彙:約11,000語", time: "平均1450時間", wpm: "Reading: 130-160 WPM / Speaking: 80-110 WPM", curation: "【できること】TED Talksの字幕なし理解。自分の専門分野に関する論文の読解と要約。\n【できないこと】査読付き論文のハイスピードな乱読、ディベートでの鋭いカウンター突っ込み。\n★明日からの最初のアクション:\nTED Talksを1本選び、スクリプトの「論理の繋ぎ語（However等）」をマーキングする。" },
+            "C1_BICS": { title: "C1 × BICS (高速・即興の洗練討論)", vocab: "英検:1級 / 語彙:約15,000語", time: "平均2250時間", wpm: "Reading: 180-220 WPM / Speaking: 130-160 WPM", curation: "【できること】騒がしいカフェ等で、複数人のネイティブが行う超高速の雑談に完全参入。\n【できないこと】幼児期のカルチャーや地域方言が激しすぎるインサイド・トークへの100%同調。\n★明日からの最初のアクション:\n海外の海外ポッドキャストを1.1倍速で聴き、会話の切り替わりの相槌の入れ方を真似る。" },
+            "C1_Bridge": { title: "C1 × Bridge (最高級タフな国際交渉)", vocab: "TOEIC:945〜 / 語彙:約16,000語", time: "平均2600時間", wpm: "Reading: 190-230 WPM / Speaking: 120-150 WPM", curation: "【できること】国際M&Aや高度な知財交渉。ユーモアや皮肉を使った心理的な関係構築。\n【できないこと】古典文学や歴史的メタファーが重層的に隠された最高級文芸の完璧な解読。\n★明日からの最初のアクション:\n海外のタフな折衝ドキュメンタリーを観て、要求の裏にある「本音」の匂わせ方を分析する。" },
+            "C1_CALP": { title: "C1 × CALP (知性を研ぐエリート学術)", vocab: "TOEFL:95〜 / IELTS:7.0 / 語彙:約17,000語", time: "平均2800時間", wpm: "Reading: 170-210 WPM / Speaking: 110-140 WPM", curation: "【できること】『The Economist』や『Nature』などの論文を辞書なし精読。大学院ディスカッション完遂。\n【できないこと】未知の学術分野における、その道10年のトップ専門家レベルの新理論構築。\n★明日からの最初のアクション:\n『The Economist』の論説を読み、そのロジックへの反論を英語で200語のエッセイに書く。" },
+            "C2_BICS": { title: "C2 × BICS (文化・言葉の完全越境)", vocab: "ネイティブ知識人同等", time: "平均4750時間", wpm: "Reading: 240+ WPM", curation: "【できること】政治演説、演劇、古典小説を文化的背景も含めて100%理解。格調の自在な変化。\n【できないこと】特になし。\n★明日からの最初のアクション:\n歴史的演説をオーディオブックで聴き、言葉の持つリズムと思想を身体へ同期させる。" },
+            "C2_Bridge": { title: "C2 × Bridge (全方位支配のトップ交渉)", vocab: "実務の神域 / 満点圏", time: "平均5000時間", wpm: "Reading: 250+ WPM", curation: "【できること】あらゆる国際ビジネス文書の即時処理、最高戦略決定会議での英語によるトップガバナンス。\n【できないこと】特になし。\n★明日からの最初のアクション:\nグローバル企業の決算質疑を聴き、市場をコントロールするための極限の表現をトレースする。" },
+            "C2_CALP": { title: "C2 × CALP (最高峰の思想・人類の知性)", vocab: "IELTS:8.5〜9.0 / TOEFL:114〜", time: "平均5500時間", wpm: "Reading: 220+ WPM", curation: "【できること】国際学会での基調講演、査読付き最高峰論文の単独執筆、難解な政策・法案文書の立案。\n【できないこと】特になし。\n★明日からの最初のアクション:\n最先端の査読付き論文を読み、それに対する補足仮説のプロトタイプを英語で1,000語ビルドする。" }
         };
 
         window.onload = function() {
-            calculateRoute();
+            // 起動時に自動的にチェックイン問診を立ち上げる
+            openCheckInModal();
         };
     </script>
 </body>
