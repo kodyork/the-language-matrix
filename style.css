@@ -493,7 +493,7 @@ header p {
     border-right: 1px solid var(--panel-border);
 }
 
-/* ✨ インタラクションマス設計（ホバーフロート＆波紋エフェクト） */
+/* インタラクションマス設計（ホバーフロート＆波紋エフェクト） */
 .matrix-cell {
     background: rgba(255,255,255,0.02);
     border: 1px solid var(--panel-border);
@@ -547,7 +547,7 @@ header p {
 .matrix-cell.highlight-both::after { content: "🗺️ 現在地＆目標"; position: absolute; top: 2px; right: 2px; background: #e3b341; color: black; font-size: 0.6rem; padding: 1px 4px; border-radius: 4px; font-weight: bold; }
 
 .cell-summary { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: #f0f6fc; line-height: 1.2; padding-right: 10px; }
-.cell-meta { font-size: 0.65rem; color: var(--text-muted); }
+.cell-meta { font-size: 0.62rem; color: var(--text-muted); line-height: 1.3; }
 
 /* 📋 モーダル基本構造 */
 .modal-overlay {
